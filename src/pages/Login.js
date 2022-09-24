@@ -97,7 +97,7 @@ const Login = () => {
       <DivForm>
         <FormLogin>
           <Typography align="center" variant="h2" gutterBottom>
-            ¡Bienvenido!
+            Inicio de Sesión
           </Typography>
           <InputContainer>
             <Box sx={{ display: "flex", alignItems: "flex-end" }}>
