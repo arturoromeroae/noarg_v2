@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -28,8 +28,8 @@ const pages = [
 // const settings = ["Perfil", "Agregar Usuarios", "Cerrar Sesión"];
 
 const ResponsiveAppBar = () => {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
   const navigate = useNavigate();
 
   let getUserInfo = Cookies.get("user");
@@ -207,7 +207,7 @@ const ResponsiveAppBar = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar sx={{ bgcolor: "green" }}>{user.userName.substring(0, 1).toUpperCase()}</Avatar>
               </IconButton>
             </Tooltip>
             <Menu

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import { DataGrid } from "@mui/x-data-grid";
-import Spinner from "../components/Spinner";
-import styled from "styled-components";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import defaultImage from "../image/default-image.jpg";
@@ -24,12 +22,7 @@ import Typography from "@mui/material/Typography";
 import Shop2TwoToneIcon from '@mui/icons-material/Shop2TwoTone';
 import QueueTwoToneIcon from '@mui/icons-material/QueueTwoTone';
 import DriveFileRenameOutlineTwoToneIcon from '@mui/icons-material/DriveFileRenameOutlineTwoTone';
-
-const LoadingContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 400px;
-`;
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -151,9 +144,7 @@ const Mantenimiento = () => {
     return (
       <>
         <Header />
-        <LoadingContainer>
-          <Spinner />
-        </LoadingContainer>
+        <LoadingSpinner />
       </>
     );
   } else {

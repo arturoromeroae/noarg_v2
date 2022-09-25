@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import { DataGrid } from "@mui/x-data-grid";
-import Spinner from "../components/Spinner";
 import styled from "styled-components";
 import LocalGroceryStoreTwoToneIcon from "@mui/icons-material/LocalGroceryStoreTwoTone";
 import defaultImage from "../image/default-image.jpg";
@@ -20,21 +19,12 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
 import Typography from "@mui/material/Typography";
-import Shop2TwoToneIcon from "@mui/icons-material/Shop2TwoTone";
-import QueueTwoToneIcon from "@mui/icons-material/QueueTwoTone";
-import DriveFileRenameOutlineTwoToneIcon from "@mui/icons-material/DriveFileRenameOutlineTwoTone";
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import HighlightOffTwoToneIcon from '@mui/icons-material/HighlightOffTwoTone';
-
-const LoadingContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 400px;
-`;
+import Cart from "../components/Cart";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const ImageTable = styled.img`
   transition: linear 0.3s;
+  border-radius: 100%;
   &:hover {
     transform: scale(1.5);
     transition: linear 0.3s;
@@ -47,20 +37,8 @@ const ImageTable = styled.img`
 const TableContainer = styled.div`
   display: flex;
   width: 100%;
-  height: 650px;
+  height: 700px;
   border-radius: 20%;
-`;
-
-const List = styled.ul`
-  list-style: none;
-`;
-
-const ListItem = styled.li`
-  border-radius: 3px;
-  text-align: center;
-  padding: 5px;
-  margin: 8px;
-  box-shadow: 0px 0px 5px 0px;
 `;
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -75,10 +53,19 @@ const Repuestos = () => {
   const [itemsModels, setItemsModels] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(0);
+  const [addToCart, setAddToCart] = useState();
+  const [productId, setProductId] = useState();
+  const [count, setCount] = useState(0);
 
   const handleClickOpen = (params) => {
     setOpen(true);
     setSelectedRow(params);
+  };
+
+  const handleCart = (params) => {
+    setAddToCart(params);
+    setProductId(params.idProducto)
+    setCount(count + 1)
   };
 
   const handleClose = () => {
@@ -96,13 +83,13 @@ const Repuestos = () => {
     {
       field: "actions",
       type: "actions",
-      headerName: "Accion",
+      headerName: "Agregar",
       width: 100,
       getActions: (params) => [
         <IconButton
-          aria-label="delete"
+          aria-label="add"
           color="primary"
-          onClick={() => handleClickOpen(params.row)}
+          onClick={() => handleCart(params.row)}
         >
           <LocalGroceryStoreTwoToneIcon />
         </IconButton>,
@@ -111,14 +98,14 @@ const Repuestos = () => {
     {
       field: "image",
       headerName: "Imagen",
-      width: 100,
+      width: 70,
       renderCell: (items) => (
         <ImageTable
           onError={({ currentTarget }) => {
             currentTarget.onerror = null; // prevents looping
             currentTarget.src = defaultImage;
           }}
-          width={100}
+          width={50}
           src={`http://appdemo1.solarc.pe/imagenes/${items.row.codProd}.JPG`}
           alt={
             items.row.nombreProducto
@@ -178,9 +165,7 @@ const Repuestos = () => {
     return (
       <>
         <Header />
-        <LoadingContainer>
-          <Spinner />
-        </LoadingContainer>
+        <LoadingSpinner />
       </>
     );
   } else {
@@ -212,91 +197,8 @@ const Repuestos = () => {
               },
             }}
           />
-          <Box sx={{ px: 2 }}>
-            <Paper elevation={3}>
-              <div style={{ padding: "10px" }}>
-                <h2>Carrito de compras</h2>
-                <List>
-                  <ListItem>
-                    test
-                    <IconButton aria-label="delete" color="primary">
-                      <HighlightOffTwoToneIcon />
-                    </IconButton>
-                    ,
-                  </ListItem>
-                  <ListItem>
-                    test{" "}
-                    <IconButton aria-label="delete" color="primary">
-                      <HighlightOffTwoToneIcon />
-                    </IconButton>
-                    ,
-                  </ListItem>
-                  <ListItem>
-                    test{" "}
-                    <IconButton aria-label="delete" color="primary">
-                      <HighlightOffTwoToneIcon />
-                    </IconButton>
-                  </ListItem>
-                  <ListItem>
-                    test{" "}
-                    <IconButton aria-label="delete" color="primary">
-                      <HighlightOffTwoToneIcon />
-                    </IconButton>
-                  </ListItem>
-                  <ListItem>
-                    test{" "}
-                    <IconButton aria-label="delete" color="primary">
-                      <HighlightOffTwoToneIcon />
-                    </IconButton>
-                  </ListItem>
-                  <ListItem>
-                    test{" "}
-                    <IconButton aria-label="delete" color="primary">
-                      <HighlightOffTwoToneIcon />
-                    </IconButton>
-                    ,
-                  </ListItem>
-                </List>
-              </div>
-              <Paper sx={{ pl: 0.5 }}>
-                <h2>Total</h2>
-              </Paper>
-            </Paper>
-          </Box>
+          <Cart dataCart={addToCart} dataCount={count} dataId={productId} />
         </TableContainer>
-        <Button
-          sx={{ m: 1 }}
-          variant="contained"
-          startIcon={<Shop2TwoToneIcon />}
-        >
-          Agregar Producto
-        </Button>
-        <Button
-          sx={{ m: 1 }}
-          variant="outlined"
-          color="success"
-          endIcon={<QueueTwoToneIcon />}
-        >
-          Agregar Marca
-        </Button>
-        <Button
-          sx={{ m: 1 }}
-          variant="outlined"
-          color="success"
-          endIcon={<DriveFileRenameOutlineTwoToneIcon />}
-        >
-          Editar Marca
-        </Button>
-        <Button sx={{ m: 1 }} variant="outlined" endIcon={<QueueTwoToneIcon />}>
-          Agregar Modelo
-        </Button>
-        <Button
-          sx={{ m: 1 }}
-          variant="outlined"
-          endIcon={<DriveFileRenameOutlineTwoToneIcon />}
-        >
-          Editar Modelo
-        </Button>
 
         <Dialog
           open={open}
@@ -309,122 +211,19 @@ const Repuestos = () => {
           <DialogTitle>{selectedRow.nombreProducto}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-slide-description">
-              <Grid container spacing={1}>
-                <Grid item xs={4}>
-                  <img
-                    onError={({ currentTarget }) => {
-                      currentTarget.onerror = null; // prevents looping
-                      currentTarget.src = defaultImage;
-                    }}
-                    width={250}
-                    src={`http://appdemo1.solarc.pe/imagenes/${selectedRow.codProd}.JPG`}
-                    alt={
-                      selectedRow.nombreProducto
-                        ? selectedRow.nombreProducto
-                        : "Imagen por defeto"
-                    }
-                  />
-                </Grid>
-                <Grid item xs={8}>
-                  <TextField
-                    sx={{ width: "30ch" }}
-                    label="Código Producto"
-                    value={selectedRow.codProd ? selectedRow.codProd : 0}
-                    margin="dense"
-                  />
-                  <TextField
-                    sx={{ m: 1, width: "31ch" }}
-                    label="Producto"
-                    value={
-                      selectedRow.nombreProducto
-                        ? selectedRow.nombreProducto
-                        : ""
-                    }
-                    margin="dense"
-                  />
-                  <TextField
-                    sx={{ width: "62ch" }}
-                    multiline
-                    label="Descripción"
-                    value={
-                      selectedRow.descripcion ? selectedRow.descripcion : ""
-                    }
-                    margin="dense"
-                  />
-                  <TextField
-                    sx={{ width: "20ch" }}
-                    label="Cantidad"
-                    value={selectedRow.stock ? selectedRow.stock : 0}
-                    margin="dense"
-                  />
-                  <TextField
-                    sx={{ m: 1, width: "20ch" }}
-                    label="Precio Base"
-                    value={selectedRow.precioBase ? selectedRow.precioBase : 0}
-                    margin="dense"
-                  />
-                  <TextField
-                    sx={{ width: "20ch" }}
-                    label="Precio Venta"
-                    value={
-                      selectedRow.precioVenta ? selectedRow.precioVenta : 0
-                    }
-                    margin="dense"
-                  />
-                  <TextField
-                    sx={{ width: "41ch" }}
-                    id="outlined-basic"
-                    variant="outlined"
-                    type="file"
-                    inputProps={{
-                      multiple: true,
-                    }}
-                  />
-                  <FormControl sx={{ ml: 1, width: "20ch" }}>
-                    <InputLabel id="demo-simple-select-label">Marca</InputLabel>
-                    {selectedRow.marca && (
-                      <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        label="Marca"
-                        value={selectedRow.marca}
-                      >
-                        {itemsBrands.map((brand) => (
-                          <MenuItem key={brand.id} value={brand.descripcion}>
-                            {brand.descripcion}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    )}
-                  </FormControl>
-                  <FormControl sx={{ my: 1, width: "20ch" }}>
-                    <InputLabel id="demo-simple-select-label">
-                      Modelo
-                    </InputLabel>
-                    {selectedRow.modelo && (
-                      <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        label="Modelo"
-                        value={selectedRow.modelo}
-                      >
-                        {itemsModels.map((model) => (
-                          <MenuItem key={model.id} value={model.descripcion}>
-                            {model.descripcion}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    )}
-                  </FormControl>
-                  <TextField
-                    sx={{ m: 1, width: "41ch" }}
-                    margin="dense"
-                    id="outlined-disabled"
-                    label="Ubicación"
-                    value={selectedRow.ubicacion ? selectedRow.ubicacion : 0}
-                  />
-                </Grid>
-              </Grid>
+              <img
+                onError={({ currentTarget }) => {
+                  currentTarget.onerror = null; // prevents looping
+                  currentTarget.src = defaultImage;
+                }}
+                width={500}
+                src={`http://appdemo1.solarc.pe/imagenes/${selectedRow.codProd}.JPG`}
+                alt={
+                  selectedRow.nombreProducto
+                    ? selectedRow.nombreProducto
+                    : "Imagen por defeto"
+                }
+              />
             </DialogContentText>
           </DialogContent>
           <DialogActions>
