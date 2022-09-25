@@ -227,8 +227,7 @@ const Repuestos = () => {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose}>Cancelar</Button>
-            <Button onClick={handleClose}>Modificar</Button>
+            <Button onClick={handleClose}>Cerrar</Button>
           </DialogActions>
         </Dialog>
       </>
