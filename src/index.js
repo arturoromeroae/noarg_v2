@@ -10,6 +10,8 @@ import Almacen from "./pages/Almacen";
 import Mantenimiento from "./pages/Mantenimiento";
 import Ventas from "./pages/Ventas";
 
+// app test
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
