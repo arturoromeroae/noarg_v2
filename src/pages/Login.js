@@ -61,7 +61,7 @@ const Login = () => {
       try {
         setLoading(true);
         let result = await fetch(
-          `http://appdemo1.solarc.pe/api/Account/Login?UserName=${user}&UserPass=${pass}`
+          `${process.env.REACT_APP_URL_FETCH}/api/Account/Login?UserName=${user}&UserPass=${pass}`
         );
         result = await result.json();
         // console.log(result);

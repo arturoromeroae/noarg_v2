@@ -1,7 +1,7 @@
 {
   "name": "repuestos-motos",
   "version": "0.1.0",
-  "homepage": "https://arturoromeroae.github.io/noarg_v2",
+  "homepage": "http://noarg.000webhostapp.com",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.4",
@@ -16,6 +16,7 @@
     "@testing-library/user-event": "^13.5.0",
     "create-app-react": "^1.0.6",
     "dayjs": "^1.11.5",
+    "dotenv": "^16.0.2",
     "js-cookie": "^3.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
