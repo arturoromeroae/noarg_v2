@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { HashRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./index.css";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
@@ -16,7 +16,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <React.StrictMode>
-    <HashRouter>
+    <BrowserRouter>
       <Routes>
         <Route index element={<Login />} />
         <Route path="/inicio" element={<Home />} />
@@ -26,6 +26,6 @@ root.render(
         <Route path="/mantenimiento" element={<Mantenimiento />} />
         <Route path="/ventas" element={<Ventas />} />
       </Routes>
-    </HashRouter>
+    </BrowserRouter>
   </React.StrictMode>
 );
