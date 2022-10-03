@@ -55,8 +55,8 @@ const Almacen = () => {
     {
       field: "actions",
       type: "actions",
-      headerName: "Accion",
-      width: 100,
+      headerName: "Editar | Eliminar",
+      width: 130,
       getActions: (params) => [
         <IconButton
           aria-label="delete"

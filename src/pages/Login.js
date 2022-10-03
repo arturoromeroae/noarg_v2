@@ -117,6 +117,7 @@ const Login = () => {
                 label="Usuario"
                 variant="standard"
                 helperText={textErrorUser}
+                onKeyDown={handleKeyDown}
               />
             </Box>
           </InputContainer>

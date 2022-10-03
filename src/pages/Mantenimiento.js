@@ -49,7 +49,7 @@ const Mantenimiento = () => {
   const columns = [
     { field: "idProducto", headerName: "ID", hide: true, width: 80 },
     { field: "codProd", headerName: "Codigo", width: 150 },
-    { field: "nombreProducto", headerName: "Producto", width: 500 },
+    { field: "nombreProducto", headerName: "Producto", width: 450 },
     { field: "descripcion", headerName: "Descripcion", width: 500 },
     { field: "stock", headerName: "Cantidad", width: 100 },
     { field: "precioBase", headerName: "P. Base", width: 90 },
@@ -60,8 +60,8 @@ const Mantenimiento = () => {
     {
       field: "actions",
       type: "actions",
-      headerName: "Accion",
-      width: 100,
+      headerName: "Editar | Eliminar",
+      width: 150,
       getActions: (params) => [
         <IconButton
           aria-label="delete"
