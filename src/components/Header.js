@@ -205,7 +205,7 @@ const ResponsiveAppBar = () => {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <Tooltip title="Opciones de Perfil">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar sx={{ bgcolor: "green" }}>{user.userName.substring(0, 1).toUpperCase()}</Avatar>
               </IconButton>

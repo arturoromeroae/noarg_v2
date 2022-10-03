@@ -1,21 +1,16 @@
 import React, { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 import dayjs from "dayjs";
 import Header from "../components/Header";
 import { DataGrid } from "@mui/x-data-grid";
+import { Navigate } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import styled from "styled-components";
 import LocalPrintshopTwoToneIcon from "@mui/icons-material/LocalPrintshopTwoTone";
 import DoDisturbOffTwoToneIcon from "@mui/icons-material/DoDisturbOffTwoTone";
-import defaultImage from "../image/default-image.jpg";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
-import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -27,6 +22,9 @@ import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import Typography from "@mui/material/Typography";
 import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
+
+let getSellInfo = Cookies.get("sell");
+let productsCookies = getSellInfo && JSON.parse(getSellInfo);
 
 const LoadingContainer = styled.div`
   display: flex;

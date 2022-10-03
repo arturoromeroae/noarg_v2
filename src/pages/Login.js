@@ -8,10 +8,10 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import KeyIcon from "@mui/icons-material/Key";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 import Alert from "../components/Alert";
-import { Navigate } from 'react-router-dom';
-import Spinner from '../components/Spinner'
+import { Navigate } from "react-router-dom";
+import Spinner from "../components/Spinner";
 
 const DivForm = styled.div`
   position: absolute;
@@ -57,7 +57,7 @@ const Login = () => {
     setCustomErrorPass(false);
     setTextErrorUser("");
     setTextErrorPass("");
-    if(user.length > 0 && pass.length > 0){
+    if (user.length > 0 && pass.length > 0) {
       try {
         setLoading(true);
         let result = await fetch(
@@ -65,31 +65,38 @@ const Login = () => {
         );
         result = await result.json();
         // console.log(result);
-    
+
         if (result) {
           // minutes
           // let inFifteenMinutes = new Date(new Date().getTime() + 2 * 60 * 1000);
           navigate("/inicio");
-          Cookies.set("user", JSON.stringify(result).toString(), { expires: 0.5 })
+          Cookies.set("user", JSON.stringify(result).toString(), {
+            expires: 0.5,
+          });
         }
-      } catch(e) {
+      } catch (e) {
         setLoading(false);
         setCheck(true);
         setTextError("Usuario o Contraseña incorrecta/os");
       }
-    }else if(user.length === 0){
+    } else if (user.length === 0) {
       setCustomErrorUser(true);
       setTextErrorUser("Debe introducir el usuario");
-    }else if(pass.length === 0){
+    } else if (pass.length === 0) {
       setCustomErrorPass(true);
       setTextErrorPass("Debe introducir la contraseña");
     }
-    
   };
 
-  if (Cookies.get('user')) {
-    return <Navigate to="/inicio" replace />
+  if (Cookies.get("user")) {
+    return <Navigate to="/inicio" replace />;
   }
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      login();
+    }
+  };
 
   return (
     <>
@@ -125,11 +132,12 @@ const Login = () => {
                 label="Contraseña"
                 variant="standard"
                 helperText={textErrorPass}
+                onKeyDown={handleKeyDown}
               />
             </Box>
           </InputContainer>
           <ButtonContainer>
-            {!loading &&
+            {!loading && (
               <Button
                 variant="contained"
                 endIcon={<LockOpenIcon />}
@@ -137,10 +145,8 @@ const Login = () => {
               >
                 Iniciar Sesión
               </Button>
-            }
-            {loading &&
-              <Spinner />
-            }
+            )}
+            {loading && <Spinner />}
           </ButtonContainer>
         </FormLogin>
       </DivForm>

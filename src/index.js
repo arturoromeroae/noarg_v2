@@ -9,6 +9,7 @@ import Repuestos from "./pages/Repuestos";
 import Almacen from "./pages/Almacen";
 import Mantenimiento from "./pages/Mantenimiento";
 import Ventas from "./pages/Ventas";
+import CompletarVenta from "./pages/CompletarVenta";
 
 // app test
 
@@ -21,6 +22,7 @@ root.render(
         <Route index element={<Login />} />
         <Route path="/inicio" element={<Home />} />
         <Route path="/cotizaciones" element={<Cotizaciones />} />
+        <Route path="/completar-venta" element={<CompletarVenta />} />
         <Route path="/repuestos" element={<Repuestos />} />
         <Route path="/almacen" element={<Almacen />} />
         <Route path="/mantenimiento" element={<Mantenimiento />} />
