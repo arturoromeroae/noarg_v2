@@ -16,6 +16,8 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Navigate } from "react-router-dom";
+import Badge from '@mui/material/Badge';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 const pages = [
   "Inicio",
@@ -204,10 +206,23 @@ const ResponsiveAppBar = () => {
             </Link>
           </Box>
 
+              <MenuItem>
+                <IconButton
+                  size="large"
+                  aria-label="show 17 new notifications"
+                  color="inherit"
+                >
+                  <Badge badgeContent={5} color="error">
+                    <NotificationsIcon />
+                  </Badge>
+                </IconButton>
+              </MenuItem>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Opciones de Perfil">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar sx={{ bgcolor: "green" }}>{user.userName.substring(0, 1).toUpperCase()}</Avatar>
+                <Avatar sx={{ bgcolor: "green" }}>
+                  {user.userName.substring(0, 1).toUpperCase()}
+                </Avatar>
               </IconButton>
             </Tooltip>
             <Menu
