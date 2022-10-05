@@ -58,8 +58,8 @@ const Repuestos = () => {
 
   const handleCart = (params) => {
     setAddToCart(params);
-    setProductId(params.idProducto)
-    setCount(count + 1)
+    setProductId(params.idProducto);
+    setCount(count + 1);
   };
 
   const handleClose = () => {

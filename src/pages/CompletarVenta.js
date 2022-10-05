@@ -13,10 +13,10 @@ import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import AddCircleTwoToneIcon from "@mui/icons-material/AddCircleTwoTone";
 import Button from "@mui/material/Button";
-import LocalOfferTwoToneIcon from '@mui/icons-material/LocalOfferTwoTone';
-import Divider from '@mui/material/Divider';
-import ReceiptLongTwoToneIcon from '@mui/icons-material/ReceiptLongTwoTone';
-import MoneyOffTwoToneIcon from '@mui/icons-material/MoneyOffTwoTone';
+import LocalOfferTwoToneIcon from "@mui/icons-material/LocalOfferTwoTone";
+import Divider from "@mui/material/Divider";
+import ReceiptLongTwoToneIcon from "@mui/icons-material/ReceiptLongTwoTone";
+import MoneyOffTwoToneIcon from "@mui/icons-material/MoneyOffTwoTone";
 
 let getSellInfo = Cookies.get("sell");
 let productsCookies = getSellInfo && JSON.parse(getSellInfo);
@@ -40,20 +40,22 @@ const BillContainer = styled.div`
   width: 50%;
 `;
 
-let lodash = require('lodash');
-let allPrices = []
+let lodash = require("lodash");
+let allPrices = [];
 
-let modifiedArr = productsCookies.map(function(element){
-  let numeros = element.precioVenta;
-  allPrices.push(numeros);
-  return numeros;
-});
+if (productsCookies) {
+  productsCookies.map(function(element) {
+    let numeros = element.precioVenta;
+    allPrices.push(numeros);
+    return numeros;
+  });
+}
 
-let total = lodash.sum(allPrices)
-console.log(total)
+let total = lodash.sum(allPrices);
+console.log(total);
 
 const CompletarVenta = () => {
-  const [selectedRow, setSelectedRow] = useState(0);
+  const selectedRow = "";
 
   if (!productsCookies) {
     return <Navigate to="/repuestos" replace />;
@@ -125,9 +127,7 @@ const CompletarVenta = () => {
             id="outlined-basic"
             label="Subtotal"
             variant="outlined"
-            value={
-              total ? total : 0
-            }
+            value={total ? total : 0}
             disabled
           />
           <TextField
@@ -135,9 +135,7 @@ const CompletarVenta = () => {
             id="outlined-basic"
             label="Monto a Pagar"
             variant="outlined"
-            value={
-              total ? total * 1.18 : 0
-            }
+            value={total ? total * 1.18 : 0}
             disabled
           />
           <TextField
@@ -146,7 +144,12 @@ const CompletarVenta = () => {
             label="Pagó con soles"
             variant="outlined"
           />
-          <TextField id="outlined-basic" label="Vuelto" variant="outlined" disabled />
+          <TextField
+            id="outlined-basic"
+            label="Vuelto"
+            variant="outlined"
+            disabled
+          />
           <Button
             sx={{ width: "215px", ml: 5, mt: 2 }}
             variant="outlined"
@@ -170,9 +173,7 @@ const CompletarVenta = () => {
             variant="outlined"
           />
           <FormControl sx={{ minWidth: 210 }}>
-            <InputLabel id="demo-simple-select-label">
-            Descuento
-            </InputLabel>
+            <InputLabel id="demo-simple-select-label">Descuento</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"

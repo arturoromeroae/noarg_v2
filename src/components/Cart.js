@@ -7,12 +7,33 @@ import ListItem from "@mui/material/ListItem";
 import DeleteForeverTwoToneIcon from "@mui/icons-material/DeleteForeverTwoTone";
 import Divider from "@mui/material/Divider";
 import SellTwoToneIcon from "@mui/icons-material/SellTwoTone";
-import NumberPicker from "./NumberPicker";
+import AddCircleTwoToneIcon from "@mui/icons-material/AddCircleTwoTone";
+import RemoveCircleTwoToneIcon from "@mui/icons-material/RemoveCircleTwoTone";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Cookies from "js-cookie";
+import styled from "styled-components";
+
+const NumberContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const NumberInput = styled.input`
+  border: 0;
+  width: 30px;
+  height: 30px;
+  font-family: "Roboto";
+  font-weight: 500;
+  text-align: center;
+  background-color: #f5f5ef;
+  border-radius: 20px;
+  &:focus {
+    outline: none;
+  }
+`;
 
 const Cart = ({ dataCart, dataCount, dataId }) => {
   const navigate = useNavigate();
@@ -21,6 +42,17 @@ const Cart = ({ dataCart, dataCount, dataId }) => {
   const listProducts = [...products];
   const [price, setPrice] = useState([]);
   const listPrice = [...price];
+  const [number, setNumber] = useState(1);
+
+  const handleClickPlus = (params) => {
+    if (params) setNumber(params + 1);
+    dataCart.cantidad = params + 1;
+  };
+
+  const handleClickMinus = () => {
+    if (number > 1) setNumber(number - 1);
+    dataCart.cantidad = number;
+  };
 
   let getSellInfo = Cookies.get("sell");
   let productsCookies = getSellInfo && JSON.parse(getSellInfo);
@@ -32,7 +64,8 @@ const Cart = ({ dataCart, dataCount, dataId }) => {
   let total = listPrice.reduce((a, b) => a + b, 0);
 
   useEffect(() => {
-    if (dataCart != undefined) {
+    if (dataCart !== undefined) {
+      if (!dataCart.cantidad) dataCart.cantidad = 1;
       listProducts.push(dataCart);
       setProducts(listProducts);
     }
@@ -51,6 +84,8 @@ const Cart = ({ dataCart, dataCount, dataId }) => {
       navigate("/completar-venta");
     }
   };
+
+  console.log(products);
 
   return (
     <>
@@ -83,11 +118,12 @@ const Cart = ({ dataCart, dataCount, dataId }) => {
               {Object.keys(products).length > 0 &&
                 products.map((value, index) => (
                   <>
-                    <Divider />
+                    <Divider key={"divider-" + index} />
                     <ListItem
                       key={index}
                       secondaryAction={
                         <IconButton
+                        key={"delete-" + index}
                           aria-label="deleteProduct"
                           color="error"
                           size="large"
@@ -110,7 +146,34 @@ const Cart = ({ dataCart, dataCount, dataId }) => {
                             textAlign: "center",
                           }}
                         >
-                          <NumberPicker />
+                          <div>
+                            <Typography variant="h7">Cantidad</Typography>
+                            <NumberContainer key={"number-" + index}>
+                              <IconButton
+                                key={"buttonMinus-" + index}
+                                aria-label="minus"
+                                onClick={handleClickMinus}
+                                color="error"
+                                size="small"
+                              >
+                                <RemoveCircleTwoToneIcon fontSize="inherit" />
+                              </IconButton>
+                              <NumberInput
+                                key={"input-" + index}
+                                disabled
+                                value={value.cantidad}
+                              />
+                              <IconButton
+                                key={"buttonPlus-" + index}
+                                aria-label="plus"
+                                onClick={() => handleClickPlus(value.cantidad)}
+                                color="primary"
+                                size="small"
+                              >
+                                <AddCircleTwoToneIcon fontSize="inherit" />
+                              </IconButton>
+                            </NumberContainer>
+                          </div>
                         </div>
                       </div>
                     </ListItem>
