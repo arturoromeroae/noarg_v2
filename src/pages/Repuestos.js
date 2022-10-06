@@ -48,7 +48,6 @@ const Repuestos = () => {
   const [open, setOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(0);
   const [addToCart, setAddToCart] = useState();
-  const [productId, setProductId] = useState();
   const [count, setCount] = useState(0);
 
   const handleClickOpen = (params) => {
@@ -57,8 +56,7 @@ const Repuestos = () => {
   };
 
   const handleCart = (params) => {
-    setAddToCart(params);
-    setProductId(params.idProducto);
+    setAddToCart(params, params.cantidad = 1);
     setCount(count + 1);
   };
 
@@ -191,7 +189,7 @@ const Repuestos = () => {
               },
             }}
           />
-          <Cart dataCart={addToCart} dataCount={count} dataId={productId} />
+          <Cart dataCart={addToCart} dataCount={count} dataCuantity={1} />
         </TableContainer>
 
         <Dialog

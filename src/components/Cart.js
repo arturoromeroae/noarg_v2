@@ -35,7 +35,7 @@ const NumberInput = styled.input`
   }
 `;
 
-const Cart = ({ dataCart, dataCount, dataId }) => {
+const Cart = ({ dataCart, dataCount, dataCuantity }) => {
   const navigate = useNavigate();
   const [dense, setDense] = useState(false);
   const [products, setProducts] = useState([]);
@@ -45,8 +45,7 @@ const Cart = ({ dataCart, dataCount, dataId }) => {
   const [number, setNumber] = useState(1);
 
   const handleClickPlus = (params) => {
-    if (params) setNumber(params + 1);
-    dataCart.cantidad = params + 1;
+    setNumber(++params)
   };
 
   const handleClickMinus = () => {
@@ -65,7 +64,6 @@ const Cart = ({ dataCart, dataCount, dataId }) => {
 
   useEffect(() => {
     if (dataCart !== undefined) {
-      if (!dataCart.cantidad) dataCart.cantidad = 1;
       listProducts.push(dataCart);
       setProducts(listProducts);
     }
@@ -118,12 +116,11 @@ const Cart = ({ dataCart, dataCount, dataId }) => {
               {Object.keys(products).length > 0 &&
                 products.map((value, index) => (
                   <>
-                    <Divider key={"divider-" + index} />
+                    <Divider />
                     <ListItem
                       key={index}
                       secondaryAction={
                         <IconButton
-                        key={"delete-" + index}
                           aria-label="deleteProduct"
                           color="error"
                           size="large"
@@ -148,9 +145,8 @@ const Cart = ({ dataCart, dataCount, dataId }) => {
                         >
                           <div>
                             <Typography variant="h7">Cantidad</Typography>
-                            <NumberContainer key={"number-" + index}>
+                            <NumberContainer>
                               <IconButton
-                                key={"buttonMinus-" + index}
                                 aria-label="minus"
                                 onClick={handleClickMinus}
                                 color="error"
@@ -159,12 +155,10 @@ const Cart = ({ dataCart, dataCount, dataId }) => {
                                 <RemoveCircleTwoToneIcon fontSize="inherit" />
                               </IconButton>
                               <NumberInput
-                                key={"input-" + index}
                                 disabled
-                                value={value.cantidad}
+                                value={number}
                               />
                               <IconButton
-                                key={"buttonPlus-" + index}
                                 aria-label="plus"
                                 onClick={() => handleClickPlus(value.cantidad)}
                                 color="primary"
