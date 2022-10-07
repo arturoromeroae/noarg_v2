@@ -56,7 +56,7 @@ const Repuestos = () => {
   };
 
   const handleCart = (params) => {
-    setAddToCart(params, params.cantidad = 1);
+    setAddToCart(params);
     setCount(count + 1);
   };
 
@@ -189,7 +189,7 @@ const Repuestos = () => {
               },
             }}
           />
-          <Cart dataCart={addToCart} dataCount={count} dataCuantity={1} />
+          <Cart dataCart={addToCart} dataCount={count} />
         </TableContainer>
 
         <Dialog

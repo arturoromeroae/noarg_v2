@@ -18,9 +18,6 @@ import Divider from "@mui/material/Divider";
 import ReceiptLongTwoToneIcon from "@mui/icons-material/ReceiptLongTwoTone";
 import MoneyOffTwoToneIcon from "@mui/icons-material/MoneyOffTwoTone";
 
-let getSellInfo = Cookies.get("sell");
-let productsCookies = getSellInfo && JSON.parse(getSellInfo);
-
 const rows = [
   { field: "idProducto", headerName: "ID", hide: true, width: 80 },
   { field: "codProd", headerName: "Código", width: 100 },
@@ -40,25 +37,24 @@ const BillContainer = styled.div`
   width: 50%;
 `;
 
-let lodash = require("lodash");
-let allPrices = [];
-
-if (productsCookies) {
-  productsCookies.map(function(element) {
-    let numeros = element.precioVenta;
-    allPrices.push(numeros);
-    return numeros;
-  });
-}
-
-let total = lodash.sum(allPrices);
-console.log(total);
-
 const CompletarVenta = () => {
+  let getSellInfo = Cookies.get("sell");
+  let productsCookies = getSellInfo && JSON.parse(getSellInfo);
+  let lodash = require("lodash");
+  let allPrices = [];
+  let total = lodash.sum(allPrices);
   const selectedRow = "";
 
   if (!productsCookies) {
     return <Navigate to="/repuestos" replace />;
+  }
+
+  if (productsCookies) {
+    productsCookies.map(function(element) {
+      let numeros = element.precioVenta;
+      allPrices.push(numeros);
+      return numeros;
+    });
   }
 
   const handleGetRowId = (e) => {
