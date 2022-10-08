@@ -18,16 +18,6 @@ import Divider from "@mui/material/Divider";
 import ReceiptLongTwoToneIcon from "@mui/icons-material/ReceiptLongTwoTone";
 import MoneyOffTwoToneIcon from "@mui/icons-material/MoneyOffTwoTone";
 
-const rows = [
-  { field: "idProducto", headerName: "ID", hide: true, width: 80 },
-  { field: "codProd", headerName: "Código", width: 100 },
-  { field: "nombreProducto", headerName: "Producto", width: 220 },
-  { field: "marca", headerName: "Marca", width: 80 },
-  { field: "precioVenta", headerName: "Precio", width: 80 },
-  { field: "", headerName: "Cantidad", width: 80 },
-  { field: "total", headerName: "Total", width: 80 },
-];
-
 const SellContainer = styled.div`
   display: flex;
 `;
@@ -38,6 +28,7 @@ const BillContainer = styled.div`
 `;
 
 const CompletarVenta = () => {
+  const [pay, setPay] = useState();
   let getSellInfo = Cookies.get("sell");
   let productsCookies = getSellInfo && JSON.parse(getSellInfo);
   let lodash = require("lodash");
@@ -45,20 +36,33 @@ const CompletarVenta = () => {
   let total = lodash.sum(allPrices);
   const selectedRow = "";
 
+  const rows = [
+    { field: "idProducto", headerName: "ID", hide: true, width: 80 },
+    { field: "codProd", headerName: "Código", width: 100 },
+    { field: "nombreProducto", headerName: "Producto", width: 220 },
+    { field: "marca", headerName: "Marca", width: 80 },
+    { field: "precioVenta", headerName: "Precio", width: 80 },
+    { field: "cantidad", headerName: "Cantidad", width: 80 },
+    { headerName: "Total", width: 80, valueGetter: (params) => params.row.cantidad * params.row.precioVenta },
+  ];
+
   if (!productsCookies) {
     return <Navigate to="/repuestos" replace />;
   }
 
-  if (productsCookies) {
-    productsCookies.map(function(element) {
-      let numeros = element.precioVenta;
-      allPrices.push(numeros);
-      return numeros;
-    });
-  }
+  let sum = 0;
+
+  productsCookies.forEach(element => {
+    sum += element.cantidad * element.precioVenta;
+  });
 
   const handleGetRowId = (e) => {
     return e.idProducto;
+  };
+
+  const handleChange = event => {
+    setPay(event.target.value);
+    console.log('value is:', event.target.value);
   };
 
   return (
@@ -123,7 +127,7 @@ const CompletarVenta = () => {
             id="outlined-basic"
             label="Subtotal"
             variant="outlined"
-            value={total ? total : 0}
+            value={sum ? sum.toFixed( 2 ) : 0}
             disabled
           />
           <TextField
@@ -131,7 +135,7 @@ const CompletarVenta = () => {
             id="outlined-basic"
             label="Monto a Pagar"
             variant="outlined"
-            value={total ? total * 1.18 : 0}
+            value={sum ? (sum * 1.18).toFixed( 2 ) : 0}
             disabled
           />
           <TextField
@@ -139,6 +143,7 @@ const CompletarVenta = () => {
             id="outlined-basic"
             label="Pagó con soles"
             variant="outlined"
+            onChange={handleChange}
           />
           <TextField
             id="outlined-basic"
@@ -167,6 +172,8 @@ const CompletarVenta = () => {
             id="outlined-basic"
             label="Monto a pagar"
             variant="outlined"
+            value={sum ? (sum * 1.18).toFixed( 2 ) : 0}
+            disabled
           />
           <FormControl sx={{ minWidth: 210 }}>
             <InputLabel id="demo-simple-select-label">Descuento</InputLabel>
