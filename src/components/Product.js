@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";

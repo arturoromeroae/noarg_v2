@@ -13,8 +13,6 @@ const DialogAlert = ({ deleteProduct, action, cancel, pr }) => {
     cancel(false);
   };
 
-  console.log(pr);
-
   return (
     <div>
       <Dialog

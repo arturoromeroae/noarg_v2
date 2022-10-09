@@ -46,7 +46,8 @@ const InputsContainer = styled.div`
 `;
 
 const CompletarVenta = () => {
-  const [pay, setPay] = useState();
+  const [pay, setPay] = useState(0);
+  const [discount, setDiscount] = useState(0);
   const [openModal, setOpenModal] = useState(false);
   const [billType, setBillType] = useState();
   const [billNumber, setBillNumber] = useState();
@@ -54,6 +55,11 @@ const CompletarVenta = () => {
   const [newProducts, setNewProducts] = useState();
   const [action, setAction] = useState(false);
   const [name, setName] = useState();
+  const [cl, setCl] = useState();
+  const [textErrorCl, setTextErrorCl] = useState("");
+  const [textErrorPay, setTextErrorPay] = useState("");
+  const [customErrorCl, setCustomErrorCl] = useState(false);
+  const [customErrorPay, setCustomErrorPay] = useState(false);
   const navigate = useNavigate();
 
   let getSellInfo = Cookies.get("sell");
@@ -106,8 +112,12 @@ const CompletarVenta = () => {
     return e.idProducto;
   };
 
-  const handleChange = (event) => {
-    setPay(event.target.value);
+  const handleChangePay = (e) => {
+    setPay(e.target.value);
+  };
+
+  const handleChangeDiscount = (e) => {
+    setDiscount(e.target.value);
   };
 
   const handleActionModal = (action) => {
@@ -124,10 +134,12 @@ const CompletarVenta = () => {
 
   const handleAlert = (productId) => {
     setNewProducts(
-      productsCookies.filter((product) => product.idProducto !== productId.idProducto)
+      productsCookies.filter(
+        (product) => product.idProducto !== productId.idProducto
+      )
     );
     setAction(true);
-    setName(productId)
+    setName(productId);
   };
 
   const handleDelete = () => {
@@ -142,7 +154,33 @@ const CompletarVenta = () => {
   const handleCancelSell = () => {
     Cookies.remove("sell");
     navigate("/repuestos");
-  }
+  };
+
+  const handlePrint = () => {
+    setCustomErrorCl(false);
+    setCustomErrorPay(false);
+    setTextErrorCl("");
+    setTextErrorPay("");
+
+    if (billType !== 4) {
+      if (cl && pay) {
+        print(productsCookies, cl, pay, billNumber, billType, sum, discount);
+      } else if (!cl) {
+        setCustomErrorCl(true);
+        setTextErrorCl("Debe introducir el cliente");
+      } else if (billType !== 4) {
+        setCustomErrorPay(true);
+        setTextErrorPay("Debe introducir el monto");
+      }
+    }else{
+      if (cl) {
+        print(productsCookies, cl, pay, billNumber, billType, sum, discount);
+      } else if (!cl) {
+        setCustomErrorCl(true);
+        setTextErrorCl("Debe introducir el cliente");
+      }
+    }
+  };
 
   useEffect(() => {
     if (billType > 0) {
@@ -199,6 +237,7 @@ const CompletarVenta = () => {
           >
             <CreditCardTwoToneIcon color="primary" /> Datos de la compra
           </Typography>
+          <p style={{ textAlign: "center" }}>Los campos con * son requeridos</p>
           <FormContainer>
             <InputsContainer>
               <FormControl sx={{ m: 2, minWidth: 210 }} required>
@@ -226,7 +265,11 @@ const CompletarVenta = () => {
                   </MenuItem>
                 </Select>
               </FormControl>
-              <Clients />
+              <Clients
+                getCl={setCl}
+                errorCl={customErrorCl}
+                errorText={textErrorCl}
+              />
               {billType > 1 && billType < 4 && (
                 <TextField
                   sx={{ m: 2 }}
@@ -257,9 +300,12 @@ const CompletarVenta = () => {
                 id="outlined-basic"
                 label="Pagó con soles"
                 variant="outlined"
-                onChange={handleChange}
+                error={customErrorPay}
+                helperText={textErrorPay}
+                onChange={handleChangePay}
                 type="number"
                 required
+                disabled={billType === 4}
               />
               <TextField
                 sx={{ m: 2 }}
@@ -335,6 +381,7 @@ const CompletarVenta = () => {
               id="outlined-basic"
               label="Monto del descuento"
               variant="outlined"
+              onChange={handleChangeDiscount}
             />
             <TextField
               sx={{ m: 2 }}
@@ -347,7 +394,8 @@ const CompletarVenta = () => {
                 sx={{ width: "215px", m: 1 }}
                 variant="contained"
                 endIcon={<ReceiptLongTwoToneIcon />}
-                onClick={() => print(productsCookies)}
+                onClick={handlePrint}
+                disabled={!billType}
               >
                 Emitir Comprobante
               </Button>
