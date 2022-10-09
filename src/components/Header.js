@@ -20,12 +20,12 @@ import Badge from '@mui/material/Badge';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 
 const pages = [
-  "Inicio",
-  "Cotizaciones",
-  "Repuestos",
-  "Almacen",
-  "Mantenimiento",
-  "Ventas",
+  {id: 1, name: "Inicio"},
+  {id: 2, name:"Cotizaciones"},
+  {id: 3, name:"Repuestos"},
+  {id: 4, name:"Almacen"},
+  {id: 5, name:"Mantenimiento"},
+  {id: 6, name:"Ventas"},
 ];
 // const settings = ["Perfil", "Agregar Usuarios", "Cerrar Sesión"];
 
@@ -108,8 +108,8 @@ const ResponsiveAppBar = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem key={page.id} onClick={handleCloseNavMenu}>
+                  <Typography key={page.id} textAlign="center">{page.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>
