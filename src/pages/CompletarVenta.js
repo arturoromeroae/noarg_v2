@@ -25,6 +25,8 @@ import Clients from "../components/ClientsAuto";
 import IconButton from "@mui/material/IconButton";
 import DeleteForeverTwoToneIcon from "@mui/icons-material/DeleteForeverTwoTone";
 import DialogAlert from "../components/DialogAlert";
+import print from "../components/PdfBill";
+import { useNavigate } from "react-router-dom";
 
 const SellContainer = styled.div`
   display: flex;
@@ -52,6 +54,7 @@ const CompletarVenta = () => {
   const [newProducts, setNewProducts] = useState();
   const [action, setAction] = useState(false);
   const [name, setName] = useState();
+  const navigate = useNavigate();
 
   let getSellInfo = Cookies.get("sell");
   let productsCookies = getSellInfo && JSON.parse(getSellInfo);
@@ -135,6 +138,11 @@ const CompletarVenta = () => {
     }
     setAction(false);
   };
+
+  const handleCancelSell = () => {
+    Cookies.remove("sell");
+    navigate("/repuestos");
+  }
 
   useEffect(() => {
     if (billType > 0) {
@@ -339,6 +347,7 @@ const CompletarVenta = () => {
                 sx={{ width: "215px", m: 1 }}
                 variant="contained"
                 endIcon={<ReceiptLongTwoToneIcon />}
+                onClick={() => print(productsCookies)}
               >
                 Emitir Comprobante
               </Button>
@@ -347,6 +356,7 @@ const CompletarVenta = () => {
                 variant="contained"
                 endIcon={<MoneyOffTwoToneIcon />}
                 color="error"
+                onClick={handleCancelSell}
               >
                 Cancelar Compra
               </Button>
