@@ -104,7 +104,7 @@ const print = (productsCookies, cl, pay, billNumber, billType, sum, discount) =>
     );
     // muestra la fecha
     pdf.setFontSize(10);
-    pdf.text(20, 55, `Fecha Emision: ${dd + "/" + mm + "/" + yyyy}`);
+    pdf.text(20, 55, `Fecha Emision: ${dd + "/" + mm + "/" + yyyy} Hora: ${time}`);
   }
 
   // cuadrado en el pdf
