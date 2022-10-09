@@ -1,16 +1,19 @@
-import React from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import React from "react";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import ReportProblemTwoToneIcon from "@mui/icons-material/ReportProblemTwoTone";
+import { yellow } from "@mui/material/colors";
 
-const DialogAlert = ({ deleteProduct, action, cancel }) => {
-
+const DialogAlert = ({ deleteProduct, action, cancel, pr }) => {
   const handleClose = () => {
     cancel(false);
   };
+
+  console.log(pr);
 
   return (
     <div>
@@ -20,24 +23,27 @@ const DialogAlert = ({ deleteProduct, action, cancel }) => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {"¿Desea eliminar el producto?"}
+        <DialogTitle id="alert-dialog-title" sx={{ textAlign: "center" }}>
+          <ReportProblemTwoToneIcon sx={{ color: yellow[800], fontSize: 50 }} /><br />
+          {` ¿Desea eliminar el producto ${pr && pr.nombreProducto}?`}
         </DialogTitle>
-        <DialogContent>
+        <DialogContent sx={{ textAlign: "center" }}>
           <DialogContentText id="alert-dialog-description">
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
+            Si presiona <strong>"Aceptar"</strong> el producto sera eliminado de la lista y no
+            podra revertir el proceso.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Disagree</Button>
+          <Button onClick={handleClose} color="error">
+            Cancelar
+          </Button>
           <Button onClick={deleteProduct} autoFocus>
-            Agree
+            Aceptar
           </Button>
         </DialogActions>
       </Dialog>
     </div>
   );
-}
+};
 
 export default DialogAlert;

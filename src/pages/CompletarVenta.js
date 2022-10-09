@@ -51,6 +51,7 @@ const CompletarVenta = () => {
   const [loading, setLoading] = useState(false);
   const [newProducts, setNewProducts] = useState();
   const [action, setAction] = useState(false);
+  const [name, setName] = useState();
 
   let getSellInfo = Cookies.get("sell");
   let productsCookies = getSellInfo && JSON.parse(getSellInfo);
@@ -80,7 +81,7 @@ const CompletarVenta = () => {
         <IconButton
           aria-label="delete"
           color="error"
-          onClick={() => handleAlert(params.row.idProducto)}
+          onClick={() => handleAlert(params.row)}
         >
           <DeleteForeverTwoToneIcon />
         </IconButton>,
@@ -120,9 +121,10 @@ const CompletarVenta = () => {
 
   const handleAlert = (productId) => {
     setNewProducts(
-      productsCookies.filter((product) => product.idProducto !== productId)
+      productsCookies.filter((product) => product.idProducto !== productId.idProducto)
     );
     setAction(true);
+    setName(productId)
   };
 
   const handleDelete = () => {
@@ -166,7 +168,6 @@ const CompletarVenta = () => {
             columns={rows}
             pageSize={5}
             rowsPerPageOptions={[5]}
-            checkboxSelection
             disableSelectionOnClick
             experimentalFeatures={{ newEditingApi: true }}
             initialState={{
@@ -359,6 +360,7 @@ const CompletarVenta = () => {
         deleteProduct={handleDelete}
         action={action}
         cancel={setAction}
+        pr={name}
       />
     </>
   );

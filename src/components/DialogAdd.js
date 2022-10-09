@@ -140,8 +140,8 @@ const DialogAdd = ({ addProduct, action }) => {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancelar</Button>
-          <Button onClick={handleSaveProd}>Modificar</Button>
+          <Button color="error" onClick={handleClose}>Cancelar</Button>
+          <Button onClick={handleSaveProd}>Agregar</Button>
         </DialogActions>
       </Dialog>
     </div>
