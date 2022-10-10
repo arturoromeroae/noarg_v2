@@ -82,6 +82,20 @@ const CompletarVenta = () => {
   let mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
   let yyyy = today.getFullYear();
 
+  // Informacion RUC y razon social
+  let ruc = "";
+  let razonSocial = "";
+  let cliente = "";
+  if (cl && cl.rucCliente) {
+    ruc = cl.rucCliente;
+    razonSocial = cl.razonSocial;
+    cliente = cl.razonSocial;
+  } else {
+    cliente = cl;
+    ruc = "string";
+    razonSocial = "string";
+  }
+
   // Obtener la hora
   function addZero(i) {
     if (i < 10) {
@@ -140,6 +154,10 @@ const CompletarVenta = () => {
     return e.idProducto;
   };
 
+  const handleChangeClient = (e) => {
+    setCl(e.target.value);
+  };
+
   const handleChangePay = (e) => {
     setPay(e.target.value);
   };
@@ -191,16 +209,26 @@ const CompletarVenta = () => {
     setTextErrorPay("");
 
     if (billType !== 4) {
-      if (cl && pay) {
+      if (cl && cliente !== "" && pay) {
         setLoadingSell(true);
-        print(productsCookies, cl, pay, billNumber, billType, sum, discount);
+        print(
+          productsCookies,
+          cl,
+          pay,
+          billNumber,
+          billType,
+          sum,
+          discount,
+          ruc,
+          razonSocial
+        );
         setData({
           usuario: user.userName,
           idOrigen: 0,
           total: (sum * 1.18).toFixed(2),
           carritoDet: productsCookies,
         });
-      } else if (!cl) {
+      } else if (!cl || cliente === "") {
         setCustomErrorCl(true);
         setTextErrorCl("Debe introducir el cliente");
       } else if (billType !== 4) {
@@ -208,16 +236,26 @@ const CompletarVenta = () => {
         setTextErrorPay("Debe introducir el monto");
       }
     } else {
-      if (cl) {
+      if (cl || cliente !== "") {
         setLoadingSell(true);
-        print(productsCookies, cl, pay, billNumber, billType, sum, discount);
+        print(
+          productsCookies,
+          cl,
+          pay,
+          billNumber,
+          billType,
+          sum,
+          discount,
+          ruc,
+          razonSocial
+        );
         setData({
           usuario: user.userName,
           idOrigen: 0,
           total: (sum * 1.18).toFixed(2),
           carritoDet: productsCookies,
         });
-      } else if (!cl) {
+      } else if (!cl || cliente === "") {
         setCustomErrorCl(true);
         setTextErrorCl("Debe introducir el cliente");
       }
@@ -296,8 +334,8 @@ const CompletarVenta = () => {
     idSede: 1,
     idPedCab: idCab,
     usuario: `${user.userName}`,
-    rucCliente: "string",
-    razonSocial: "string",
+    rucCliente: ruc,
+    razonSocial: razonSocial,
     idOrigen: 1,
     ventaDet: cart,
   };
@@ -317,8 +355,8 @@ const CompletarVenta = () => {
     idSede: 1,
     idPedCab: idCab,
     usuario: `${user.userName}`,
-    rucCliente: "string",
-    razonSocial: "string",
+    rucCliente: ruc,
+    razonSocial: razonSocial,
     idOrigen: 1,
     cotizaDet: cart,
   };
@@ -337,7 +375,6 @@ const CompletarVenta = () => {
           setLoadingSell(false);
           Cookies.remove("sell");
           navigate("/ventas");
-          console.log(data);
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -359,7 +396,6 @@ const CompletarVenta = () => {
           setLoadingSell(false);
           Cookies.remove("sell");
           navigate("/cotizaciones");
-          console.log(data);
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -440,20 +476,19 @@ const CompletarVenta = () => {
                       </MenuItem>
                     </Select>
                   </FormControl>
-                  <Clients
-                    getCl={setCl}
+                  <TextField
+                    sx={{ m: 2 }}
+                    id="outlined-basic"
+                    label="Cliente"
+                    variant="outlined"
+                    type="text"
+                    onChange={handleChangeClient}
                     errorCl={customErrorCl}
                     errorText={textErrorCl}
+                    value={cliente}
+                    required
                   />
-                  {billType > 1 && billType < 4 && (
-                    <TextField
-                      sx={{ m: 2 }}
-                      id="outlined-basic"
-                      label="RUC"
-                      variant="outlined"
-                      type="text"
-                    />
-                  )}
+                  {billType > 1 && billType < 4 && <Clients getCl={setCl} />}
                   <TextField
                     sx={{ m: 2 }}
                     id="outlined-basic"
@@ -605,9 +640,7 @@ const CompletarVenta = () => {
           />
         </>
       )}
-      {loadingSell &&
-        <LoadingSpinner />
-      }
+      {loadingSell && <LoadingSpinner />}
     </>
   );
 };

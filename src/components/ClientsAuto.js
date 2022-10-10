@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const Clients = ({ getCl, errorCl, errorText }) => {
+const Clients = ({ getCl }) => {
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
   const loading = open && options.length === 0;
@@ -53,18 +53,16 @@ const Clients = ({ getCl, errorCl, errorText }) => {
           setOpen(false);
         }}
         isOptionEqualToValue={(option, value) =>
-          option.razonSocial === value.razonSocial
+          option.rucCliente === value.rucCliente
         }
-        getOptionLabel={option => option.razonSocial}
-        onBlur={(event, value) => value ? getCl(value) : getCl(event.target.value)}
+        getOptionLabel={option => option.rucCliente}
+        onChange={(event, value) => getCl(value)}
         options={options}
         loading={loading}
         renderInput={(params) => (
           <TextField
             {...params}
-            label="Cliente"
-            error={errorCl}
-            helperText={errorText}
+            label="RUC"
             required
             InputProps={{
               ...params.InputProps,

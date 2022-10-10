@@ -192,7 +192,6 @@ const Cotizaciones = () => {
           setError(error);
         }
       );
-    console.log(url);
   };
 
   const handleGetRowId = (e) => {

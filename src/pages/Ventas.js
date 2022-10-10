@@ -193,7 +193,6 @@ const Ventas = () => {
           setError(error);
         }
       );
-    console.log(url);
   };
 
   const handleGetRowId = (e) => {
