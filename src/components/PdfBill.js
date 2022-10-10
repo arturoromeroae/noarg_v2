@@ -81,7 +81,7 @@ const print = (productsCookies, cl, pay, billNumber, billType, sum, discount, ru
   pdf.text(20, 50, `Cliente: ${cl}`);
 
   // condicional para ruc y razon social
-  if (billType == 1 || billType == 2) {
+  if (billType === 1 || billType === 2) {
     pdf.setFontSize(10);
         pdf.text(20, 85, ``);
     pdf.setFontSize(10);

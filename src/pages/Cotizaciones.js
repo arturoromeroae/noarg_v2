@@ -20,6 +20,8 @@ import RemoveShoppingCartTwoToneIcon from "@mui/icons-material/RemoveShoppingCar
 import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
+import DialogCotize from "../components/DialogCotize";
+import DialogCotizeBuy from "../components/DialogCotizeBuy";
 
 const TableContainer = styled("div")(({ theme }) => ({
   display: "flex",
@@ -102,11 +104,13 @@ const Cotizaciones = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
   const [usuarios, setUsuarios] = useState(null);
-  const [open, setOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(0);
+  const [selectedRowBuy, setSelectedRowBuy] = useState(0);
   const [valueI, setValueI] = useState(dayjs());
   const [valueF, setValueF] = useState(dayjs());
-  const [selectedUser, setSelectedUser] = useState("")
+  const [selectedUser, setSelectedUser] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+  const [openModalBuy, setOpenModalBuy] = useState(false);
 
   let today = new Date();
   let dd = String(today.getDate()).padStart(2, "0");
@@ -116,9 +120,14 @@ const Cotizaciones = () => {
   today = yyyy + "/" + mm + "/" + dd;
 
   const handleClickOpen = (params) => {
-    setOpen(true);
+    setOpenModal(true);
     setSelectedRow(params);
   };
+
+  const handleClickOpenBuy = (params) => {
+    setOpenModalBuy(true);
+    setSelectedRowBuy(params);
+  }
 
   const handleChangeInicio = (newValue) => {
     setValueI(newValue);
@@ -152,7 +161,7 @@ const Cotizaciones = () => {
         >
           <RemoveShoppingCartTwoToneIcon />
         </IconButton>,
-        <IconButton aria-label="delete" color="primary">
+        <IconButton aria-label="delete" color="primary" onClick={() => handleClickOpenBuy(params.row)} >
           <ShoppingCartTwoToneIcon />
         </IconButton>,
       ],
@@ -179,12 +188,11 @@ const Cotizaciones = () => {
       );
   }, []);
 
+  // Obtener cotizaciones
   const getCotizaciones = () => {
-    let url = `http://appdemo1.solarc.pe/api/Cotiza/ConsultaCotiza?IdSede=1&Usuario=${selectedUser}&TipoComprobante=4&FechaDesde=${
-      valueI.$y
-    }.${parseInt(valueI.$M) + 1}.${valueI.$D}&FechaHasta=${
-      valueF.$y
-    }.${parseInt(valueF.$M) + 1}.${valueF.$D}`;
+    let url = `http://appdemo1.solarc.pe/api/Cotiza/ConsultaCotiza?IdSede=1&Usuario=${selectedUser}&TipoComprobante=4&FechaDesde=${valueI.$y
+      }.${parseInt(valueI.$M) + 1}.${valueI.$D}&FechaHasta=${valueF.$y
+      }.${parseInt(valueF.$M) + 1}.${valueF.$D}`;
     fetch(url)
       .then((res) => res.json())
       .then(
@@ -199,6 +207,7 @@ const Cotizaciones = () => {
           setError(error);
         }
       );
+    console.log(url)
   };
 
   // Obtener usuarios
@@ -287,11 +296,11 @@ const Cotizaciones = () => {
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     label="Usuario"
-                    value={selectedRow.modelo}
+                    onChange={handleUser}
                   >
                     {usuarios &&
                       usuarios.map((value) => (
-                        <MenuItem key={value.idUsuario}>
+                        <MenuItem key={value.idUsuario} value={value.userName}>
                           {value.userName}
                         </MenuItem>
                       ))}
@@ -310,6 +319,8 @@ const Cotizaciones = () => {
             </LocalizationProvider>
           </div>
         </TableContainer>
+        <DialogCotize open={openModal} action={setOpenModal} dataNull={selectedRow} />
+        <DialogCotizeBuy openBuy={openModalBuy} actionBuy={setOpenModalBuy} dataBuy={selectedRowBuy} />
       </>
     );
   }
