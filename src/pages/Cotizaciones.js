@@ -101,10 +101,12 @@ const Cotizaciones = () => {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
+  const [usuarios, setUsuarios] = useState(null);
   const [open, setOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(0);
-  const [valueI, setValueI] = React.useState(dayjs());
-  const [valueF, setValueF] = React.useState(dayjs());
+  const [valueI, setValueI] = useState(dayjs());
+  const [valueF, setValueF] = useState(dayjs());
+  const [selectedUser, setSelectedUser] = useState("")
 
   let today = new Date();
   let dd = String(today.getDate()).padStart(2, "0");
@@ -125,6 +127,10 @@ const Cotizaciones = () => {
   const handleChangeFinal = (newValue) => {
     setValueF(newValue);
   };
+
+  const handleUser = (e) => {
+    setSelectedUser(e.target.value);
+  }
 
   const columns = [
     { field: "numero", headerName: "Comprobante", width: 150 },
@@ -153,9 +159,10 @@ const Cotizaciones = () => {
     },
   ];
 
+  // Obtener cotizaciones
   useEffect(() => {
     fetch(
-      `http://appdemo1.solarc.pe/api/Cotiza/ConsultaCotiza?IdSede=1&Usuario=JGONZALES&TipoComprobante=4&FechaDesde=${today}&FechaHasta=${today}`
+      `http://appdemo1.solarc.pe/api/Cotiza/ConsultaCotiza?IdSede=1&Usuario=${selectedUser}&TipoComprobante=4&FechaDesde=${today}&FechaHasta=${today}`
     )
       .then((res) => res.json())
       .then(
@@ -173,7 +180,7 @@ const Cotizaciones = () => {
   }, []);
 
   const getCotizaciones = () => {
-    let url = `http://appdemo1.solarc.pe/api/Cotiza/ConsultaCotiza?IdSede=1&Usuario=JGONZALES&TipoComprobante=4&FechaDesde=${
+    let url = `http://appdemo1.solarc.pe/api/Cotiza/ConsultaCotiza?IdSede=1&Usuario=${selectedUser}&TipoComprobante=4&FechaDesde=${
       valueI.$y
     }.${parseInt(valueI.$M) + 1}.${valueI.$D}&FechaHasta=${
       valueF.$y
@@ -193,6 +200,22 @@ const Cotizaciones = () => {
         }
       );
   };
+
+  // Obtener usuarios
+  useEffect(() => {
+    fetch("http://appdemo1.solarc.pe/api/Account/Usuarios")
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          if (result) {
+            setUsuarios(result);
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }, []);
 
   const handleGetRowId = (e) => {
     return e.numero;
@@ -266,9 +289,12 @@ const Cotizaciones = () => {
                     label="Usuario"
                     value={selectedRow.modelo}
                   >
-                    <MenuItem key="{model.id}" value="{model.descripcion}">
-                      test
-                    </MenuItem>
+                    {usuarios &&
+                      usuarios.map((value) => (
+                        <MenuItem key={value.idUsuario}>
+                          {value.userName}
+                        </MenuItem>
+                      ))}
                   </Select>
                 </FormControl>
                 <Button
