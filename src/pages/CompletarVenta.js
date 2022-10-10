@@ -211,6 +211,12 @@ const CompletarVenta = () => {
       if (cl) {
         setLoadingSell(true);
         print(productsCookies, cl, pay, billNumber, billType, sum, discount);
+        setData({
+          usuario: user.userName,
+          idOrigen: 0,
+          total: (sum * 1.18).toFixed(2),
+          carritoDet: productsCookies,
+        });
       } else if (!cl) {
         setCustomErrorCl(true);
         setTextErrorCl("Debe introducir el cliente");
@@ -296,8 +302,29 @@ const CompletarVenta = () => {
     ventaDet: cart,
   };
 
+  // Insertar cotizacion
+  let cotizeData = {
+    fecha: `${yyyy}-${mm}-${dd}T${time}`,
+    idCliente: 1,
+    tipoVenta: billType,
+    subTotal: sum,
+    igv: sum * 0.18,
+    total: sum * 1.18,
+    vuelto: pay - sum,
+    porcDscto: 0,
+    valorDscto: 0,
+    valorVenta: sum,
+    idSede: 1,
+    idPedCab: idCab,
+    usuario: `${user.userName}`,
+    rucCliente: "string",
+    razonSocial: "string",
+    idOrigen: 1,
+    cotizaDet: cart,
+  };
+
   useEffect(() => {
-    if (cart) {
+    if (billType !== 4 && cart) {
       fetch("http://appdemo1.solarc.pe/api/Venta/InsertaVenta", {
         method: "POST", // or 'PUT'
         headers: {
@@ -310,6 +337,28 @@ const CompletarVenta = () => {
           setLoadingSell(false);
           Cookies.remove("sell");
           navigate("/ventas");
+          console.log(data);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  }, [cart]);
+
+  useEffect(() => {
+    if (billType === 4 && cart) {
+      fetch("http://appdemo1.solarc.pe/api/Cotiza/InsertaCotiza", {
+        method: "POST", // or 'PUT'
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(cotizeData),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setLoadingSell(false);
+          Cookies.remove("sell");
+          navigate("/cotizaciones");
           console.log(data);
         })
         .catch((error) => {
@@ -556,7 +605,7 @@ const CompletarVenta = () => {
           />
         </>
       )}
-      {loading &&
+      {loadingSell &&
         <LoadingSpinner />
       }
     </>
