@@ -6,44 +6,31 @@ import EditIcon from "@mui/icons-material/Edit";
 import defaultImage from "../image/default-image.jpg";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import Slide from "@mui/material/Slide";
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
-import InputLabel from "@mui/material/InputLabel";
-import Select from "@mui/material/Select";
-import FormControl from "@mui/material/FormControl";
 import Typography from "@mui/material/Typography";
 import Shop2TwoToneIcon from '@mui/icons-material/Shop2TwoTone';
 import QueueTwoToneIcon from '@mui/icons-material/QueueTwoTone';
 import DriveFileRenameOutlineTwoToneIcon from '@mui/icons-material/DriveFileRenameOutlineTwoTone';
 import LoadingSpinner from "../components/LoadingSpinner";
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import DialogMaintanceEdit from "../components/DialogMaintanceEdit";
+import DialogMaintanceDelete from "../components/DialogMaintanceDelete";
 
 const Mantenimiento = () => {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
-  const [itemsBrands, setItemsBrands] = useState([]);
-  const [itemsModels, setItemsModels] = useState([]);
   const [open, setOpen] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const [selectedRow, setSelectedRow] = useState(0);
+  const [selectedRowDelete, setSelectedRowDelete] = useState(0);
 
-  const handleClickOpen = (params) => {
+  const handleClickOpenEdit = (params) => {
     setOpen(true);
     setSelectedRow(params);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleClickOpenDelete = (params) => {
+    setOpenDelete(true);
+    setSelectedRowDelete(params);
   };
 
   const columns = [
@@ -66,11 +53,11 @@ const Mantenimiento = () => {
         <IconButton
           aria-label="delete"
           color="primary"
-          onClick={() => handleClickOpen(params.row)}
+          onClick={() => handleClickOpenEdit(params.row)}
         >
           <EditIcon />
         </IconButton>,
-        <IconButton aria-label="delete" color="secondary">
+        <IconButton aria-label="delete" color="secondary" onClick={() => handleClickOpenDelete(params.row)}>
           <DeleteIcon />
         </IconButton>,
       ],
@@ -107,28 +94,6 @@ const Mantenimiento = () => {
         },
         (error) => {
           setIsLoaded(true);
-          setError(error);
-        }
-      );
-
-    fetch("http://appdemo1.solarc.pe/api/Parametros/GetParametros?Tabla=marca")
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          setItemsBrands(result.data);
-        },
-        (error) => {
-          setError(error);
-        }
-      );
-
-    fetch("http://appdemo1.solarc.pe/api/Parametros/GetParametros?Tabla=modelo")
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          setItemsModels(result.data);
-        },
-        (error) => {
           setError(error);
         }
       );
@@ -187,146 +152,9 @@ const Mantenimiento = () => {
           <Button sx={{ m: 1 }} variant="outlined" endIcon={<DriveFileRenameOutlineTwoToneIcon />}>
             Editar Modelo
           </Button>
-
-          <Dialog
-            open={open}
-            TransitionComponent={Transition}
-            keepMounted
-            onClose={handleClose}
-            aria-describedby="alert-dialog-slide-description"
-            maxWidth="md"
-          >
-            <DialogTitle>{selectedRow.nombreProducto}</DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-slide-description">
-                <Grid container spacing={1}>
-                  <Grid item xs={4}>
-                    <img
-                      onError={({ currentTarget }) => {
-                        currentTarget.onerror = null; // prevents looping
-                        currentTarget.src = defaultImage;
-                      }}
-                      width={250}
-                      src={`http://appdemo1.solarc.pe/imagenes/${selectedRow.codProd}.JPG`}
-                      alt={
-                        selectedRow.nombreProducto
-                          ? selectedRow.nombreProducto
-                          : "Imagen por defeto"
-                      }
-                    />
-                  </Grid>
-                  <Grid item xs={8}>
-                    <TextField
-                      sx={{ width: "30ch" }}
-                      label="Código Producto"
-                      value={selectedRow.codProd ? selectedRow.codProd : 0}
-                      margin="dense"
-                    />
-                    <TextField
-                      sx={{ m: 1, width: "31ch" }}
-                      label="Producto"
-                      value={
-                        selectedRow.nombreProducto
-                          ? selectedRow.nombreProducto
-                          : ""
-                      }
-                      margin="dense"
-                    />
-                    <TextField
-                      sx={{ width: "62ch" }}
-                      multiline
-                      label="Descripción"
-                      value={
-                        selectedRow.descripcion ? selectedRow.descripcion : ""
-                      }
-                      margin="dense"
-                    />
-                    <TextField
-                      sx={{ width: "20ch" }}
-                      label="Cantidad"
-                      value={selectedRow.stock ? selectedRow.stock : 0}
-                      margin="dense"
-                    />
-                    <TextField
-                      sx={{ m: 1, width: "20ch" }}
-                      label="Precio Base"
-                      value={
-                        selectedRow.precioBase ? selectedRow.precioBase : 0
-                      }
-                      margin="dense"
-                    />
-                    <TextField
-                      sx={{ width: "20ch" }}
-                      label="Precio Venta"
-                      value={
-                        selectedRow.precioVenta ? selectedRow.precioVenta : 0
-                      }
-                      margin="dense"
-                    />
-                    <TextField
-                      sx={{ width: "41ch" }}
-                      id="outlined-basic"
-                      variant="outlined"
-                      type="file"
-                      inputProps={{
-                        multiple: true,
-                      }}
-                    />
-                    <FormControl sx={{ ml: 1, width: "20ch" }}>
-                      <InputLabel id="demo-simple-select-label">
-                        Marca
-                      </InputLabel>
-                      {selectedRow.marca && (
-                        <Select
-                          labelId="demo-simple-select-label"
-                          id="demo-simple-select"
-                          label="Marca"
-                          value={selectedRow.marca}
-                        >
-                          {itemsBrands.map((brand) => (
-                            <MenuItem key={brand.id} value={brand.descripcion}>
-                              {brand.descripcion}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      )}
-                    </FormControl>
-                    <FormControl sx={{ my: 1, width: "20ch" }}>
-                      <InputLabel id="demo-simple-select-label">
-                        Modelo
-                      </InputLabel>
-                      {selectedRow.modelo && (
-                        <Select
-                          labelId="demo-simple-select-label"
-                          id="demo-simple-select"
-                          label="Modelo"
-                          value={selectedRow.modelo}
-                        >
-                          {itemsModels.map((model) => (
-                            <MenuItem key={model.id} value={model.descripcion}>
-                              {model.descripcion}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      )}
-                    </FormControl>
-                    <TextField
-                      sx={{ m: 1, width: "41ch" }}
-                      margin="dense"
-                      id="outlined-disabled"
-                      label="Ubicación"
-                      value={selectedRow.ubicacion ? selectedRow.ubicacion : 0}
-                    />
-                  </Grid>
-                </Grid>
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose}>Cancelar</Button>
-              <Button onClick={handleClose}>Modificar</Button>
-            </DialogActions>
-          </Dialog>
         </div>
+        <DialogMaintanceEdit action={open} set={setOpen} data={selectedRow} />
+        <DialogMaintanceDelete action={openDelete} set={setOpenDelete} data={selectedRowDelete} />
       </>
     );
   }

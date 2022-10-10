@@ -6,39 +6,31 @@ import EditIcon from "@mui/icons-material/Edit";
 import defaultImage from "../image/default-image.jpg";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import Slide from "@mui/material/Slide";
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import InputAdornment from "@mui/material/InputAdornment";
 import Typography from "@mui/material/Typography";
 import NoteAddTwoToneIcon from '@mui/icons-material/NoteAddTwoTone';
 import ArticleTwoToneIcon from '@mui/icons-material/ArticleTwoTone';
 import AssignmentTurnedInTwoToneIcon from '@mui/icons-material/AssignmentTurnedInTwoTone';
 import LoadingSpinner from "../components/LoadingSpinner";
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import DialogAlmacenDelete from "../components/DialogAlmacenDelete";
+import DialogAlmacenEdit from "../components/DialogAlmacenEdit";
 
 const Almacen = () => {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
-  const [open, setOpen] = React.useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const [selectedRow, setSelectedRow] = useState(0);
+  const [selectedRowDelete, setSelectedRowDelete] = useState(0);
 
   const handleClickOpen = (params) => {
-    setOpen(true);
+    setOpenEdit(true);
     setSelectedRow(params);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleClickOpenDelete = (params) => {
+    setOpenDelete(true);
+    setSelectedRowDelete(params);
   };
 
   const columns = [
@@ -65,7 +57,7 @@ const Almacen = () => {
         >
           <EditIcon />
         </IconButton>,
-        <IconButton aria-label="delete" color="secondary">
+        <IconButton aria-label="delete" color="secondary" onClick={() => handleClickOpenDelete(params.row)}>
           <DeleteIcon />
         </IconButton>,
       ],
@@ -158,85 +150,9 @@ const Almacen = () => {
           <Button variant="contained" sx={{ m: 1 }} endIcon={<NoteAddTwoToneIcon />}>
             Cargar Excel
           </Button>
-
-          <Dialog
-            open={open}
-            TransitionComponent={Transition}
-            keepMounted
-            onClose={handleClose}
-            aria-describedby="alert-dialog-slide-description"
-            maxWidth="md"
-          >
-            <DialogTitle>{selectedRow.nombreProducto}</DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-slide-description">
-                <Grid container spacing={1}>
-                  <Grid item xs={4}>
-                    <img
-                      onError={({ currentTarget }) => {
-                        currentTarget.onerror = null; // prevents looping
-                        currentTarget.src = defaultImage;
-                      }}
-                      width={250}
-                      src={`http://appdemo1.solarc.pe/imagenes/${selectedRow.codProd}.JPG`}
-                      alt={selectedRow.nombreProducto}
-                    />
-                  </Grid>
-                  <Grid item xs={8}>
-                    <TextField
-                      fullWidth
-                      label="Código Producto"
-                      value={selectedRow.codProd ? selectedRow.codProd : 0}
-                      margin="dense"
-                    />
-                    <TextField
-                      fullWidth
-                      label="Cantidad"
-                      value={selectedRow.stock ? selectedRow.stock : 0}
-                      margin="dense"
-                    />
-                    <TextField
-                      fullWidth
-                      label="Precio Base"
-                      value={
-                        selectedRow.precioBase ? selectedRow.precioBase : 0
-                      }
-                      margin="dense"
-                    />
-                    <TextField
-                      disabled
-                      fullWidth
-                      label="Aumento de stock"
-                      margin="dense"
-                    />
-                    <TextField
-                      label="Aumento sobre el precio base"
-                      id="outlined-start-adornment"
-                      margin="dense"
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">%</InputAdornment>
-                        ),
-                      }}
-                    />
-                    <TextField
-                      disabled
-                      sx={{ m: 1, width: "25ch" }}
-                      margin="dense"
-                      id="outlined-disabled"
-                      label="Total"
-                      defaultValue="0"
-                    />
-                  </Grid>
-                </Grid>
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose}>Cancelar</Button>
-              <Button onClick={handleClose}>Aceptar</Button>
-            </DialogActions>
-          </Dialog>
         </div>
+        <DialogAlmacenDelete open={openDelete} set={setOpenDelete} data={selectedRowDelete} />
+        <DialogAlmacenEdit open={openEdit} set={setOpenEdit} data={selectedRow} />
       </>
     );
   }
