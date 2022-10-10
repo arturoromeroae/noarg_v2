@@ -20,6 +20,8 @@ import DoDisturbOffTwoToneIcon from "@mui/icons-material/DoDisturbOffTwoTone";
 import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
+import DialogVentasAnular from "../components/DialogVentasAnular";
+import DialogVentasImprimir from "../components/DialogVentasImprimir";
 
 const TableContainer = styled("div")(({ theme }) => ({
   display: "flex",
@@ -100,9 +102,12 @@ function CustomNoRowsOverlay() {
 const Ventas = () => {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [items, setItems] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [selectedRow, setSelectedRow] = useState(0);
+  const [openNull, setOpenNull] = useState(false);
+  const [openPrint, setOpenPrint] = useState(false);
+  const [selectedRowNull, setSelectedRowNull] = useState(0);
+  const [selectedRowPrint, setSelectedRowPrint] = useState(0);
   const [valueI, setValueI] = React.useState(dayjs());
   const [valueF, setValueF] = React.useState(dayjs());
 
@@ -113,9 +118,15 @@ const Ventas = () => {
 
   today = yyyy + "/" + mm + "/" + dd;
 
-  const handleClickOpen = (params) => {
-    setOpen(true);
-    setSelectedRow(params);
+  const handleClickOpenNull = (params) => {
+    setOpenNull(true);
+    setSelectedRowNull(params);
+  };
+
+  const handleClickOpenPrint = (params) => {
+    setOpenPrint(true);
+    setSelectedRowPrint(params);
+    setLoading(true);
   };
 
   const handleChangeInicio = (newValue) => {
@@ -143,11 +154,14 @@ const Ventas = () => {
         <IconButton
           aria-label="delete"
           color="error"
-          onClick={() => handleClickOpen(params.row)}
+          onClick={() => handleClickOpenNull(params.row)}
         >
           <DoDisturbOffTwoToneIcon />
         </IconButton>,
-        <IconButton aria-label="delete" color="primary">
+        <IconButton 
+          aria-label="delete" 
+          color="primary" 
+          onClick={() => handleClickOpenPrint(params.row)}>
           <LocalPrintshopTwoToneIcon />
         </IconButton>,
       ],
@@ -174,11 +188,9 @@ const Ventas = () => {
   }, []);
 
   const getCotizaciones = () => {
-    let url = `http://appdemo1.solarc.pe/api/Venta/ConsultaVenta?IdSede=1&TipoComprobante=1&FechaDesde=${
-      valueI.$y
-    }.${parseInt(valueI.$M) + 1}.${valueI.$D}&FechaHasta=${
-      valueF.$y
-    }.${parseInt(valueF.$M) + 1}.${valueF.$D}`;
+    let url = `http://appdemo1.solarc.pe/api/Venta/ConsultaVenta?IdSede=1&TipoComprobante=1&FechaDesde=${valueI.$y
+      }.${parseInt(valueI.$M) + 1}.${valueI.$D}&FechaHasta=${valueF.$y
+      }.${parseInt(valueF.$M) + 1}.${valueF.$D}`;
     fetch(url)
       .then((res) => res.json())
       .then(
@@ -265,7 +277,7 @@ const Ventas = () => {
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     label="Usuario"
-                    value={selectedRow.modelo}
+                    value={selectedRowNull.modelo}
                   >
                     <MenuItem key="{model.id}" value="{model.descripcion}">
                       test
@@ -280,7 +292,7 @@ const Ventas = () => {
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     label="Tipo de Comprobante"
-                    value={selectedRow.modelo}
+                    value={selectedRowNull.modelo}
                   >
                     <MenuItem key="{model.id}" value="{model.descripcion}">
                       test
@@ -300,6 +312,8 @@ const Ventas = () => {
             </LocalizationProvider>
           </div>
         </TableContainer>
+        <DialogVentasAnular open={openNull} set={setOpenNull} data={selectedRowNull} />
+        <DialogVentasImprimir openPrintModal={openPrint} setPrint={setOpenPrint} dataPrint={selectedRowPrint} load={loading} setLoad={setLoading} />
       </>
     );
   }
