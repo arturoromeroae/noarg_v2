@@ -252,7 +252,7 @@ const CompletarVenta = () => {
         setData({
           usuario: user.userName,
           idOrigen: 0,
-          total: (sum * 1.18).toFixed(2),
+          total: (sum).toFixed(2),
           carritoDet: productsCookies,
         });
       } else if (!cl || cliente === "") {
@@ -326,7 +326,7 @@ const CompletarVenta = () => {
     tipoVenta: billType,
     subTotal: sum,
     igv: sum * 0.18,
-    total: sum * 1.18,
+    total: sum,
     vuelto: pay - sum,
     porcDscto: 0,
     valorDscto: 0,
@@ -347,7 +347,7 @@ const CompletarVenta = () => {
     tipoVenta: billType,
     subTotal: sum,
     igv: sum * 0.18,
-    total: sum * 1.18,
+    total: sum,
     vuelto: pay - sum,
     porcDscto: 0,
     valorDscto: 0,
@@ -502,7 +502,7 @@ const CompletarVenta = () => {
                     id="outlined-basic"
                     label="Monto a Pagar"
                     variant="outlined"
-                    value={sum ? "S/ " + (sum * 1.18).toFixed(2) : 0}
+                    value={sum ? "S/ " + (sum).toFixed(2) : 0}
                     disabled
                   />
                   {billType !== 4 && (
@@ -525,7 +525,7 @@ const CompletarVenta = () => {
                       label="Vuelto"
                       variant="outlined"
                       value={
-                        pay ? "S/ " + (pay - sum * 1.18).toFixed(2) : "S/ " + 0
+                        pay ? "S/ " + (pay - sum).toFixed(2) : "S/ " + 0
                       }
                       disabled
                     />
@@ -573,7 +573,7 @@ const CompletarVenta = () => {
                   id="outlined-basic"
                   label="Monto a pagar"
                   variant="outlined"
-                  value={sum ? "S/ " + (sum * 1.18).toFixed(2) : 0}
+                  value={sum ? "S/ " + (sum).toFixed(2) : 0}
                   disabled
                 />
                 <FormControl sx={{ m: 2, minWidth: 210 }}>

@@ -19,7 +19,7 @@ const print = (productsCookies, cl, pay, billNumber, billType, sum, discount, ru
   let time = h + ":" + m + ":" + s;
 
   let infoBill = [];
-  let total = (Math.round((sum * 1.18).toFixed(2) * 100) / 100).toFixed(2);
+  let total = (Math.round((sum).toFixed(2) * 100) / 100).toFixed(2);
   const pdf = new jsPDF("p", "mm", "a4");
 
   // cuadrado en el pdf

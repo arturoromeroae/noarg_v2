@@ -82,9 +82,10 @@ const Repuestos = () => {
           aria-label="add"
           color="primary"
           onClick={() => handleCart(params.row)}
+          disabled={params.row.stock <= 0}
         >
           <LocalGroceryStoreTwoToneIcon />
-        </IconButton>,
+        </IconButton>
       ],
     },
     {

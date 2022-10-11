@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -21,9 +21,54 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const DialogMaintanceEdit = ({ data, action, set }) => {
     const [itemsModels, setItemsModels] = useState([]);
     const [itemsBrands, setItemsBrands] = useState([]);
+    const [itemCod, setItemCod] = useState(data.codProd);
+    const [itemNom, setItemNom] = useState(data.nombreProducto ? data.nombreProducto : "");
+    const [itemDes, setItemDes] = useState(data.descripcion ? data.descripcion : "");
+    const [itemStk, setItemStk] = useState(data.stock ? data.stock : 0);
+    const [itemPb, setItemPb] = useState(data.precioBase ? data.precioBase : 0);
+    const [itemPv, setItemPv] = useState(data.precioVenta ? data.precioVenta : 0);
+    const [itemBr, setItemBr] = useState(data.marca ? data.marca : 0);
+    const [itemMd, setItemMd] = useState(data.modelo ? data.modelo : 0);
+    const [itemUb, setItemUb] = useState(data.ubicacion ? data.ubicacion : 0);
 
     const handleClose = () => {
         set(false);
+    }
+
+    const handleCodPr = (e) => {
+        setItemCod(e.target.value)
+    }
+
+    const handlePr = (e) => {
+        setItemNom(e.target.value)
+    }
+
+    const handleDes = (e) => {
+        setItemDes(e.target.value)
+    }
+
+    const handleCant = (e) => {
+        setItemStk(e.target.value)
+    }
+
+    const handlePb = (e) => {
+        setItemPb(e.target.value)
+    }
+
+    const handlePv = (e) => {
+        setItemPv(e.target.value)
+    }
+
+    const handleModel = (e) => {
+        setItemMd((itemsModels.filter((p) => p.descripcion === e.target.value))[0].id);
+    }
+
+    const handleBrand = (e) => {
+        setItemBr((itemsModels.filter((p) => p.descripcion === e.target.value))[0].id);
+    }
+
+    const handleUbicacion = (e) => {
+        setItemUb(e.target.value)
     }
 
     useState(() => {
@@ -49,6 +94,45 @@ const DialogMaintanceEdit = ({ data, action, set }) => {
                 }
             );
     }, [])
+
+    const handleEdit = () => {
+        let pr = {
+            "codProd": itemCod,
+            "nombreProducto": itemNom,
+            "descripcion": itemDes,
+            "idMarca": itemBr,
+            "idModelo": itemMd,
+            "idUnidadMedida": 0,
+            "idTienda": 1,
+            "precioBase": itemPb,
+            "imagen": "string",
+            "rutaImagen": "string",
+            "idProducto": data.idProducto,
+            "cantidad": itemStk,
+            "precioVenta": itemPv,
+            "ubicacion": itemUb
+        }
+        // Editar producto
+        
+            // if (data) {
+            //     fetch("http://appdemo1.solarc.pe/api/Productos/ActualizarProducto", {
+            //         method: "POST", // or 'PUT'
+            //         headers: {
+            //             "Content-Type": "application/json",
+            //         },
+            //         body: JSON.stringify(pr),
+            //     })
+            //         .then((response) => response.json())
+            //         .then((data) => {
+            //             console.log(data)
+            //         })
+            //         .catch((error) => {
+            //             console.error("Error:", error);
+            //         });
+            // }
+            console.log(pr)
+        
+    }
 
     return (
         <div>
@@ -85,6 +169,7 @@ const DialogMaintanceEdit = ({ data, action, set }) => {
                                     label="Código Producto"
                                     value={data.codProd ? data.codProd : 0}
                                     margin="dense"
+                                    onChange={handleCodPr}
                                 />
                                 <TextField
                                     sx={{ m: 1, width: "31ch" }}
@@ -95,21 +180,24 @@ const DialogMaintanceEdit = ({ data, action, set }) => {
                                             : ""
                                     }
                                     margin="dense"
+                                    onChange={handlePr}
                                 />
                                 <TextField
                                     sx={{ width: "62ch" }}
                                     multiline
                                     label="Descripción"
-                                    value={
+                                    defaultValue={
                                         data.descripcion ? data.descripcion : ""
                                     }
                                     margin="dense"
+                                    onChange={handleDes}
                                 />
                                 <TextField
                                     sx={{ width: "20ch" }}
                                     label="Cantidad"
                                     value={data.stock ? data.stock : 0}
                                     margin="dense"
+                                    onChange={handleCant}
                                 />
                                 <TextField
                                     sx={{ m: 1, width: "20ch" }}
@@ -118,6 +206,7 @@ const DialogMaintanceEdit = ({ data, action, set }) => {
                                         data.precioBase ? data.precioBase : 0
                                     }
                                     margin="dense"
+                                    onChange={handlePb}
                                 />
                                 <TextField
                                     sx={{ width: "20ch" }}
@@ -126,6 +215,7 @@ const DialogMaintanceEdit = ({ data, action, set }) => {
                                         data.precioVenta ? data.precioVenta : 0
                                     }
                                     margin="dense"
+                                    onChange={handlePv}
                                 />
                                 <TextField
                                     sx={{ width: "41ch" }}
@@ -145,7 +235,8 @@ const DialogMaintanceEdit = ({ data, action, set }) => {
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
                                             label="Marca"
-                                            value={data.marca}
+                                            defaultValue={data.marca}
+                                            onChange={handleBrand}
                                         >
                                             {itemsBrands.map((brand) => (
                                                 <MenuItem key={brand.id} value={brand.descripcion}>
@@ -164,10 +255,11 @@ const DialogMaintanceEdit = ({ data, action, set }) => {
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
                                             label="Modelo"
-                                            value={data.modelo}
+                                            defaultValue={data.modelo}
+                                            onChange={handleModel}
                                         >
                                             {itemsModels.map((model) => (
-                                                <MenuItem key={model.id} value={model.descripcion}>
+                                                <MenuItem data-value={model.id} key={model.id} value={model.descripcion}>
                                                     {model.descripcion}
                                                 </MenuItem>
                                             ))}
@@ -180,6 +272,7 @@ const DialogMaintanceEdit = ({ data, action, set }) => {
                                     id="outlined-disabled"
                                     label="Ubicación"
                                     value={data.ubicacion ? data.ubicacion : 0}
+                                    onChange={handleUbicacion}
                                 />
                             </Grid>
                         </Grid>
@@ -187,7 +280,7 @@ const DialogMaintanceEdit = ({ data, action, set }) => {
                 </DialogContent>
                 <DialogActions>
                     <Button color='error' onClick={handleClose}>Cancelar</Button>
-                    <Button onClick={handleClose}>Modificar</Button>
+                    <Button onClick={handleEdit}>Modificar</Button>
                 </DialogActions>
             </Dialog>
         </div>
