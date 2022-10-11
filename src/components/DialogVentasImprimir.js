@@ -7,6 +7,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Spinner from './Spinner';
 import Button from '@mui/material/Button';
 import Slide from '@mui/material/Slide';
+import print from "../components/PdfPrint";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -20,6 +21,33 @@ const DialogVentasImprimir = ({ openPrintModal, setPrint, dataPrint, load, setLo
         setLoad(false);
     };
 
+    let productsCookies = "";
+    let cl = "";
+    let pay = 0;
+    let billNumber = "";
+    let billType = "";
+    let sum = "";
+    let discount = 0;
+    let ruc = "";
+    let razonSocial = "";
+
+    const handlePrint = () => {
+        if (dataPrint && cartPrint) {
+            print(
+                productsCookies = cartPrint,
+                cl = dataPrint.razonSocial,
+                pay = 0,
+                billNumber = dataPrint.numero,
+                billType = dataPrint.comprobante,
+                sum = dataPrint.total,
+                discount = 0,
+                ruc = cartPrint[0].ruc,
+                razonSocial = dataPrint.razonSocial
+            );
+        }
+    }
+    console.log(cartPrint);
+    console.log(dataPrint);
     useEffect(() => {
         if (dataPrint) {
             fetch(
@@ -75,7 +103,7 @@ const DialogVentasImprimir = ({ openPrintModal, setPrint, dataPrint, load, setLo
                         </DialogContent>
                         <DialogActions>
                             <Button onClick={handleClose} color="error">Cerrar</Button>
-                            <Button >Imprimir</Button>
+                            <Button onClick={handlePrint}>Imprimir</Button>
                         </DialogActions>
                     </>
                 }

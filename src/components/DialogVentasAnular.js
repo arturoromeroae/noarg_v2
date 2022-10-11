@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -9,14 +9,60 @@ import { yellow } from "@mui/material/colors";
 import Button from "@mui/material/Button";
 
 const DialogVentasAnular = ({ open, set, data }) => {
+    const [deleteBill, setDeleteBill] = useState();
+    
     const handleClose = () => {
         set(false);
     };
 
     const handleDelete = () => {
-        console.log(false);
+        setDeleteBill(1);
+        set(false);
     };
+
     console.log(data)
+    // Insertar venta
+    let NullData = {
+        "fecha": "2022-10-10T20:57:10.880Z",
+        "idCliente": 0,
+        "tipoVenta": 0,
+        "subTotal": 0,
+        "igv": 0,
+        "total": 0,
+        "vuelto": 0,
+        "porcDscto": 0,
+        "valorDscto": 0,
+        "valorVenta": 0,
+        "idSede": 0,
+        "idPedCab": 0,
+        "usuario": "string",
+        "rucCliente": "string",
+        "razonSocial": data.razonSocial,
+        "idOrigen": 1,
+        "isAnulado": 1,
+        "idVentaCab": data.idVentaCab,
+    };
+
+    useEffect(() => {
+        if (data) {
+            fetch("http://appdemo1.solarc.pe/api/Venta/InsertaVenta", {
+                method: "POST", // or 'PUT'
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(NullData),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    setDeleteBill();
+                    window.location.reload(false);
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+        }
+    }, [deleteBill]);
+
     return (
         <div>
             <Dialog
