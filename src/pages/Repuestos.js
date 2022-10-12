@@ -15,6 +15,7 @@ import Slide from "@mui/material/Slide";
 import Typography from "@mui/material/Typography";
 import Cart from "../components/Cart";
 import LoadingSpinner from "../components/LoadingSpinner";
+import DialogAddEdit from "../components/DialogAddEdit";
 
 const ImageTable = styled.img`
   transition: linear 0.3s;
@@ -46,8 +47,10 @@ const Repuestos = () => {
   const [itemsBrands, setItemsBrands] = useState([]);
   const [itemsModels, setItemsModels] = useState([]);
   const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
   const [selectedRow, setSelectedRow] = useState(0);
   const [addToCart, setAddToCart] = useState();
+  const [addToCartEdit, setAddToCartEdit] = useState();
   const [count, setCount] = useState(0);
 
   const handleClickOpen = (params) => {
@@ -64,14 +67,52 @@ const Repuestos = () => {
     setOpen(false);
   };
 
+  const handleCartEdit = (params) => {
+    if(params.stock > 0){
+      setOpenEdit(true);
+      setAddToCartEdit(params);
+    }
+    console.log(params);
+  };
+
   const columns = [
     { field: "idProducto", headerName: "ID", hide: true, width: 80 },
     { field: "codProd", headerName: "Codigo", width: 150 },
-    { field: "nombreProducto", headerName: "Producto", width: 400 },
+    {
+      field: "nombreProducto",
+      type: "actions",
+      headerName: "Producto",
+      width: 400,
+      getActions: (params) => [
+        <a style={{ cursor: params.row.stock > 0 && "pointer", color: params.row.stock > 0 ? "blue" : "red" }} onClick={() => handleCartEdit(params.row)}>
+          {params.row.nombreProducto}
+        </a>
+      ],
+    },
     { field: "descripcion", headerName: "Descripcion", width: 450 },
-    { field: "stock", headerName: "Cantidad", width: 100 },
+    {
+      field: "stock",
+      type: "actions",
+      headerName: "Cantidad",
+      width: 100,
+      getActions: (params) => [
+        <a style={{ cursor: params.row.stock > 0 && "pointer", color: params.row.stock > 0 ? "blue" : "red" }} onClick={() => handleCartEdit(params.row)}>
+          {params.row.stock}
+        </a>
+      ],
+    },
     { field: "precioVenta", headerName: "P. Venta", width: 90 },
-    { field: "ubicacion", headerName: "Ubicacion", width: 100 },
+    {
+      field: "ubicacion",
+      type: "actions",
+      headerName: "Ubicación",
+      width: 100,
+      getActions: (params) => [
+        <a style={{ cursor: params.row.stock > 0 && "pointer", color: params.row.stock > 0 ? "blue" : "red" }} onClick={() => handleCartEdit(params.row)}>
+          {params.row.ubicacion}
+        </a>
+      ],
+    },
     {
       field: "actions",
       type: "actions",
@@ -223,6 +264,8 @@ const Repuestos = () => {
             <Button onClick={handleClose}>Cerrar</Button>
           </DialogActions>
         </Dialog>
+
+        <DialogAddEdit info={addToCartEdit} setAction={setOpenEdit} action={openEdit} />
       </>
     );
   }
