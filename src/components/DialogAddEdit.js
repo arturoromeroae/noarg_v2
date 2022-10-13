@@ -11,35 +11,32 @@ import Cookies from "js-cookie";
 import Button from "@mui/material/Button";
 import defaultImage from "../image/default-image.jpg";
 import ProductsAuto from "../components/ProductsAuto";
+import LoadingSpinner from "./LoadingSpinner";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const DialogAddEdit = ({ info, setAction, action }) => {
+const DialogAddEdit = ({ info, infoEdit, setAction, action }) => {
     const [prod, setProd] = useState();
-
-    let getSellInfo = Cookies.get("sell");
-    let productsCookies = getSellInfo && JSON.parse(getSellInfo);
 
     const handleClose = () => {
         setAction(false);
+        setProd(info);
     };
 
     const handleQuantity = (event) => {
-        prod.cantidad = event.target.value;
+        const newProduct = info;
+        if(event.target.value > 0){
+            newProduct.cantidad = parseInt(event.target.value);
+            setProd(newProduct);
+        }
     };
 
-    const handleSaveProd = () => {
-        if (prod) {
-            Cookies.set(
-                "sell",
-                JSON.stringify([...productsCookies, prod]).toString(),
-                {
-                    expires: 0.3,
-                }
-            );
-        }
+    const handlePrice = (event) => {
+        const newProduct = info;
+        newProduct.precioVenta = parseFloat(event.target.value);
+        setProd(newProduct);
     };
 
     return (
@@ -105,12 +102,15 @@ const DialogAddEdit = ({ info, setAction, action }) => {
                                 required
                                 onChange={handleQuantity}
                             />
-                            <TextField
-                                sx={{ m: 1, width: "20ch" }}
-                                label="Precio Venta"
-                                margin="dense"
-                                defaultValue={info && info.precioVenta}
-                            />
+                            {info &&
+                                <TextField
+                                    sx={{ m: 1, width: "20ch" }}
+                                    label="Precio Venta"
+                                    margin="dense"
+                                    helperText={info ? "Precio actual: " + info.precioVenta : ""}
+                                    onChange={handlePrice}
+                                />
+                            }
                             <TextField
                                 sx={{ m: 1, width: "20ch" }}
                                 margin="dense"
@@ -140,7 +140,7 @@ const DialogAddEdit = ({ info, setAction, action }) => {
                 </DialogContent>
                 <DialogActions>
                     <Button color="error" onClick={handleClose}>Cancelar</Button>
-                    <Button onClick={handleSaveProd}>Agregar</Button>
+                    <Button onClick={() => infoEdit(info)}>Agregar</Button>
                 </DialogActions>
             </Dialog>
         </div>

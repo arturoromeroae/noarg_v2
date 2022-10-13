@@ -30,7 +30,7 @@ const Cart = ({ dataCart, dataCount }) => {
         );
         if (foundIndex === -1) {
           const newProduct = dataCart;
-          newProduct.cantidad = 1;
+          if(!newProduct.cantidad) newProduct.cantidad = 1;
           return [...prevState, newProduct];
         }
         const newState = [...prevState];

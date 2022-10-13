@@ -70,9 +70,8 @@ const Repuestos = () => {
   const handleCartEdit = (params) => {
     if(params.stock > 0){
       setOpenEdit(true);
-      setAddToCartEdit(params);
     }
-    console.log(params);
+    setAddToCartEdit(params);
   };
 
   const columns = [
@@ -84,9 +83,9 @@ const Repuestos = () => {
       headerName: "Producto",
       width: 400,
       getActions: (params) => [
-        <a style={{ cursor: params.row.stock > 0 && "pointer", color: params.row.stock > 0 ? "blue" : "red" }} onClick={() => handleCartEdit(params.row)}>
+        <p style={{ cursor: params.row.stock > 0 && "pointer", color: params.row.stock > 0 ? "blue" : "red" }} onClick={() => handleCartEdit(params.row)}>
           {params.row.nombreProducto}
-        </a>
+        </p>
       ],
     },
     { field: "descripcion", headerName: "Descripcion", width: 450 },
@@ -96,9 +95,9 @@ const Repuestos = () => {
       headerName: "Cantidad",
       width: 100,
       getActions: (params) => [
-        <a style={{ cursor: params.row.stock > 0 && "pointer", color: params.row.stock > 0 ? "blue" : "red" }} onClick={() => handleCartEdit(params.row)}>
+        <p style={{ cursor: params.row.stock > 0 && "pointer", color: params.row.stock > 0 ? "blue" : "red" }} onClick={() => handleCartEdit(params.row)}>
           {params.row.stock}
-        </a>
+        </p>
       ],
     },
     { field: "precioVenta", headerName: "P. Venta", width: 90 },
@@ -108,9 +107,9 @@ const Repuestos = () => {
       headerName: "Ubicación",
       width: 100,
       getActions: (params) => [
-        <a style={{ cursor: params.row.stock > 0 && "pointer", color: params.row.stock > 0 ? "blue" : "red" }} onClick={() => handleCartEdit(params.row)}>
+        <p style={{ cursor: params.row.stock > 0 && "pointer", color: params.row.stock > 0 ? "blue" : "red" }} onClick={() => handleCartEdit(params.row)}>
           {params.row.ubicacion}
-        </a>
+        </p>
       ],
     },
     {
@@ -265,7 +264,7 @@ const Repuestos = () => {
           </DialogActions>
         </Dialog>
 
-        <DialogAddEdit info={addToCartEdit} setAction={setOpenEdit} action={openEdit} />
+        <DialogAddEdit info={addToCartEdit} infoEdit={handleCart} setAction={setOpenEdit} action={openEdit} />
       </>
     );
   }

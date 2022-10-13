@@ -58,6 +58,7 @@ const CompletarVenta = () => {
   const [action, setAction] = useState(false);
   const [name, setName] = useState();
   const [cl, setCl] = useState();
+  const [dni, setDni] = useState();
   const [textErrorCl, setTextErrorCl] = useState("");
   const [textErrorPay, setTextErrorPay] = useState("");
   const [customErrorCl, setCustomErrorCl] = useState(false);
@@ -86,12 +87,14 @@ const CompletarVenta = () => {
   let ruc = "";
   let razonSocial = "";
   let cliente = "";
+  let clienteDni = "";
   if (cl && cl.rucCliente) {
     ruc = cl.rucCliente;
     razonSocial = cl.razonSocial;
     cliente = cl.razonSocial;
   } else {
     cliente = cl;
+    clienteDni = dni;
     ruc = "string";
     razonSocial = "string";
   }
@@ -158,6 +161,10 @@ const CompletarVenta = () => {
     setCl(e.target.value);
   };
 
+  const handleChangeDni = (e) => {
+    setDni(e.target.value);
+  };
+
   const handleChangePay = (e) => {
     setPay(e.target.value);
   };
@@ -214,6 +221,7 @@ const CompletarVenta = () => {
         print(
           productsCookies,
           cl,
+          dni,
           pay,
           billNumber,
           billType,
@@ -486,6 +494,16 @@ const CompletarVenta = () => {
                     errorCl={customErrorCl}
                     errorText={textErrorCl}
                     value={cliente}
+                    required
+                  />
+                  <TextField
+                    sx={{ m: 2 }}
+                    id="outlined-basic"
+                    label="DNI"
+                    variant="outlined"
+                    onChange={handleChangeDni}
+                    inputProps={{ inputMode: 'numeric', maxLength: 8, pattern: '[0-9]' }}
+                    value={clienteDni}
                     required
                   />
                   {billType > 1 && billType < 4 && <Clients getCl={setCl} />}

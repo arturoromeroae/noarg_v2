@@ -1,7 +1,7 @@
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
-const print = (productsCookies, cl, pay, billNumber, billType, sum, discount, ruc, razonSocial) => {
+const print = (productsCookies, cl, dni, pay, billNumber, billType, sum, discount, ruc, razonSocial) => {
   // Obtener la fecha
   let today = new Date();
   let dd = String(today.getDate()).padStart(2, "0");
@@ -19,7 +19,7 @@ const print = (productsCookies, cl, pay, billNumber, billType, sum, discount, ru
   let time = h + ":" + m + ":" + s;
 
   let infoBill = [];
-  let total = (Math.round((sum * 1.18).toFixed(2) * 100) / 100).toFixed(2);
+  let total = (Math.round((sum).toFixed(2) * 100) / 100).toFixed(2);
   const pdf = new jsPDF("p", "mm", "a4");
 
   // cuadrado en el pdf
@@ -78,7 +78,7 @@ const print = (productsCookies, cl, pay, billNumber, billType, sum, discount, ru
 
   // muestra informacion del cliente
   pdf.setFontSize(10);
-  pdf.text(20, 50, `Cliente: ${cl}`);
+  pdf.text(20, 50, `Cliente: ${cl} DNI: ${dni}`);
 
   // condicional para ruc y razon social
   if (billType === 1 || billType === 2) {
