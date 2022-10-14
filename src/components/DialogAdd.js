@@ -11,6 +11,7 @@ import Cookies from "js-cookie";
 import Button from "@mui/material/Button";
 import defaultImage from "../image/default-image.jpg";
 import ProductsAuto from "../components/ProductsAuto";
+import ProductsAutoCode from "./ProductsAutoCode";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -24,6 +25,7 @@ const DialogAdd = ({ addProduct, action }) => {
 
   const handleClose = () => {
     addProduct(false);
+    setProd("");
   };
 
   const handleQuantity = (event) => {
@@ -76,13 +78,8 @@ const DialogAdd = ({ addProduct, action }) => {
             </Grid>
             <Grid item xs={8}>
               <div style={{ display: "flex" }}>
-                <TextField
-                  sx={{ m: 1, width: "30ch" }}
-                  label="Código Producto"
-                  margin="dense"
-                  value={prod ? prod.codProd : ""}
-                />
-                <ProductsAuto pr={setProd} />
+                <ProductsAutoCode pr={setProd} getPr={prod} />
+                <ProductsAuto pr={setProd} getPr={prod} />
               </div>
               <TextField
                 sx={{ m: 1, width: "62ch" }}

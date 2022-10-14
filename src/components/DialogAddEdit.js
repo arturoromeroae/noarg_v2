@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -7,11 +7,9 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import Cookies from "js-cookie";
 import Button from "@mui/material/Button";
 import defaultImage from "../image/default-image.jpg";
-import ProductsAuto from "../components/ProductsAuto";
-import LoadingSpinner from "./LoadingSpinner";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -19,25 +17,36 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const DialogAddEdit = ({ info, infoEdit, setAction, action }) => {
     const [prod, setProd] = useState();
+    const [price, setPrice] = useState();
+    const [quantity, setQuantity] = useState();
+
+    useEffect(() => {
+        if (info) {
+            setPrice(info.precioVenta)
+        }
+    }, [info])
 
     const handleClose = () => {
         setAction(false);
+        setQuantity("");
         setProd(info);
     };
 
     const handleQuantity = (event) => {
         const newProduct = info;
-        if(event.target.value > 0){
+        if (event.target.value > 0) {
             newProduct.cantidad = parseInt(event.target.value);
             setProd(newProduct);
+            setQuantity(event.target.value);
         }
     };
 
-    const handlePrice = (event) => {
-        const newProduct = info;
-        newProduct.precioVenta = parseFloat(event.target.value);
-        setProd(newProduct);
-    };
+    const handleSave = (params) => {
+        params.precioVenta = price;
+        infoEdit(params);
+        setQuantity("");
+        setAction(false);
+    }
 
     return (
         <div>
@@ -100,17 +109,19 @@ const DialogAddEdit = ({ info, infoEdit, setAction, action }) => {
                                 label="Cantidad"
                                 margin="dense"
                                 required
+                                value={quantity}
                                 onChange={handleQuantity}
                             />
-                            {info &&
-                                <TextField
-                                    sx={{ m: 1, width: "20ch" }}
-                                    label="Precio Venta"
-                                    margin="dense"
-                                    helperText={info ? "Precio actual: " + info.precioVenta : ""}
-                                    onChange={handlePrice}
-                                />
-                            }
+                            <TextField
+                                sx={{ m: 1, width: "20ch" }}
+                                label="Precio Venta"
+                                margin="dense"
+                                value={price}
+                                onChange={e => setPrice(e.target.value)}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
                             <TextField
                                 sx={{ m: 1, width: "20ch" }}
                                 margin="dense"
@@ -140,7 +151,7 @@ const DialogAddEdit = ({ info, infoEdit, setAction, action }) => {
                 </DialogContent>
                 <DialogActions>
                     <Button color="error" onClick={handleClose}>Cancelar</Button>
-                    <Button onClick={() => infoEdit(info)}>Agregar</Button>
+                    <Button onClick={() => handleSave(info)}>Agregar</Button>
                 </DialogActions>
             </Dialog>
         </div>

@@ -59,6 +59,7 @@ const CompletarVenta = () => {
   const [name, setName] = useState();
   const [cl, setCl] = useState();
   const [dni, setDni] = useState();
+  const [direccion, setDireccion] = useState();
   const [textErrorCl, setTextErrorCl] = useState("");
   const [textErrorPay, setTextErrorPay] = useState("");
   const [customErrorCl, setCustomErrorCl] = useState(false);
@@ -88,6 +89,7 @@ const CompletarVenta = () => {
   let razonSocial = "";
   let cliente = "";
   let clienteDni = "";
+  let clienteDireccion = "";
   if (cl && cl.rucCliente) {
     ruc = cl.rucCliente;
     razonSocial = cl.razonSocial;
@@ -95,6 +97,7 @@ const CompletarVenta = () => {
   } else {
     cliente = cl;
     clienteDni = dni;
+    clienteDireccion = direccion;
     ruc = "string";
     razonSocial = "string";
   }
@@ -165,6 +168,10 @@ const CompletarVenta = () => {
     setDni(e.target.value);
   };
 
+  const handleChangeDireccion = (e) => {
+    setDireccion(e.target.value);
+  };
+
   const handleChangePay = (e) => {
     setPay(e.target.value);
   };
@@ -222,6 +229,7 @@ const CompletarVenta = () => {
           productsCookies,
           cl,
           dni,
+          direccion,
           pay,
           billNumber,
           billType,
@@ -249,6 +257,8 @@ const CompletarVenta = () => {
         print(
           productsCookies,
           cl,
+          dni,
+          direccion,
           pay,
           billNumber,
           billType,
@@ -429,8 +439,8 @@ const CompletarVenta = () => {
                 getRowId={handleGetRowId}
                 rows={productsCookies}
                 columns={rows}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
+                pageSize={10}
+                rowsPerPageOptions={[10]}
                 disableSelectionOnClick
                 experimentalFeatures={{ newEditingApi: true }}
                 initialState={{
@@ -506,6 +516,14 @@ const CompletarVenta = () => {
                     value={clienteDni}
                     required
                   />
+                  <TextField
+                    sx={{ m: 1, width: 700 }}
+                    id="outlined-basic"
+                    label="Dirección"
+                    variant="outlined"
+                    onChange={handleChangeDireccion}
+                    value={clienteDireccion}
+                  />
                   {billType > 1 && billType < 4 && <Clients getCl={setCl} />}
                   <TextField
                     sx={{ m: 2 }}
@@ -576,7 +594,7 @@ const CompletarVenta = () => {
                     Agregar productos
                   </Button>
                 </InputsContainer>
-                <Divider sx={{ marginTop: "30px" }} />
+                <Divider sx={{ marginTop: "20px" }} />
                 <Typography
                   sx={{ m: 1, textAlign: "center" }}
                   variant="h5"

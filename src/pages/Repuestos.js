@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import styled from "styled-components";
 import LocalGroceryStoreTwoToneIcon from "@mui/icons-material/LocalGroceryStoreTwoTone";
 import defaultImage from "../image/default-image.jpg";
@@ -16,6 +16,7 @@ import Typography from "@mui/material/Typography";
 import Cart from "../components/Cart";
 import LoadingSpinner from "../components/LoadingSpinner";
 import DialogAddEdit from "../components/DialogAddEdit";
+import Box from '@mui/material/Box';
 
 const ImageTable = styled.img`
   transition: linear 0.3s;
@@ -40,6 +41,28 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+function QuickSearchToolbar() {
+  return (
+    <Box
+      sx={{
+        p: 0.5,
+        pb: 0,
+      }}
+    >
+      <GridToolbarQuickFilter
+        quickFilterParser={(searchInput) =>
+          searchInput
+            .split(',')
+            .map((value) => value.trim())
+            .filter((value) => value !== '')
+        }
+      />
+    </Box>
+  );
+}
+
+const VISIBLE_FIELDS = ['name', 'rating', 'country', 'dateCreated', 'isAdmin'];
+
 const Repuestos = () => {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -52,6 +75,7 @@ const Repuestos = () => {
   const [addToCart, setAddToCart] = useState();
   const [addToCartEdit, setAddToCartEdit] = useState();
   const [count, setCount] = useState(0);
+  const [countEdit, setCountEdit] = useState(0);
 
   const handleClickOpen = (params) => {
     setOpen(true);
@@ -72,23 +96,24 @@ const Repuestos = () => {
       setOpenEdit(true);
     }
     setAddToCartEdit(params);
+    setCountEdit(countEdit + 1)
   };
 
   const columns = [
     { field: "idProducto", headerName: "ID", hide: true, width: 80 },
     { field: "codProd", headerName: "Codigo", width: 150 },
+    { field: "nombreProducto", headerName: "Producto", width: 450 },
     {
-      field: "nombreProducto",
+      field: "descripcion",
       type: "actions",
-      headerName: "Producto",
+      headerName: "Descripcion",
       width: 400,
       getActions: (params) => [
         <p style={{ cursor: params.row.stock > 0 && "pointer", color: params.row.stock > 0 ? "blue" : "red" }} onClick={() => handleCartEdit(params.row)}>
-          {params.row.nombreProducto}
+          {params.row.descripcion}
         </p>
       ],
     },
-    { field: "descripcion", headerName: "Descripcion", width: 450 },
     {
       field: "stock",
       type: "actions",
@@ -215,6 +240,7 @@ const Repuestos = () => {
         <TableContainer>
           <DataGrid
             rows={items}
+            components={{ Toolbar: QuickSearchToolbar }}
             columns={columns}
             pageSize={10}
             rowsPerPageOptions={[10]}
@@ -264,7 +290,7 @@ const Repuestos = () => {
           </DialogActions>
         </Dialog>
 
-        <DialogAddEdit info={addToCartEdit} infoEdit={handleCart} setAction={setOpenEdit} action={openEdit} />
+        <DialogAddEdit info={addToCartEdit} infoEdit={handleCart} setAction={setOpenEdit} action={openEdit} counter={countEdit} />
       </>
     );
   }

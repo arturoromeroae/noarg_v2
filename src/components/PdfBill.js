@@ -1,7 +1,7 @@
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
-const print = (productsCookies, cl, dni, pay, billNumber, billType, sum, discount, ruc, razonSocial) => {
+const print = (productsCookies, cl, dni, direccion, pay, billNumber, billType, sum, discount, ruc, razonSocial) => {
   // Obtener la fecha
   let today = new Date();
   let dd = String(today.getDate()).padStart(2, "0");
@@ -79,6 +79,7 @@ const print = (productsCookies, cl, dni, pay, billNumber, billType, sum, discoun
   // muestra informacion del cliente
   pdf.setFontSize(10);
   pdf.text(20, 50, `Cliente: ${cl} DNI: ${dni}`);
+  pdf.text(20, 55, `Dirección: ${direccion}`);
 
   // condicional para ruc y razon social
   if (billType === 1 || billType === 2) {
@@ -89,17 +90,17 @@ const print = (productsCookies, cl, dni, pay, billNumber, billType, sum, discoun
 } else {
     // Muestra RUC
     pdf.setFontSize(10);
-        pdf.text(20, 60, `RUC: ${ruc}`);
+        pdf.text(20, 65, `RUC: ${ruc}`);
     // Muestra Razon Social
     pdf.setFontSize(10);
-        pdf.text(20, 65, `Razón Social: ${razonSocial}`);
+        pdf.text(20, 70, `Razón Social: ${razonSocial}`);
 }
 
   // condicional para subtotal, igv y fecha
   if (billType === 1 || billType === 2) {
     // muestra la fecha
     pdf.setFontSize(10);
-    pdf.text(20, 55, `Fecha Emision: ${dd + "/" + mm + "/" + yyyy} Hora: ${time}`);
+    pdf.text(20, 60, `Fecha Emision: ${dd + "/" + mm + "/" + yyyy} Hora: ${time}`);
     pdf.setFontSize(10);
     pdf.text(150, 75, ``);
     pdf.setFontSize(10);

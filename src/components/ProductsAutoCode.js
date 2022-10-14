@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const ProductsAuto = ({ pr, getPr }) => {
+const ProductsAutoCode = ({ pr }) => {
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
   const loading = open && options.length === 0;
@@ -39,8 +39,6 @@ const ProductsAuto = ({ pr, getPr }) => {
     }
   }, [open]);
 
-  getPr && console.log(getPr.nombreProducto)
-
   return (
     <>
       <Autocomplete
@@ -54,15 +52,14 @@ const ProductsAuto = ({ pr, getPr }) => {
           setOpen(false);
         }}
         onChange={(event, value) => pr(value)}
-        isOptionEqualToValue={(option, value) => option.nombreProducto === value.nombreProducto}
-        getOptionLabel={(option) => option.nombreProducto}
+        isOptionEqualToValue={(option, value) => option.codProd === value.codProd}
+        getOptionLabel={(option) => option.codProd}
         options={options}
         loading={loading}
-        inputValue={getPr && getPr.nombreProducto}
         renderInput={(params) => (
           <TextField
             {...params}
-            label="Nombre Producto"
+            label="Código de Producto"
             InputProps={{
               ...params.InputProps,
               endAdornment: (
@@ -81,4 +78,4 @@ const ProductsAuto = ({ pr, getPr }) => {
   );
 };
 
-export default ProductsAuto;
+export default ProductsAutoCode;
