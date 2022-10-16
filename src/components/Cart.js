@@ -12,7 +12,6 @@ import Typography from "@mui/material/Typography";
 
 const Cart = ({ dataCart, dataCount }) => {
   const navigate = useNavigate();
-  const [dense, setDense] = useState(false);
   const [products, setProducts] = useState([]);
 
   let getSellInfo = Cookies.get("sell");
@@ -20,7 +19,8 @@ const Cart = ({ dataCart, dataCount }) => {
   if (productsCookies) {
     return <Navigate to="/completar-venta" replace />;
   }
-  // let total = listPrice.reduce((a, b) => a + b, 0);
+  let total = products;
+  console.log(total);
 
   useEffect(() => {
     if (dataCart) {
@@ -94,7 +94,6 @@ const Cart = ({ dataCart, dataCount }) => {
               <ShoppingCartIcon />
             </Typography>
             <List
-              dense={dense}
               sx={{
                 overflow: "auto",
                 height: 460,
@@ -114,7 +113,6 @@ const Cart = ({ dataCart, dataCount }) => {
             </List>
           </div>
           <Paper sx={{ pl: 0.5, textAlign: "center" }}>
-            {/* <h2>Total: S/{total.toFixed(2)}</h2> */}
             {products.length > 0 && (
               <Button
                 sx={{ m: 1 }}

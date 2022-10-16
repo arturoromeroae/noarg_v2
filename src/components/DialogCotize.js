@@ -7,11 +7,9 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import ReportProblemTwoToneIcon from "@mui/icons-material/ReportProblemTwoTone";
 import { yellow } from "@mui/material/colors";
-import AlertSuccess from './AlertSuccess';
 
 const DialogCotize = ({ open, action, dataNull }) => {
     const [nulled, setNulled] = useState();
-    const [showAlert, setShowAlert] = useState(false);
     const handleClose = () => {
         action(false);
     };
@@ -77,9 +75,6 @@ const DialogCotize = ({ open, action, dataNull }) => {
 
     return (
         <div>
-            {showAlert &&
-            <AlertSuccess />
-            }
             <Dialog
                 open={open}
                 onClose={handleClose}

@@ -9,14 +9,12 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import defaultImage from "../image/default-image.jpg";
-import LoadingSpinner from "../components/LoadingSpinner";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const DialogAddEdit = ({ info, infoEdit, setAction, action }) => {
-    const [prod, setProd] = useState();
     const [price, setPrice] = useState();
     const [quantity, setQuantity] = useState();
 
@@ -29,14 +27,12 @@ const DialogAddEdit = ({ info, infoEdit, setAction, action }) => {
     const handleClose = () => {
         setAction(false);
         setQuantity("");
-        setProd(info);
     };
 
     const handleQuantity = (event) => {
         const newProduct = info;
         if (event.target.value > 0) {
             newProduct.cantidad = parseInt(event.target.value);
-            setProd(newProduct);
             setQuantity(event.target.value);
         }
     };

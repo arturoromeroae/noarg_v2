@@ -13,6 +13,7 @@ import DriveFileRenameOutlineTwoToneIcon from '@mui/icons-material/DriveFileRena
 import LoadingSpinner from "../components/LoadingSpinner";
 import DialogMaintanceEdit from "../components/DialogMaintanceEdit";
 import DialogMaintanceDelete from "../components/DialogMaintanceDelete";
+import DialogCreate from "../components/DialogCreate";
 
 const Mantenimiento = () => {
   const [error, setError] = useState(null);
@@ -22,6 +23,7 @@ const Mantenimiento = () => {
   const [openDelete, setOpenDelete] = useState(false);
   const [selectedRow, setSelectedRow] = useState(0);
   const [selectedRowDelete, setSelectedRowDelete] = useState(0);
+  const [openCreate, setOpenCreate] = useState(false);
 
   const handleClickOpenEdit = (params) => {
     setOpen(true);
@@ -31,6 +33,10 @@ const Mantenimiento = () => {
   const handleClickOpenDelete = (params) => {
     setOpenDelete(true);
     setSelectedRowDelete(params);
+  };
+
+  const handleClickCreate = () => {
+    setOpenCreate(true);
   };
 
   const columns = [
@@ -137,7 +143,7 @@ const Mantenimiento = () => {
               },
             }}
           />
-          <Button sx={{ m: 1 }} variant="contained" startIcon={<Shop2TwoToneIcon />}>
+          <Button sx={{ m: 1 }} variant="contained" startIcon={<Shop2TwoToneIcon />} onClick={handleClickCreate}>
             Agregar Producto
           </Button>
           <Button sx={{ m: 1 }} variant="outlined" color="success" endIcon={<QueueTwoToneIcon />}>
@@ -153,7 +159,11 @@ const Mantenimiento = () => {
             Editar Modelo
           </Button>
         </div>
+        {/* Agregar productos */}
+        <DialogCreate setOpen={setOpenCreate} open={openCreate} />
+        {/* Editar productos */}
         <DialogMaintanceEdit action={open} set={setOpen} data={selectedRow} />
+        {/* Eliminar productos */}
         <DialogMaintanceDelete action={openDelete} set={setOpenDelete} data={selectedRowDelete} />
       </>
     );

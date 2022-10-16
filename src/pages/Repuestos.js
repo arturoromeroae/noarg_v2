@@ -61,14 +61,10 @@ function QuickSearchToolbar() {
   );
 }
 
-const VISIBLE_FIELDS = ['name', 'rating', 'country', 'dateCreated', 'isAdmin'];
-
 const Repuestos = () => {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
-  const [itemsBrands, setItemsBrands] = useState([]);
-  const [itemsModels, setItemsModels] = useState([]);
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [selectedRow, setSelectedRow] = useState(0);
@@ -189,28 +185,6 @@ const Repuestos = () => {
           setError(error);
         }
       );
-
-    fetch("http://appdemo1.solarc.pe/api/Parametros/GetParametros?Tabla=marca")
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          setItemsBrands(result.data);
-        },
-        (error) => {
-          setError(error);
-        }
-      );
-
-    fetch("http://appdemo1.solarc.pe/api/Parametros/GetParametros?Tabla=modelo")
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          setItemsModels(result.data);
-        },
-        (error) => {
-          setError(error);
-        }
-      );
   }, []);
 
   const handleGetRowId = (e) => {
@@ -290,6 +264,7 @@ const Repuestos = () => {
           </DialogActions>
         </Dialog>
 
+        {/* Editar productos */}
         <DialogAddEdit info={addToCartEdit} infoEdit={handleCart} setAction={setOpenEdit} action={openEdit} counter={countEdit} />
       </>
     );
