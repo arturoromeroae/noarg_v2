@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -19,13 +19,21 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const DialogAdd = ({ addProduct, action }) => {
   const [prod, setProd] = useState();
+  const [price, setPrice] = useState();
 
   let getSellInfo = Cookies.get("sell");
   let productsCookies = getSellInfo && JSON.parse(getSellInfo);
 
+  useEffect(() => {
+    if (prod) {
+        setPrice(prod.precioVenta)
+    }
+}, [prod])
+
   const handleClose = () => {
     addProduct(false);
     setProd("");
+    setPrice("");
   };
 
   const handleQuantity = (event) => {
@@ -33,6 +41,9 @@ const DialogAdd = ({ addProduct, action }) => {
   };
 
   const handleSaveProd = () => {
+    if(!prod.cantidad) prod.cantidad = 1;
+    prod.precioVenta = price;
+
     if (prod) {
       Cookies.set(
         "sell",
@@ -42,7 +53,10 @@ const DialogAdd = ({ addProduct, action }) => {
         }
       );
       addProduct(false);
+      setProd("");
+      setPrice("");
     }
+
   };
 
   return (
@@ -93,7 +107,6 @@ const DialogAdd = ({ addProduct, action }) => {
                 sx={{ m: 1, width: "15ch" }}
                 label="Cantidad"
                 margin="dense"
-                required
                 onChange={handleQuantity}
               />
               <TextField
@@ -107,8 +120,9 @@ const DialogAdd = ({ addProduct, action }) => {
                 sx={{ m: 1, width: "20ch" }}
                 label="Precio Venta"
                 margin="dense"
-                value={prod ? prod.precioVenta : ""}
-                disabled
+                value={price}
+                onChange={e => setPrice(e.target.value)}
+                InputLabelProps={{ shrink: true }}
               />
               <TextField
                 sx={{ m: 1, width: "20ch" }}

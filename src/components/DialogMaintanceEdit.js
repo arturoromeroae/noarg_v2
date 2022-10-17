@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -13,62 +13,83 @@ import FormControl from "@mui/material/FormControl";
 import Slide from "@mui/material/Slide";
 import defaultImage from "../image/default-image.jpg";
 import Button from "@mui/material/Button";
+import IconButton from '@mui/material/IconButton';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const DialogMaintanceEdit = ({ data, action, set }) => {
+    const [dataProducts, setDataProducts] = useState([]);
     const [itemsModels, setItemsModels] = useState([]);
     const [itemsBrands, setItemsBrands] = useState([]);
-    const [itemCod, setItemCod] = useState(data.codProd);
-    const [itemNom, setItemNom] = useState(data.nombreProducto ? data.nombreProducto : "");
-    const [itemDes, setItemDes] = useState(data.descripcion ? data.descripcion : "");
-    const [itemStk, setItemStk] = useState(data.stock ? data.stock : 0);
-    const [itemPb, setItemPb] = useState(data.precioBase ? data.precioBase : 0);
-    const [itemPv, setItemPv] = useState(data.precioVenta ? data.precioVenta : 0);
-    const [itemBr, setItemBr] = useState(data.marca ? data.marca : 0);
-    const [itemMd, setItemMd] = useState(data.modelo ? data.modelo : 0);
-    const [itemUb, setItemUb] = useState(data.ubicacion ? data.ubicacion : 0);
+    const [itemCod, setItemCod] = useState();
+    const [itemNom, setItemNom] = useState();
+    const [itemDes, setItemDes] = useState();
+    const [itemStk, setItemStk] = useState();
+    const [itemPb, setItemPb] = useState();
+    const [itemPv, setItemPv] = useState();
+    const [itemBr, setItemBr] = useState();
+    const [itemMd, setItemMd] = useState();
+    const [itemUb, setItemUb] = useState();
+
+    useEffect(() => {
+        if(data) {
+            setDataProducts(data);
+            setItemCod(data.codProd);
+            setItemNom(data.nombreProducto);
+            setItemDes(data.descripcion);
+            setItemStk(data.stock);
+            setItemPb(data.precioBase);
+            setItemPv(data.precioVenta);
+            setItemUb(data.ubicacion);
+            itemsModels && setItemMd((itemsModels.filter((p) => p.descripcion === data.modelo))[0].id);
+            itemsBrands && setItemBr((itemsBrands.filter((p) => p.descripcion === data.marca))[0].id);
+        }
+            
+    }, [data])
+    
 
     const handleClose = () => {
         set(false);
+        setDataProducts("");
     }
 
     const handleCodPr = (e) => {
-        setItemCod(e.target.value)
+        setItemCod(e.target.value);
     }
 
     const handlePr = (e) => {
-        setItemNom(e.target.value)
+        setItemNom(e.target.value);
     }
 
     const handleDes = (e) => {
-        setItemDes(e.target.value)
+        setItemDes(e.target.value);
     }
 
     const handleCant = (e) => {
-        setItemStk(e.target.value)
+        setItemStk(e.target.value);
     }
 
     const handlePb = (e) => {
-        setItemPb(e.target.value)
+        setItemPb(e.target.value);
     }
 
     const handlePv = (e) => {
-        setItemPv(e.target.value)
+        setItemPv(e.target.value);
     }
 
     const handleModel = (e) => {
-        setItemMd((itemsModels.filter((p) => p.descripcion === e.target.value))[0].id);
+        itemsModels && setItemMd((itemsModels.filter((p) => p.descripcion === e.target.value))[0].id);
     }
 
     const handleBrand = (e) => {
-        setItemBr((itemsModels.filter((p) => p.descripcion === e.target.value))[0].id);
+        itemsBrands && setItemBr((itemsBrands.filter((p) => p.descripcion === e.target.value))[0].id);
     }
 
     const handleUbicacion = (e) => {
-        setItemUb(e.target.value)
+        setItemUb(e.target.value);
     }
 
     useState(() => {
@@ -104,12 +125,12 @@ const DialogMaintanceEdit = ({ data, action, set }) => {
             "idModelo": itemMd,
             "idUnidadMedida": 0,
             "idTienda": 1,
-            "precioBase": itemPb,
+            "precioBase": parseFloat(itemPb),
             "imagen": "string",
             "rutaImagen": "string",
             "idProducto": data.idProducto,
-            "cantidad": itemStk,
-            "precioVenta": itemPv,
+            "cantidad": parseInt(itemStk),
+            "precioVenta": parseFloat(itemPv),
             "ubicacion": itemUb
         }
         // Editar producto
@@ -131,7 +152,6 @@ const DialogMaintanceEdit = ({ data, action, set }) => {
             //         });
             // }
             console.log(pr)
-        
     }
 
     return (
@@ -144,7 +164,7 @@ const DialogMaintanceEdit = ({ data, action, set }) => {
                 aria-describedby="alert-dialog-slide-description"
                 maxWidth="md"
             >
-                <DialogTitle>{data.nombreProducto}</DialogTitle>
+                <DialogTitle>{dataProducts.nombreProducto}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-slide-description">
                         <Grid container spacing={1}>
@@ -155,10 +175,10 @@ const DialogMaintanceEdit = ({ data, action, set }) => {
                                         currentTarget.src = defaultImage;
                                     }}
                                     width={250}
-                                    src={`http://appdemo1.solarc.pe/imagenes/${data.codProd}.JPG`}
+                                    src={`http://appdemo1.solarc.pe/imagenes/${dataProducts.codProd}.JPG`}
                                     alt={
-                                        data.nombreProducto
-                                            ? data.nombreProducto
+                                        dataProducts.nombreProducto
+                                            ? dataProducts.nombreProducto
                                             : "Imagen por defeto"
                                     }
                                 />
@@ -167,75 +187,66 @@ const DialogMaintanceEdit = ({ data, action, set }) => {
                                 <TextField
                                     sx={{ width: "30ch" }}
                                     label="Código Producto"
-                                    value={data.codProd ? data.codProd : 0}
+                                    value={itemCod}
                                     margin="dense"
                                     onChange={handleCodPr}
+                                    InputLabelProps={{ shrink: true }}
                                 />
                                 <TextField
                                     sx={{ m: 1, width: "31ch" }}
                                     label="Producto"
-                                    value={
-                                        data.nombreProducto
-                                            ? data.nombreProducto
-                                            : ""
-                                    }
+                                    value={itemNom}
                                     margin="dense"
                                     onChange={handlePr}
+                                    InputLabelProps={{ shrink: true }}
                                 />
                                 <TextField
                                     sx={{ width: "62ch" }}
                                     multiline
                                     label="Descripción"
-                                    defaultValue={
-                                        data.descripcion ? data.descripcion : ""
-                                    }
+                                    defaultValue={itemDes}
                                     margin="dense"
                                     onChange={handleDes}
+                                    InputLabelProps={{ shrink: true }}
                                 />
                                 <TextField
                                     sx={{ width: "20ch" }}
                                     label="Cantidad"
-                                    value={data.stock ? data.stock : 0}
+                                    value={itemStk}
                                     margin="dense"
                                     onChange={handleCant}
+                                    InputLabelProps={{ shrink: true }}
                                 />
                                 <TextField
                                     sx={{ m: 1, width: "20ch" }}
                                     label="Precio Base"
-                                    value={
-                                        data.precioBase ? data.precioBase : 0
-                                    }
+                                    value={itemPb}
                                     margin="dense"
                                     onChange={handlePb}
+                                    InputLabelProps={{ shrink: true }}
                                 />
                                 <TextField
                                     sx={{ width: "20ch" }}
                                     label="Precio Venta"
-                                    value={
-                                        data.precioVenta ? data.precioVenta : 0
-                                    }
+                                    value={itemPv}
                                     margin="dense"
                                     onChange={handlePv}
+                                    InputLabelProps={{ shrink: true }}
                                 />
-                                <TextField
-                                    sx={{ width: "41ch" }}
-                                    id="outlined-basic"
-                                    variant="outlined"
-                                    type="file"
-                                    inputProps={{
-                                        multiple: true,
-                                    }}
-                                />
-                                <FormControl sx={{ ml: 1, width: "20ch" }}>
+                                <IconButton sx={{ m: 1 }} color="primary" aria-label="upload picture" component="label" size="large">
+                                    <input hidden accept=".jpg" type="file" />
+                                    <PhotoCamera />
+                                </IconButton>
+                                <FormControl sx={{ m: 1, width: "26ch" }}>
                                     <InputLabel id="demo-simple-select-label">
                                         Marca
                                     </InputLabel>
-                                    {data.marca && (
+                                    {dataProducts.marca && (
                                         <Select
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
                                             label="Marca"
-                                            defaultValue={data.marca}
+                                            defaultValue={dataProducts.marca}
                                             onChange={handleBrand}
                                         >
                                             {itemsBrands.map((brand) => (
@@ -246,16 +257,16 @@ const DialogMaintanceEdit = ({ data, action, set }) => {
                                         </Select>
                                     )}
                                 </FormControl>
-                                <FormControl sx={{ my: 1, width: "20ch" }}>
+                                <FormControl sx={{ m: 1, width: "26ch" }}>
                                     <InputLabel id="demo-simple-select-label">
                                         Modelo
                                     </InputLabel>
-                                    {data.modelo && (
+                                    {dataProducts.modelo && (
                                         <Select
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
                                             label="Modelo"
-                                            defaultValue={data.modelo}
+                                            defaultValue={dataProducts.modelo}
                                             onChange={handleModel}
                                         >
                                             {itemsModels.map((model) => (
@@ -271,8 +282,9 @@ const DialogMaintanceEdit = ({ data, action, set }) => {
                                     margin="dense"
                                     id="outlined-disabled"
                                     label="Ubicación"
-                                    value={data.ubicacion ? data.ubicacion : 0}
+                                    value={itemUb}
                                     onChange={handleUbicacion}
+                                    InputLabelProps={{ shrink: true }}
                                 />
                             </Grid>
                         </Grid>
