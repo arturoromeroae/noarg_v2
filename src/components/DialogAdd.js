@@ -20,15 +20,17 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const DialogAdd = ({ addProduct, action }) => {
   const [prod, setProd] = useState();
   const [price, setPrice] = useState();
+  const [quantity, setQuantity] = useState();
+  const [quantityUpdate, setQuantityUpdate] = useState();
 
   let getSellInfo = Cookies.get("sell");
   let productsCookies = getSellInfo && JSON.parse(getSellInfo);
 
   useEffect(() => {
     if (prod) {
-        setPrice(prod.precioVenta)
+      setPrice(prod.precioVenta);
     }
-}, [prod])
+  }, [prod]);
 
   const handleClose = () => {
     addProduct(false);
@@ -37,14 +39,23 @@ const DialogAdd = ({ addProduct, action }) => {
   };
 
   const handleQuantity = (event) => {
-    prod.cantidad = event.target.value;
+    setQuantity(event.target.value);
   };
 
   const handleSaveProd = () => {
-    if(!prod.cantidad) prod.cantidad = 1;
     prod.precioVenta = price;
+    const foundIndex = productsCookies.findIndex(
+      (p) => p.idProducto === prod.idProducto
+    );
 
-    if (prod) {
+    if (foundIndex === -1) {
+      const newProduct = prod;
+      prod.cantidad = 1;
+    } else {
+      productsCookies[foundIndex].cantidad++;
+    }
+
+    if (prod && foundIndex === -1) {
       Cookies.set(
         "sell",
         JSON.stringify([...productsCookies, prod]).toString(),
@@ -55,8 +66,16 @@ const DialogAdd = ({ addProduct, action }) => {
       addProduct(false);
       setProd("");
       setPrice("");
+      setQuantity("");
+    } else {
+      Cookies.set("sell", JSON.stringify([...productsCookies]).toString(), {
+        expires: 0.3,
+      });
+      addProduct(false);
+      setProd("");
+      setPrice("");
+      setQuantity("");
     }
-
   };
 
   return (
@@ -107,6 +126,7 @@ const DialogAdd = ({ addProduct, action }) => {
                 sx={{ m: 1, width: "15ch" }}
                 label="Cantidad"
                 margin="dense"
+                value={quantity}
                 onChange={handleQuantity}
               />
               <TextField
@@ -121,7 +141,7 @@ const DialogAdd = ({ addProduct, action }) => {
                 label="Precio Venta"
                 margin="dense"
                 value={price}
-                onChange={e => setPrice(e.target.value)}
+                onChange={(e) => setPrice(e.target.value)}
                 InputLabelProps={{ shrink: true }}
               />
               <TextField
@@ -152,7 +172,9 @@ const DialogAdd = ({ addProduct, action }) => {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button color="error" onClick={handleClose}>Cancelar</Button>
+          <Button color="error" onClick={handleClose}>
+            Cancelar
+          </Button>
           <Button onClick={handleSaveProd}>Agregar</Button>
         </DialogActions>
       </Dialog>

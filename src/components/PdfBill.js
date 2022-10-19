@@ -1,4 +1,5 @@
 import jsPDF from "jspdf";
+import autoTable from 'jspdf-autotable';
 
 const print = (productsCookies, cl, dni, direccion, pay, billNumber, billType, sum, discount, ruc, razonSocial) => {
   // Obtener la fecha
@@ -20,6 +21,7 @@ const print = (productsCookies, cl, dni, direccion, pay, billNumber, billType, s
   let infoBill = [];
   let total = (Math.round((sum).toFixed(2) * 100) / 100).toFixed(2);
   const pdf = new jsPDF("p", "mm", "a4");
+  require('jspdf-autotable');
 
   // cuadrado en el pdf
   pdf.rect(140, 20, 50, 40);

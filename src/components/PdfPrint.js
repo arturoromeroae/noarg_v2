@@ -1,4 +1,5 @@
 import jsPDF from "jspdf";
+import autoTable from 'jspdf-autotable';
 
 const print = (productsCookies, cl, pay, billNumber, billType, sum, discount, ruc, razonSocial) => {
   // Obtener la fecha
