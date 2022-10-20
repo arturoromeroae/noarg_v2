@@ -319,7 +319,7 @@ const Cotizaciones = () => {
             </LocalizationProvider>
           </div>
         </TableContainer>
-        <DialogCotize open={openModal} action={setOpenModal} dataNull={selectedRow} />
+        <DialogCotize open={openModal} action={setOpenModal} dataNull={selectedRow} reload={getCotizaciones()} />
         <DialogCotizeBuy openBuy={openModalBuy} actionBuy={setOpenModalBuy} dataBuy={selectedRowBuy} />
       </>
     );

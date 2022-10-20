@@ -312,7 +312,7 @@ const Ventas = () => {
             </LocalizationProvider>
           </div>
         </TableContainer>
-        <DialogVentasAnular open={openNull} set={setOpenNull} data={selectedRowNull} />
+        <DialogVentasAnular open={openNull} set={setOpenNull} data={selectedRowNull} reload={getCotizaciones} />
         <DialogVentasImprimir openPrintModal={openPrint} setPrint={setOpenPrint} dataPrint={selectedRowPrint} load={loading} setLoad={setLoading} />
       </>
     );

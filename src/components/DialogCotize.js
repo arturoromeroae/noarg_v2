@@ -8,7 +8,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import ReportProblemTwoToneIcon from "@mui/icons-material/ReportProblemTwoTone";
 import { yellow } from "@mui/material/colors";
 
-const DialogCotize = ({ open, action, dataNull }) => {
+const DialogCotize = ({ open, action, dataNull, reload }) => {
     const [nulled, setNulled] = useState();
     const handleClose = () => {
         action(false);
@@ -65,7 +65,7 @@ const DialogCotize = ({ open, action, dataNull }) => {
                 .then((response) => response.json())
                 .then((data) => {
                     setNulled();
-                    window.location.reload(false);
+                    reload();
                 })
                 .catch((error) => {
                     console.error("Error:", error);

@@ -21,7 +21,6 @@ const DialogAdd = ({ addProduct, action }) => {
   const [prod, setProd] = useState();
   const [price, setPrice] = useState();
   const [quantity, setQuantity] = useState();
-  const [quantityUpdate, setQuantityUpdate] = useState();
 
   let getSellInfo = Cookies.get("sell");
   let productsCookies = getSellInfo && JSON.parse(getSellInfo);
@@ -49,10 +48,17 @@ const DialogAdd = ({ addProduct, action }) => {
     );
 
     if (foundIndex === -1) {
-      const newProduct = prod;
-      prod.cantidad = 1;
+      if (!quantity) {
+        prod.cantidad = 1;
+      } else {
+        prod.cantidad = quantity;
+      }
     } else {
-      productsCookies[foundIndex].cantidad++;
+      if (!quantity) {
+        productsCookies[foundIndex].cantidad++;
+      } else {
+        productsCookies[foundIndex].cantidad += parseInt(quantity);
+      }
     }
 
     if (prod && foundIndex === -1) {
@@ -112,7 +118,14 @@ const DialogAdd = ({ addProduct, action }) => {
             <Grid item xs={8}>
               <div style={{ display: "flex" }}>
                 <ProductsAutoCode pr={setProd} getPr={prod} />
-                <ProductsAuto pr={setProd} getPr={prod} />
+                <TextField
+                sx={{ m: 1, width: "35ch" }}
+                multiline
+                label="Nombre del Producto"
+                margin="dense"
+                value={prod ? prod.nombreProducto : ""}
+                disabled
+              />
               </div>
               <TextField
                 sx={{ m: 1, width: "62ch" }}

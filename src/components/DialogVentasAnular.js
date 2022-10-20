@@ -8,7 +8,7 @@ import ReportProblemTwoToneIcon from "@mui/icons-material/ReportProblemTwoTone";
 import { yellow } from "@mui/material/colors";
 import Button from "@mui/material/Button";
 
-const DialogVentasAnular = ({ open, set, data }) => {
+const DialogVentasAnular = ({ open, set, data, reload }) => {
     const [deleteBill, setDeleteBill] = useState();
     
     const handleClose = () => {
@@ -55,7 +55,7 @@ const DialogVentasAnular = ({ open, set, data }) => {
                 .then((response) => response.json())
                 .then((data) => {
                     setDeleteBill();
-                    window.location.reload(false);
+                    reload();
                 })
                 .catch((error) => {
                     console.error("Error:", error);
