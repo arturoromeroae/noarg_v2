@@ -270,7 +270,7 @@ const CompletarVenta = () => {
         setData({
           usuario: user.userName,
           idOrigen: 0,
-          total: (sum).toFixed(2),
+          total: sum.toFixed(2),
           carritoDet: productsCookies,
         });
       } else if (!cl || cliente === "") {
@@ -506,16 +506,22 @@ const CompletarVenta = () => {
                     value={cliente}
                     required
                   />
-                  <TextField
-                    sx={{ m: 2 }}
-                    id="outlined-basic"
-                    label="DNI"
-                    variant="outlined"
-                    onChange={handleChangeDni}
-                    inputProps={{ inputMode: 'numeric', maxLength: 8, pattern: '[0-9]' }}
-                    value={clienteDni}
-                    required
-                  />
+                  {billType !== 2 && billType !== 3 && (
+                    <TextField
+                      sx={{ m: 2 }}
+                      id="outlined-basic"
+                      label="DNI"
+                      variant="outlined"
+                      onChange={handleChangeDni}
+                      inputProps={{
+                        inputMode: "numeric",
+                        maxLength: 8,
+                        pattern: "[0-9]",
+                      }}
+                      value={clienteDni}
+                      required
+                    />
+                  )}
                   <TextField
                     sx={{ m: 1, width: 700 }}
                     id="outlined-basic"
@@ -530,7 +536,7 @@ const CompletarVenta = () => {
                     id="outlined-basic"
                     label="Subtotal"
                     variant="outlined"
-                    value={sum ? "S/ " + sum.toFixed(2) : 0}
+                    value={sum ? "S/ " + (sum / 1.18).toFixed(2) : 0}
                     disabled
                   />
                   <TextField
@@ -538,7 +544,7 @@ const CompletarVenta = () => {
                     id="outlined-basic"
                     label="Monto a Pagar"
                     variant="outlined"
-                    value={sum ? "S/ " + (sum).toFixed(2) : 0}
+                    value={sum ? "S/ " + sum.toFixed(2) : 0}
                     disabled
                   />
                   {billType !== 4 && (
@@ -560,9 +566,7 @@ const CompletarVenta = () => {
                       id="outlined-basic"
                       label="Vuelto"
                       variant="outlined"
-                      value={
-                        pay ? "S/ " + (pay - sum).toFixed(2) : "S/ " + 0
-                      }
+                      value={pay ? "S/ " + (pay - sum).toFixed(2) : "S/ " + 0}
                       disabled
                     />
                   )}
@@ -604,45 +608,47 @@ const CompletarVenta = () => {
                   <LocalOfferTwoToneIcon color="secondary" /> Descuentos
                   Adicionales
                 </Typography>
-                <TextField
-                  sx={{ m: 2 }}
-                  id="outlined-basic"
-                  label="Monto a pagar"
-                  variant="outlined"
-                  value={sum ? "S/ " + (sum).toFixed(2) : 0}
-                  disabled
-                />
-                <FormControl sx={{ m: 2, minWidth: 210 }}>
-                  <InputLabel id="demo-simple-select-label">
-                    Descuento
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    label="Descuento"
-                    value={selectedRow.modelo}
-                  >
-                    <MenuItem key="{model.id}" value="0">
-                      S/
-                    </MenuItem>
-                    <MenuItem key="{model.id}" value="1">
-                      %
-                    </MenuItem>
-                  </Select>
-                </FormControl>
-                <TextField
-                  sx={{ m: 2 }}
-                  id="outlined-basic"
-                  label="Monto del descuento"
-                  variant="outlined"
-                  onChange={handleChangeDiscount}
-                />
-                <TextField
-                  sx={{ m: 2 }}
-                  id="outlined-basic"
-                  label="Nuevo precio de venta"
-                  variant="outlined"
-                />
+                <InputsContainer>
+                  <TextField
+                    sx={{ m: 2 }}
+                    id="outlined-basic"
+                    label="Monto a pagar"
+                    variant="outlined"
+                    value={sum ? "S/ " + sum.toFixed(2) : 0}
+                    disabled
+                  />
+                  <FormControl sx={{ m: 2, minWidth: 210 }}>
+                    <InputLabel id="demo-simple-select-label">
+                      Descuento
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      label="Descuento"
+                      value={selectedRow.modelo}
+                    >
+                      <MenuItem key="{model.id}" value="0">
+                        S/
+                      </MenuItem>
+                      <MenuItem key="{model.id}" value="1">
+                        %
+                      </MenuItem>
+                    </Select>
+                  </FormControl>
+                  <TextField
+                    sx={{ m: 2 }}
+                    id="outlined-basic"
+                    label="Monto del descuento"
+                    variant="outlined"
+                    onChange={handleChangeDiscount}
+                  />
+                  <TextField
+                    sx={{ m: 2 }}
+                    id="outlined-basic"
+                    label="Nuevo precio de venta"
+                    variant="outlined"
+                  />
+                </InputsContainer>
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   <Button
                     sx={{ width: "215px", m: 1 }}

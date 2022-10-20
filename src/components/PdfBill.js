@@ -109,7 +109,7 @@ const print = (productsCookies, cl, dni, direccion, pay, billNumber, billType, s
   } else {
     // Muestra Subtotal
     pdf.setFontSize(10);
-    pdf.text(150, 70, `Subtotal: S/ ${sum}`);
+    pdf.text(150, 70, `Subtotal: S/ ${sum / 1.18}`);
     // Muestra IGV
     pdf.setFontSize(10);
     pdf.text(

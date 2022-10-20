@@ -19,8 +19,6 @@ const Cart = ({ dataCart, dataCount }) => {
   if (productsCookies) {
     return <Navigate to="/completar-venta" replace />;
   }
-  let total = products;
-  console.log(total);
 
   useEffect(() => {
     if (dataCart) {
@@ -30,7 +28,7 @@ const Cart = ({ dataCart, dataCount }) => {
         );
         if (foundIndex === -1) {
           const newProduct = dataCart;
-          if(!newProduct.cantidad) newProduct.cantidad = 1;
+          if (!newProduct.cantidad) newProduct.cantidad = 1;
           return [...prevState, newProduct];
         }
         const newState = [...prevState];
@@ -39,6 +37,12 @@ const Cart = ({ dataCart, dataCount }) => {
       });
     }
   }, [dataCount]);
+
+  let total = 0;
+  let sum = products.map((x) => x.cantidad * x.precioVenta);
+  sum.forEach((x) => {
+    total += x;
+  });
 
   const handleSaveProd = () => {
     if (products.length > 0) {
@@ -113,6 +117,7 @@ const Cart = ({ dataCart, dataCount }) => {
             </List>
           </div>
           <Paper sx={{ pl: 0.5, textAlign: "center" }}>
+            <h2>Total: S/{total.toFixed(2)}</h2>
             {products.length > 0 && (
               <Button
                 sx={{ m: 1 }}

@@ -94,7 +94,7 @@ const print = (productsCookies, cl, pay, billNumber, billType, sum, discount, ru
   } else {
     // Muestra Subtotal
     pdf.setFontSize(10);
-    pdf.text(150, 70, `Subtotal: S/ ${sum}`);
+    pdf.text(150, 70, `Subtotal: S/ ${sum / 1.18}`);
     
     // muestra la fecha
     pdf.setFontSize(10);
