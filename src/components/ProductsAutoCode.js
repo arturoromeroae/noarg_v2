@@ -2,6 +2,7 @@ import React, {useEffect} from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import CircularProgress from "@mui/material/CircularProgress";
+import PropTypes from 'prop-types';
 
 const ProductsAutoCode = ({ pr }) => {
   const [open, setOpen] = React.useState(false);
@@ -76,6 +77,10 @@ const ProductsAutoCode = ({ pr }) => {
       />
     </>
   );
+};
+
+ProductsAutoCode.propTypes = {
+  pr: PropTypes.any
 };
 
 export default ProductsAutoCode;

@@ -23,7 +23,7 @@ import { styled } from "@mui/material/styles";
 import DialogVentasAnular from "../components/DialogVentasAnular";
 import DialogVentasImprimir from "../components/DialogVentasImprimir";
 
-const TableContainer = styled("div")(({ theme }) => ({
+const TableContainer = styled("div")(() => ({
   display: "flex",
   justifyContent: "center",
 }));
@@ -152,16 +152,19 @@ const Ventas = () => {
       width: 150,
       getActions: (params) => [
         <IconButton
+          key={params.row.idProducto}
           aria-label="delete"
           color="error"
           onClick={() => handleClickOpenNull(params.row)}
         >
           <DoDisturbOffTwoToneIcon />
         </IconButton>,
-        <IconButton 
-          aria-label="delete" 
-          color="primary" 
-          onClick={() => handleClickOpenPrint(params.row)}>
+        <IconButton
+          key={params.row.idProducto}
+          aria-label="delete"
+          color="primary"
+          onClick={() => handleClickOpenPrint(params.row)}
+        >
           <LocalPrintshopTwoToneIcon />
         </IconButton>,
       ],
@@ -188,9 +191,11 @@ const Ventas = () => {
   }, []);
 
   const getCotizaciones = () => {
-    let url = `http://appdemo1.solarc.pe/api/Venta/ConsultaVenta?IdSede=1&TipoComprobante=1&FechaDesde=${valueI.$y
-      }.${parseInt(valueI.$M) + 1}.${valueI.$D}&FechaHasta=${valueF.$y
-      }.${parseInt(valueF.$M) + 1}.${valueF.$D}`;
+    let url = `http://appdemo1.solarc.pe/api/Venta/ConsultaVenta?IdSede=1&TipoComprobante=1&FechaDesde=${
+      valueI.$y
+    }.${parseInt(valueI.$M) + 1}.${valueI.$D}&FechaHasta=${valueF.$y}.${
+      parseInt(valueF.$M) + 1
+    }.${valueF.$D}`;
     fetch(url)
       .then((res) => res.json())
       .then(
@@ -312,8 +317,19 @@ const Ventas = () => {
             </LocalizationProvider>
           </div>
         </TableContainer>
-        <DialogVentasAnular open={openNull} set={setOpenNull} data={selectedRowNull} reload={getCotizaciones} />
-        <DialogVentasImprimir openPrintModal={openPrint} setPrint={setOpenPrint} dataPrint={selectedRowPrint} load={loading} setLoad={setLoading} />
+        <DialogVentasAnular
+          open={openNull}
+          set={setOpenNull}
+          data={selectedRowNull}
+          reload={getCotizaciones}
+        />
+        <DialogVentasImprimir
+          openPrintModal={openPrint}
+          setPrint={setOpenPrint}
+          dataPrint={selectedRowPrint}
+          load={loading}
+          setLoad={setLoading}
+        />
       </>
     );
   }

@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import CircularProgress from "@mui/material/CircularProgress";
+import PropTypes from 'prop-types';
 
 const Clients = ({ getCl }) => {
-  const [open, setOpen] = React.useState(false);
-  const [options, setOptions] = React.useState([]);
+  const [open, setOpen] = useState(false);
+  const [options, setOptions] = useState([]);
   const loading = open && options.length === 0;
 
   useEffect(() => {
@@ -80,6 +81,10 @@ const Clients = ({ getCl }) => {
       />
     </>
   );
+};
+
+Clients.propTypes = {
+  getCl: PropTypes.any
 };
 
 export default Clients;

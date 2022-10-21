@@ -16,7 +16,7 @@ import Typography from "@mui/material/Typography";
 import Cart from "../components/Cart";
 import LoadingSpinner from "../components/LoadingSpinner";
 import DialogAddEdit from "../components/DialogAddEdit";
-import Box from '@mui/material/Box';
+import Box from "@mui/material/Box";
 
 const ImageTable = styled.img`
   transition: linear 0.3s;
@@ -52,9 +52,9 @@ function QuickSearchToolbar() {
       <GridToolbarQuickFilter
         quickFilterParser={(searchInput) =>
           searchInput
-            .split(',')
+            .split(",")
             .map((value) => value.trim())
-            .filter((value) => value !== '')
+            .filter((value) => value !== "")
         }
       />
     </Box>
@@ -88,11 +88,11 @@ const Repuestos = () => {
   };
 
   const handleCartEdit = (params) => {
-    if(params.stock > 0){
+    if (params.stock > 0) {
       setOpenEdit(true);
     }
     setAddToCartEdit(params);
-    setCountEdit(countEdit + 1)
+    setCountEdit(countEdit + 1);
   };
 
   const columns = [
@@ -105,9 +105,16 @@ const Repuestos = () => {
       headerName: "Descripcion",
       width: 400,
       getActions: (params) => [
-        <p style={{ cursor: params.row.stock > 0 && "pointer", color: params.row.stock > 0 ? "blue" : "red" }} onClick={() => handleCartEdit(params.row)}>
+        <p
+          style={{
+            cursor: params.row.stock > 0 && "pointer",
+            color: params.row.stock > 0 ? "blue" : "red",
+          }}
+          key={params.row.idProducto}
+          onClick={() => handleCartEdit(params.row)}
+        >
           {params.row.descripcion}
-        </p>
+        </p>,
       ],
     },
     {
@@ -116,9 +123,16 @@ const Repuestos = () => {
       headerName: "Cantidad",
       width: 100,
       getActions: (params) => [
-        <p style={{ cursor: params.row.stock > 0 && "pointer", color: params.row.stock > 0 ? "blue" : "red" }} onClick={() => handleCartEdit(params.row)}>
+        <p
+          style={{
+            cursor: params.row.stock > 0 && "pointer",
+            color: params.row.stock > 0 ? "blue" : "red",
+          }}
+          key={params.row.idProducto}
+          onClick={() => handleCartEdit(params.row)}
+        >
           {params.row.stock}
-        </p>
+        </p>,
       ],
     },
     { field: "precioVenta", headerName: "P. Venta", width: 90 },
@@ -128,9 +142,16 @@ const Repuestos = () => {
       headerName: "Ubicación",
       width: 100,
       getActions: (params) => [
-        <p style={{ cursor: params.row.stock > 0 && "pointer", color: params.row.stock > 0 ? "blue" : "red" }} onClick={() => handleCartEdit(params.row)}>
+        <p
+          style={{
+            cursor: params.row.stock > 0 && "pointer",
+            color: params.row.stock > 0 ? "blue" : "red",
+          }}
+          key={params.row.idProducto}
+          onClick={() => handleCartEdit(params.row)}
+        >
           {params.row.ubicacion}
-        </p>
+        </p>,
       ],
     },
     {
@@ -140,13 +161,14 @@ const Repuestos = () => {
       width: 100,
       getActions: (params) => [
         <IconButton
+          key={params.row.idProducto}
           aria-label="add"
           color="primary"
           onClick={() => handleCart(params.row)}
           disabled={params.row.stock <= 0}
         >
           <LocalGroceryStoreTwoToneIcon />
-        </IconButton>
+        </IconButton>,
       ],
     },
     {
@@ -265,7 +287,13 @@ const Repuestos = () => {
         </Dialog>
 
         {/* Editar productos */}
-        <DialogAddEdit info={addToCartEdit} infoEdit={handleCart} setAction={setOpenEdit} action={openEdit} counter={countEdit} />
+        <DialogAddEdit
+          info={addToCartEdit}
+          infoEdit={handleCart}
+          setAction={setOpenEdit}
+          action={openEdit}
+          counter={countEdit}
+        />
       </>
     );
   }

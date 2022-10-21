@@ -7,13 +7,15 @@ import defaultImage from "../image/default-image.jpg";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Shop2TwoToneIcon from '@mui/icons-material/Shop2TwoTone';
-import QueueTwoToneIcon from '@mui/icons-material/QueueTwoTone';
-import DriveFileRenameOutlineTwoToneIcon from '@mui/icons-material/DriveFileRenameOutlineTwoTone';
+import Shop2TwoToneIcon from "@mui/icons-material/Shop2TwoTone";
+import QueueTwoToneIcon from "@mui/icons-material/QueueTwoTone";
+import DriveFileRenameOutlineTwoToneIcon from "@mui/icons-material/DriveFileRenameOutlineTwoTone";
 import LoadingSpinner from "../components/LoadingSpinner";
 import DialogMaintanceEdit from "../components/DialogMaintanceEdit";
 import DialogMaintanceDelete from "../components/DialogMaintanceDelete";
 import DialogCreate from "../components/DialogCreate";
+import SuccessAlert from "../components/SuccessAlert";
+import ErrorAlert from "../components/ErrorAlert";
 
 const Mantenimiento = () => {
   const [error, setError] = useState(null);
@@ -24,6 +26,8 @@ const Mantenimiento = () => {
   const [selectedRow, setSelectedRow] = useState(0);
   const [selectedRowDelete, setSelectedRowDelete] = useState(0);
   const [openCreate, setOpenCreate] = useState(false);
+  const [successCreated, setSuccessCreated] = useState(false);
+  const [errorCreated, setErrorCreated] = useState(false);
 
   const handleClickOpenEdit = (params) => {
     setOpen(true);
@@ -57,13 +61,19 @@ const Mantenimiento = () => {
       width: 150,
       getActions: (params) => [
         <IconButton
+          key={params.row.idProducto}
           aria-label="delete"
           color="primary"
           onClick={() => handleClickOpenEdit(params.row)}
         >
           <EditIcon />
         </IconButton>,
-        <IconButton aria-label="delete" color="secondary" onClick={() => handleClickOpenDelete(params.row)}>
+        <IconButton
+          key={params.row.idProducto}
+          aria-label="delete"
+          color="secondary"
+          onClick={() => handleClickOpenDelete(params.row)}
+        >
           <DeleteIcon />
         </IconButton>,
       ],
@@ -122,7 +132,11 @@ const Mantenimiento = () => {
     return (
       <>
         <Header />
-        <Typography sx={{ m: 1, textAlign: "center" }} variant="h2" gutterBottom>
+        <Typography
+          sx={{ m: 1, textAlign: "center" }}
+          variant="h2"
+          gutterBottom
+        >
           Mantenimiento
         </Typography>
         <div style={{ height: 650, width: "100%" }}>
@@ -143,28 +157,67 @@ const Mantenimiento = () => {
               },
             }}
           />
-          <Button sx={{ m: 1 }} variant="contained" startIcon={<Shop2TwoToneIcon />} onClick={handleClickCreate}>
+          <Button
+            sx={{ m: 1 }}
+            variant="contained"
+            startIcon={<Shop2TwoToneIcon />}
+            onClick={handleClickCreate}
+          >
             Agregar Producto
           </Button>
-          <Button sx={{ m: 1 }} variant="outlined" color="success" endIcon={<QueueTwoToneIcon />}>
+          <Button
+            sx={{ m: 1 }}
+            variant="outlined"
+            color="success"
+            endIcon={<QueueTwoToneIcon />}
+          >
             Agregar Marca
           </Button>
-          <Button sx={{ m: 1 }} variant="outlined" color="success" endIcon={<DriveFileRenameOutlineTwoToneIcon />}>
+          <Button
+            sx={{ m: 1 }}
+            variant="outlined"
+            color="success"
+            endIcon={<DriveFileRenameOutlineTwoToneIcon />}
+          >
             Editar Marca
           </Button>
-          <Button sx={{ m: 1 }} variant="outlined" endIcon={<QueueTwoToneIcon />}>
+          <Button
+            sx={{ m: 1 }}
+            variant="outlined"
+            endIcon={<QueueTwoToneIcon />}
+          >
             Agregar Modelo
           </Button>
-          <Button sx={{ m: 1 }} variant="outlined" endIcon={<DriveFileRenameOutlineTwoToneIcon />}>
+          <Button
+            sx={{ m: 1 }}
+            variant="outlined"
+            endIcon={<DriveFileRenameOutlineTwoToneIcon />}
+          >
             Editar Modelo
           </Button>
         </div>
         {/* Agregar productos */}
-        <DialogCreate setOpen={setOpenCreate} open={openCreate} />
+        <DialogCreate
+          setOpen={setOpenCreate}
+          open={openCreate}
+          actionAlert={setSuccessCreated}
+          actionAlertError={setErrorCreated}
+        />
         {/* Editar productos */}
         <DialogMaintanceEdit action={open} set={setOpen} data={selectedRow} />
         {/* Eliminar productos */}
-        <DialogMaintanceDelete action={openDelete} set={setOpenDelete} data={selectedRowDelete} />
+        <DialogMaintanceDelete
+          action={openDelete}
+          set={setOpenDelete}
+          data={selectedRowDelete}
+        />
+        {/* Mensaje de producto creado */}
+        <SuccessAlert
+          actionSuccess={setSuccessCreated}
+          success={successCreated}
+        />
+        {/* Mensaje de error producto creado */}
+        <ErrorAlert actionError={setErrorCreated} error={errorCreated} />
       </>
     );
   }

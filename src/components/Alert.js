@@ -4,8 +4,9 @@ import Alert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import CloseIcon from '@mui/icons-material/Close';
+import PropTypes from 'prop-types';
 
-export default function TransitionAlerts({text}) {
+export default function TransitionAlerts({ text }) {
   const [open, setOpen] = React.useState(true);
 
   return (
@@ -33,3 +34,7 @@ export default function TransitionAlerts({text}) {
     </Box>
   );
 }
+
+TransitionAlerts.propTypes = {
+  text: PropTypes.string
+};

@@ -7,9 +7,9 @@ import defaultImage from "../image/default-image.jpg";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import NoteAddTwoToneIcon from '@mui/icons-material/NoteAddTwoTone';
-import ArticleTwoToneIcon from '@mui/icons-material/ArticleTwoTone';
-import AssignmentTurnedInTwoToneIcon from '@mui/icons-material/AssignmentTurnedInTwoTone';
+import NoteAddTwoToneIcon from "@mui/icons-material/NoteAddTwoTone";
+import ArticleTwoToneIcon from "@mui/icons-material/ArticleTwoTone";
+import AssignmentTurnedInTwoToneIcon from "@mui/icons-material/AssignmentTurnedInTwoTone";
 import LoadingSpinner from "../components/LoadingSpinner";
 import DialogAlmacenDelete from "../components/DialogAlmacenDelete";
 import DialogAlmacenEdit from "../components/DialogAlmacenEdit";
@@ -51,13 +51,19 @@ const Almacen = () => {
       width: 130,
       getActions: (params) => [
         <IconButton
+          key={params.row.idProducto}
           aria-label="delete"
           color="primary"
           onClick={() => handleClickOpen(params.row)}
         >
           <EditIcon />
         </IconButton>,
-        <IconButton aria-label="delete" color="secondary" onClick={() => handleClickOpenDelete(params.row)}>
+        <IconButton
+          aria-label="delete"
+          color="secondary"
+          key={params.row.idProducto}
+          onClick={() => handleClickOpenDelete(params.row)}
+        >
           <DeleteIcon />
         </IconButton>,
       ],
@@ -141,18 +147,38 @@ const Almacen = () => {
             }}
           />
 
-          <Button variant="outlined" sx={{ m: 1 }} startIcon={<AssignmentTurnedInTwoToneIcon />}>
+          <Button
+            variant="outlined"
+            sx={{ m: 1 }}
+            startIcon={<AssignmentTurnedInTwoToneIcon />}
+          >
             Reporte Stock
           </Button>
-          <Button variant="outlined" sx={{ m: 1 }} startIcon={<ArticleTwoToneIcon />}>
+          <Button
+            variant="outlined"
+            sx={{ m: 1 }}
+            startIcon={<ArticleTwoToneIcon />}
+          >
             Reporte Stock
           </Button>
-          <Button variant="contained" sx={{ m: 1 }} endIcon={<NoteAddTwoToneIcon />}>
+          <Button
+            variant="contained"
+            sx={{ m: 1 }}
+            endIcon={<NoteAddTwoToneIcon />}
+          >
             Cargar Excel
           </Button>
         </div>
-        <DialogAlmacenDelete open={openDelete} set={setOpenDelete} data={selectedRowDelete} />
-        <DialogAlmacenEdit open={openEdit} set={setOpenEdit} data={selectedRow} />
+        <DialogAlmacenDelete
+          open={openDelete}
+          set={setOpenDelete}
+          data={selectedRowDelete}
+        />
+        <DialogAlmacenEdit
+          open={openEdit}
+          set={setOpenEdit}
+          data={selectedRow}
+        />
       </>
     );
   }

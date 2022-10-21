@@ -136,6 +136,7 @@ const CompletarVenta = () => {
       width: 80,
       getActions: (params) => [
         <IconButton
+          key={params.row.idProducto}
           aria-label="delete"
           color="error"
           onClick={() => handleAlert(params.row)}
@@ -389,7 +390,7 @@ const CompletarVenta = () => {
         body: JSON.stringify(sellData),
       })
         .then((response) => response.json())
-        .then((data) => {
+        .then(() => {
           setLoadingSell(false);
           Cookies.remove("sell");
           navigate("/ventas");
@@ -410,7 +411,7 @@ const CompletarVenta = () => {
         body: JSON.stringify(cotizeData),
       })
         .then((response) => response.json())
-        .then((data) => {
+        .then(() => {
           setLoadingSell(false);
           Cookies.remove("sell");
           navigate("/cotizaciones");

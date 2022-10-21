@@ -7,6 +7,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import ReportProblemTwoToneIcon from "@mui/icons-material/ReportProblemTwoTone";
 import { yellow } from "@mui/material/colors";
+import PropTypes from "prop-types";
 
 const DialogAlert = ({ deleteProduct, action, cancel, pr }) => {
   const handleClose = () => {
@@ -22,13 +23,14 @@ const DialogAlert = ({ deleteProduct, action, cancel, pr }) => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title" sx={{ textAlign: "center" }}>
-          <ReportProblemTwoToneIcon sx={{ color: yellow[800], fontSize: 50 }} /><br />
+          <ReportProblemTwoToneIcon sx={{ color: yellow[800], fontSize: 50 }} />
+          <br />
           {` ¿Desea eliminar el producto ${pr && pr.nombreProducto}?`}
         </DialogTitle>
         <DialogContent sx={{ textAlign: "center" }}>
           <DialogContentText id="alert-dialog-description">
-            Si presiona <strong>"Aceptar"</strong> el producto sera eliminado de la lista y no
-            podra revertir el proceso.
+            Si presiona <strong>`&quot;`Aceptar`&quot;`</strong> el producto sera eliminado de
+            la lista y no podra revertir el proceso.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -42,6 +44,13 @@ const DialogAlert = ({ deleteProduct, action, cancel, pr }) => {
       </Dialog>
     </div>
   );
+};
+
+DialogAlert.propTypes = {
+  deleteProduct: PropTypes.array,
+  action: PropTypes.bool,
+  cancel: PropTypes.bool,
+  pr: PropTypes.array,
 };
 
 export default DialogAlert;

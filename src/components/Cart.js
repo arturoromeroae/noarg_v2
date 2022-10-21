@@ -9,6 +9,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Cookies from "js-cookie";
 import Product from "./Product";
 import Typography from "@mui/material/Typography";
+import PropTypes from 'prop-types';
 
 const Cart = ({ dataCart, dataCount }) => {
   const navigate = useNavigate();
@@ -144,6 +145,11 @@ const Cart = ({ dataCart, dataCount }) => {
       </Box>
     </>
   );
+};
+
+Cart.propTypes = {
+  dataCart: PropTypes.array,
+  dataCount: PropTypes.number
 };
 
 export default Cart;

@@ -23,7 +23,7 @@ import { styled } from "@mui/material/styles";
 import DialogCotize from "../components/DialogCotize";
 import DialogCotizeBuy from "../components/DialogCotizeBuy";
 
-const TableContainer = styled("div")(({ theme }) => ({
+const TableContainer = styled("div")(() => ({
   display: "flex",
   justifyContent: "center",
 }));
@@ -127,7 +127,7 @@ const Cotizaciones = () => {
   const handleClickOpenBuy = (params) => {
     setOpenModalBuy(true);
     setSelectedRowBuy(params);
-  }
+  };
 
   const handleChangeInicio = (newValue) => {
     setValueI(newValue);
@@ -139,7 +139,7 @@ const Cotizaciones = () => {
 
   const handleUser = (e) => {
     setSelectedUser(e.target.value);
-  }
+  };
 
   const columns = [
     { field: "numero", headerName: "Comprobante", width: 150 },
@@ -155,13 +155,19 @@ const Cotizaciones = () => {
       width: 120,
       getActions: (params) => [
         <IconButton
+          key={params.row.idProducto}
           aria-label="delete"
           color="error"
           onClick={() => handleClickOpen(params.row)}
         >
           <RemoveShoppingCartTwoToneIcon />
         </IconButton>,
-        <IconButton aria-label="delete" color="primary" onClick={() => handleClickOpenBuy(params.row)} >
+        <IconButton
+          aria-label="delete"
+          color="primary"
+          key={params.row.idProducto}
+          onClick={() => handleClickOpenBuy(params.row)}
+        >
           <ShoppingCartTwoToneIcon />
         </IconButton>,
       ],
@@ -190,9 +196,11 @@ const Cotizaciones = () => {
 
   // Obtener cotizaciones
   const getCotizaciones = () => {
-    let url = `http://appdemo1.solarc.pe/api/Cotiza/ConsultaCotiza?IdSede=1&Usuario=${selectedUser}&TipoComprobante=4&FechaDesde=${valueI.$y
-      }.${parseInt(valueI.$M) + 1}.${valueI.$D}&FechaHasta=${valueF.$y
-      }.${parseInt(valueF.$M) + 1}.${valueF.$D}`;
+    let url = `http://appdemo1.solarc.pe/api/Cotiza/ConsultaCotiza?IdSede=1&Usuario=${selectedUser}&TipoComprobante=4&FechaDesde=${
+      valueI.$y
+    }.${parseInt(valueI.$M) + 1}.${valueI.$D}&FechaHasta=${valueF.$y}.${
+      parseInt(valueF.$M) + 1
+    }.${valueF.$D}`;
     fetch(url)
       .then((res) => res.json())
       .then(
@@ -207,7 +215,7 @@ const Cotizaciones = () => {
           setError(error);
         }
       );
-    console.log(url)
+    console.log(url);
   };
 
   // Obtener usuarios
@@ -319,8 +327,17 @@ const Cotizaciones = () => {
             </LocalizationProvider>
           </div>
         </TableContainer>
-        <DialogCotize open={openModal} action={setOpenModal} dataNull={selectedRow} reload={getCotizaciones()} />
-        <DialogCotizeBuy openBuy={openModalBuy} actionBuy={setOpenModalBuy} dataBuy={selectedRowBuy} />
+        <DialogCotize
+          open={openModal}
+          action={setOpenModal}
+          dataNull={selectedRow}
+          reload={getCotizaciones()}
+        />
+        <DialogCotizeBuy
+          openBuy={openModalBuy}
+          actionBuy={setOpenModalBuy}
+          dataBuy={selectedRowBuy}
+        />
       </>
     );
   }

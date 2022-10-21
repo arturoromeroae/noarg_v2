@@ -15,12 +15,13 @@ import MenuItem from "@mui/material/MenuItem";
 import addImage from "../image/add-image.jpg";
 import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
+import PropTypes from "prop-types";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const DialogCreate = ({ open, setOpen }) => {
+const DialogCreate = ({ open, setOpen, actionAlert, actionAlertError }) => {
   const [itemsModels, setItemsModels] = useState([]);
   const [itemsBrands, setItemsBrands] = useState([]);
   const [itemCod, setItemCod] = useState();
@@ -146,38 +147,56 @@ const DialogCreate = ({ open, setOpen }) => {
       codProd: itemCod,
       nombreProducto: itemNom,
       descripcion: itemDes,
-      idMarca: itemBr,
-      idModelo: itemMd,
-      idUnidadMedida: 0,
+      idMarca: parseInt(itemBr),
+      idModelo: parseInt(itemMd),
+      idUnidadMedida: 1,
       idTienda: 1,
       precioBase: parseFloat(itemPb),
       imagen: "string",
       rutaImagen: "string",
       idProducto: 0,
-      cantidad: parseInt(itemStk),
+      cantidad: parseFloat(itemStk),
       precioVenta: parseFloat(itemPv),
       ubicacion: itemUb,
     };
 
-    if (pr) {
-      useEffect(() => {
-        setLoading(true)
-        fetch("http://appdemo1.solarc.pe/api/Productos/Productos", {
-          method: "POST", // or 'PUT'
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(pr),
+    if (
+      pr &&
+      itemCod &&
+      itemNom &&
+      itemPb &&
+      itemStk &&
+      itemPv &&
+      itemBr &&
+      itemMd
+    ) {
+      setLoading(true);
+      fetch("http://appdemo1.solarc.pe/api/Productos/Productos", {
+        method: "POST", // or 'PUT'
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(pr),
+      })
+        .then((response) => response.json())
+        .then(() => {
+          setLoading(false);
+          actionAlert(true);
+          setOpen(false);
+          setItemCod("");
+          setItemNom("");
+          setItemDes("");
+          setItemStk("");
+          setItemPb("");
+          setItemPv("");
+          setItemBr("");
+          setItemMd("");
+          setItemUb("");
         })
-          .then((response) => response.json())
-          .then((data) => {
-            setLoading(false);
-            console.log(data);
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
-      }, []);
+        .catch((error) => {
+          console.error("Error:", error);
+          actionAlertError(true);
+        });
     }
   };
 
@@ -321,11 +340,19 @@ const DialogCreate = ({ open, setOpen }) => {
           <Button color="error" onClick={handleClose}>
             Cancelar
           </Button>
-          <Button onClick={handleCreate}>Modificar</Button>
+          <Button onClick={handleCreate}>Aceptar</Button>
         </DialogActions>
       </Dialog>
     </div>
   );
+};
+
+DialogCreate.propTypes = {
+  open: PropTypes.bool,
+  setOpen: PropTypes.bool,
+  actionAlert: PropTypes.bool,
+  actionAlertError: PropTypes.bool,
+  loading: PropTypes.bool,
 };
 
 export default DialogCreate;

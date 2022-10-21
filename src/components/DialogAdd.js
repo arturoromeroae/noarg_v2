@@ -10,8 +10,8 @@ import TextField from "@mui/material/TextField";
 import Cookies from "js-cookie";
 import Button from "@mui/material/Button";
 import defaultImage from "../image/default-image.jpg";
-import ProductsAuto from "../components/ProductsAuto";
 import ProductsAutoCode from "./ProductsAutoCode";
+import PropTypes from 'prop-types';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -193,6 +193,11 @@ const DialogAdd = ({ addProduct, action }) => {
       </Dialog>
     </div>
   );
+};
+
+DialogAdd.propTypes = {
+  addProduct: PropTypes.any,
+  action: PropTypes.bool
 };
 
 export default DialogAdd;
