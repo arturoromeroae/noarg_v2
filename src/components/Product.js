@@ -7,6 +7,7 @@ import AddCircleTwoToneIcon from "@mui/icons-material/AddCircleTwoTone";
 import RemoveCircleTwoToneIcon from "@mui/icons-material/RemoveCircleTwoTone";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
+import PropTypes from "prop-types";
 
 const QuantityContainer = styled.div`
   display: flex;
@@ -93,6 +94,12 @@ const Product = ({ data, deleteProduct, changeQuantity }) => {
       <Divider />
     </>
   );
+};
+
+Product.propTypes = {
+  data: PropTypes.array,
+  deleteProduct: PropTypes.string,
+  changeQuantity: PropTypes.any
 };
 
 export default Product;

@@ -7,6 +7,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import ReportProblemTwoToneIcon from "@mui/icons-material/ReportProblemTwoTone";
 import { yellow } from "@mui/material/colors";
 import Button from "@mui/material/Button";
+import PropTypes from "prop-types";
 
 const DialogVentasAnular = ({ open, set, data, reload }) => {
     const [deleteBill, setDeleteBill] = useState();
@@ -53,7 +54,7 @@ const DialogVentasAnular = ({ open, set, data, reload }) => {
                 body: JSON.stringify(NullData),
             })
                 .then((response) => response.json())
-                .then((data) => {
+                .then(() => {
                     setDeleteBill();
                     reload();
                 })
@@ -77,7 +78,7 @@ const DialogVentasAnular = ({ open, set, data, reload }) => {
                 </DialogTitle>
                 <DialogContent sx={{ textAlign: "center" }}>
                     <DialogContentText id="alert-dialog-description">
-                        Si presiona <strong>"Aceptar"</strong> la venta sera anulada de la lista y no
+                        Si presiona <strong>`&quot;`Aceptar`&quot;`</strong> la venta sera anulada de la lista y no
                         podra revertir el proceso.
                     </DialogContentText>
                 </DialogContent>
@@ -93,5 +94,12 @@ const DialogVentasAnular = ({ open, set, data, reload }) => {
         </div>
     )
 }
+
+DialogVentasAnular.propTypes = {
+    data: PropTypes.array,
+    open: PropTypes.bool,
+    set: PropTypes.bool,
+    reload: PropTypes.bool
+};
 
 export default DialogVentasAnular

@@ -15,6 +15,7 @@ import defaultImage from "../image/default-image.jpg";
 import Button from "@mui/material/Button";
 import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import PropTypes from "prop-types";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -298,5 +299,11 @@ const DialogMaintanceEdit = ({ data, action, set }) => {
         </div>
     )
 }
+
+DialogMaintanceEdit.propTypes = {
+    data: PropTypes.array,
+    action: PropTypes.bool,
+    set: PropTypes.bool
+};
 
 export default DialogMaintanceEdit

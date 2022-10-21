@@ -7,6 +7,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import ReportProblemTwoToneIcon from "@mui/icons-material/ReportProblemTwoTone";
 import { yellow } from "@mui/material/colors";
+import PropTypes from "prop-types";
 
 const DialogMaintanceDelete = ({ data, action, set }) => {
     const handleClose = () => {
@@ -31,7 +32,7 @@ const DialogMaintanceDelete = ({ data, action, set }) => {
                 </DialogTitle>
                 <DialogContent sx={{ textAlign: "center" }}>
                     <DialogContentText id="alert-dialog-description">
-                        Si presiona <strong>"Aceptar"</strong> el producto sera eliminado de la lista y no
+                        Si presiona <strong>`&quot;`Aceptar`&quot;`</strong> el producto sera eliminado de la lista y no
                         podra revertir el proceso.
                     </DialogContentText>
                 </DialogContent>
@@ -47,5 +48,11 @@ const DialogMaintanceDelete = ({ data, action, set }) => {
         </div>
     )
 }
+
+DialogMaintanceDelete.propTypes = {
+    data: PropTypes.array,
+    action: PropTypes.bool,
+    set: PropTypes.bool
+};
 
 export default DialogMaintanceDelete
