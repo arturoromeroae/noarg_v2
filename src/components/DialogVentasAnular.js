@@ -78,7 +78,7 @@ const DialogVentasAnular = ({ open, set, data, reload }) => {
                 </DialogTitle>
                 <DialogContent sx={{ textAlign: "center" }}>
                     <DialogContentText id="alert-dialog-description">
-                        Si presiona <strong>`&quot;`Aceptar`&quot;`</strong> la venta sera anulada de la lista y no
+                        Si presiona <strong>&quot;Aceptar&quot;</strong> la venta sera anulada de la lista y no
                         podra revertir el proceso.
                     </DialogContentText>
                 </DialogContent>

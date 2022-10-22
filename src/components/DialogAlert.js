@@ -29,7 +29,7 @@ const DialogAlert = ({ deleteProduct, action, cancel, pr }) => {
         </DialogTitle>
         <DialogContent sx={{ textAlign: "center" }}>
           <DialogContentText id="alert-dialog-description">
-            Si presiona <strong>`&quot;`Aceptar`&quot;`</strong> el producto sera eliminado de
+            Si presiona <strong>&quot;Aceptar&quot;</strong> el producto sera eliminado de
             la lista y no podra revertir el proceso.
           </DialogContentText>
         </DialogContent>

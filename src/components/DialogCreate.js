@@ -40,7 +40,7 @@ const DialogCreate = ({ open, setOpen, actionAlert, actionAlertError }) => {
   const [errorPb, setErrorPb] = useState(false);
   const [errorPv, setErrorPv] = useState(false);
   const [errorStk, setErrorStk] = useState(false);
-  const [loading, setLoading] = useState(false);
+  //const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetch("http://appdemo1.solarc.pe/api/Parametros/GetParametros?Tabla=marca")
@@ -110,14 +110,14 @@ const DialogCreate = ({ open, setOpen, actionAlert, actionAlertError }) => {
 
   const handleBrand = (e) => {
     setItemBr(
-      itemsBrands.filter((p) => p.descripcion === e.target.value)[0].id
+      itemsBrands.filter((p) => p.descripcion === e.target.value)[0].codigo
     );
     setErrorBr(false);
   };
 
   const handleModel = (e) => {
     setItemMd(
-      itemsModels.filter((p) => p.descripcion === e.target.value)[0].id
+      itemsModels.filter((p) => p.descripcion === e.target.value)[0].codigo
     );
     setErrorMd(false);
   };
@@ -170,7 +170,8 @@ const DialogCreate = ({ open, setOpen, actionAlert, actionAlertError }) => {
       itemBr &&
       itemMd
     ) {
-      setLoading(true);
+      //setLoading(true);
+      console.log(pr);
       fetch("http://appdemo1.solarc.pe/api/Productos/Productos", {
         method: "POST", // or 'PUT'
         headers: {
@@ -180,7 +181,7 @@ const DialogCreate = ({ open, setOpen, actionAlert, actionAlertError }) => {
       })
         .then((response) => response.json())
         .then(() => {
-          setLoading(false);
+          //setLoading(false);
           actionAlert(true);
           setOpen(false);
           setItemCod("");

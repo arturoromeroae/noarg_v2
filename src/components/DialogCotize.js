@@ -89,7 +89,7 @@ const DialogCotize = ({ open, action, dataNull, reload }) => {
         </DialogTitle>
         <DialogContent sx={{ textAlign: "center" }}>
           <DialogContentText id="alert-dialog-description">
-            Si presiona <strong>`&quot;Aceptar`&quot;</strong> cotización sera anulada de la
+            Si presiona <strong>&quot;Aceptar&quot;</strong> cotización sera anulada de la
             lista y no podra revertir el proceso.
           </DialogContentText>
         </DialogContent>
