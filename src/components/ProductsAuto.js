@@ -40,8 +40,6 @@ const ProductsAuto = ({ pr, getPr }) => {
     }
   }, [open]);
 
-  getPr && console.log(getPr.nombreProducto)
-
   return (
     <>
       <Autocomplete

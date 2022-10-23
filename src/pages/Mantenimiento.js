@@ -16,6 +16,10 @@ import DialogMaintanceDelete from "../components/DialogMaintanceDelete";
 import DialogCreate from "../components/DialogCreate";
 import SuccessAlert from "../components/SuccessAlert";
 import ErrorAlert from "../components/ErrorAlert";
+import DialogMaintanceAddModel from "../components/DialogMaintanceAddModel";
+import DialogMaintanceAddBrand from "../components/DialogMaintanceAddBrand";
+import DialogMaintanceEditModel from "../components/DialogMaintanceEditModel";
+import DialogMaintanceEditBrand from "../components/DialogMaintanceEditBrand";
 
 const Mantenimiento = () => {
   const [error, setError] = useState(null);
@@ -23,6 +27,10 @@ const Mantenimiento = () => {
   const [items, setItems] = useState([]);
   const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+  const [openModel, setOpenModel] = useState(false);
+  const [openBrand, setOpenBrand] = useState(false);
+  const [openEditModel, setOpenEditModel] = useState(false);
+  const [openEditBrand, setOpenEditBrand] = useState(false);
   const [selectedRow, setSelectedRow] = useState(0);
   const [selectedRowDelete, setSelectedRowDelete] = useState(0);
   const [openCreate, setOpenCreate] = useState(false);
@@ -41,6 +49,22 @@ const Mantenimiento = () => {
 
   const handleClickCreate = () => {
     setOpenCreate(true);
+  };
+
+  const handleClickCreateModel = () => {
+    setOpenModel(true);
+  };
+
+  const handleClickCreateBrand = () => {
+    setOpenBrand(true);
+  };
+
+  const handleClickEditModel = () => {
+    setOpenEditModel(true);
+  };
+
+  const handleClickEditBrand = () => {
+    setOpenEditBrand(true);
   };
 
   const columns = [
@@ -170,6 +194,7 @@ const Mantenimiento = () => {
             variant="outlined"
             color="success"
             endIcon={<QueueTwoToneIcon />}
+            onClick={handleClickCreateBrand}
           >
             Agregar Marca
           </Button>
@@ -178,6 +203,7 @@ const Mantenimiento = () => {
             variant="outlined"
             color="success"
             endIcon={<DriveFileRenameOutlineTwoToneIcon />}
+            onClick={handleClickEditBrand}
           >
             Editar Marca
           </Button>
@@ -185,6 +211,7 @@ const Mantenimiento = () => {
             sx={{ m: 1 }}
             variant="outlined"
             endIcon={<QueueTwoToneIcon />}
+            onClick={handleClickCreateModel}
           >
             Agregar Modelo
           </Button>
@@ -192,6 +219,7 @@ const Mantenimiento = () => {
             sx={{ m: 1 }}
             variant="outlined"
             endIcon={<DriveFileRenameOutlineTwoToneIcon />}
+            onClick={handleClickEditModel}
           >
             Editar Modelo
           </Button>
@@ -211,6 +239,14 @@ const Mantenimiento = () => {
           set={setOpenDelete}
           data={selectedRowDelete}
         />
+        {/* Agregar modelos */}
+        <DialogMaintanceAddModel action={openModel} set={setOpenModel} />
+        {/* Editar modelos */}
+        <DialogMaintanceEditModel action={openEditModel} set={setOpenEditModel} />
+        {/* Agregar marcas */}
+        <DialogMaintanceAddBrand action={openBrand} set={setOpenBrand} />
+        {/* Editar marcas */}
+        <DialogMaintanceEditBrand action={openEditBrand} set={setOpenEditBrand} />
         {/* Mensaje de producto creado */}
         <SuccessAlert
           actionSuccess={setSuccessCreated}

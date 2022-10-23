@@ -64,7 +64,6 @@ const Login = () => {
           `http://appdemo1.solarc.pe/api/Account/Login?UserName=${user}&UserPass=${pass}`
         );
         result = await result.json();
-        // console.log(result);
 
         if (result) {
           // minutes

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -52,8 +53,7 @@ const DialogVentasImprimir = ({
       );
     }
   };
-  console.log(cartPrint);
-  console.log(dataPrint);
+
   useEffect(() => {
     if (dataPrint) {
       fetch(

@@ -215,7 +215,6 @@ const Cotizaciones = () => {
           setError(error);
         }
       );
-    console.log(url);
   };
 
   // Obtener usuarios

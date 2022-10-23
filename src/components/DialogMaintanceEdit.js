@@ -61,7 +61,6 @@ const DialogMaintanceEdit = ({ data, action, set }) => {
     }
   }, [data]);
 
-  console.log(itemMd);
   const handleClose = () => {
     set(false);
     setDataProducts("");
@@ -163,7 +162,6 @@ const DialogMaintanceEdit = ({ data, action, set }) => {
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
-          console.log(JSON.stringify(pr));
         })
         .catch((error) => {
           console.error("Error:", error);

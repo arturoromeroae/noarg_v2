@@ -171,7 +171,6 @@ const DialogCreate = ({ open, setOpen, actionAlert, actionAlertError }) => {
       itemMd
     ) {
       //setLoading(true);
-      console.log(pr);
       fetch("http://appdemo1.solarc.pe/api/Productos/Productos", {
         method: "POST", // or 'PUT'
         headers: {

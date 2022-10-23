@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import jsPDF from "jspdf";
 import autoTable from 'jspdf-autotable';
 
@@ -21,6 +22,7 @@ const print = (productsCookies, cl, dni, direccion, pay, billNumber, billType, s
   let infoBill = [];
   let total = (Math.round((sum).toFixed(2) * 100) / 100).toFixed(2);
   const pdf = new jsPDF("p", "mm", "a4");
+  // eslint-disable-next-line no-undef
   require('jspdf-autotable');
 
   // cuadrado en el pdf
