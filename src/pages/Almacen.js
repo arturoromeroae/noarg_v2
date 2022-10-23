@@ -13,6 +13,8 @@ import AssignmentTurnedInTwoToneIcon from "@mui/icons-material/AssignmentTurnedI
 import LoadingSpinner from "../components/LoadingSpinner";
 import DialogAlmacenDelete from "../components/DialogAlmacenDelete";
 import DialogAlmacenEdit from "../components/DialogAlmacenEdit";
+import DialogAlmacenCatalog from "../components/DialogAlmacenCatalog";
+import DialogAlmacenStock from "../components/DialogAlmacenStock";
 
 const Almacen = () => {
   const [error, setError] = useState(null);
@@ -20,6 +22,8 @@ const Almacen = () => {
   const [items, setItems] = useState([]);
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+  const [openCatalog, setOpenCatalog] = useState(false);
+  const [openStock, setOpenStock] = useState(false);
   const [selectedRow, setSelectedRow] = useState(0);
   const [selectedRowDelete, setSelectedRowDelete] = useState(0);
 
@@ -33,11 +37,19 @@ const Almacen = () => {
     setSelectedRowDelete(params);
   };
 
+  const handleClickCatalog = () => {
+    setOpenCatalog(true);
+  };
+
+  const handleClickStock = () => {
+    setOpenStock(true);
+  };
+
   const columns = [
     { field: "idProducto", headerName: "ID", hide: true, width: 80 },
     { field: "codProd", headerName: "Codigo", width: 150 },
-    { field: "nombreProducto", headerName: "Producto", width: 500 },
-    { field: "descripcion", headerName: "Descripcion", width: 500 },
+    { field: "nombreProducto", headerName: "Producto", width: 470 },
+    { field: "descripcion", headerName: "Descripcion", width: 480 },
     { field: "stock", headerName: "Cantidad", width: 100 },
     { field: "precioBase", headerName: "P. Base", width: 90 },
     { field: "precioVenta", headerName: "P. Venta", width: 90 },
@@ -94,9 +106,6 @@ const Almacen = () => {
           setIsLoaded(true);
           setItems(result.data);
         },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
         (error) => {
           setIsLoaded(true);
           setError(error);
@@ -151,15 +160,17 @@ const Almacen = () => {
             variant="outlined"
             sx={{ m: 1 }}
             startIcon={<AssignmentTurnedInTwoToneIcon />}
+            onClick={handleClickStock}
           >
-            Reporte Stock
+            Reporte de Stock
           </Button>
           <Button
             variant="outlined"
             sx={{ m: 1 }}
             startIcon={<ArticleTwoToneIcon />}
+            onClick={handleClickCatalog}
           >
-            Reporte Stock
+            Reporte de Catálogo
           </Button>
           <Button
             variant="contained"
@@ -169,16 +180,22 @@ const Almacen = () => {
             Cargar Excel
           </Button>
         </div>
+        {/* Eliminar productos */}
         <DialogAlmacenDelete
           open={openDelete}
           set={setOpenDelete}
           data={selectedRowDelete}
         />
+        {/* Editar productos */}
         <DialogAlmacenEdit
           open={openEdit}
           set={setOpenEdit}
           data={selectedRow}
         />
+        {/* Imprimir catalogo */}
+        <DialogAlmacenCatalog open={openCatalog} set={setOpenCatalog} />
+        {/* Imprimir stock */}
+        <DialogAlmacenStock open={openStock} set={setOpenStock} />
       </>
     );
   }
