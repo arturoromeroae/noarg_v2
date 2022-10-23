@@ -15,13 +15,20 @@ import MenuItem from "@mui/material/MenuItem";
 import addImage from "../image/add-image.jpg";
 import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
+import LoadingButton from "@mui/lab/LoadingButton";
 import PropTypes from "prop-types";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const DialogCreate = ({ open, setOpen, actionAlert, actionAlertError }) => {
+const DialogCreate = ({
+  open,
+  setOpen,
+  actionAlert,
+  actionAlertError,
+  text,
+}) => {
   const [itemsModels, setItemsModels] = useState([]);
   const [itemsBrands, setItemsBrands] = useState([]);
   const [itemCod, setItemCod] = useState();
@@ -40,7 +47,7 @@ const DialogCreate = ({ open, setOpen, actionAlert, actionAlertError }) => {
   const [errorPb, setErrorPb] = useState(false);
   const [errorPv, setErrorPv] = useState(false);
   const [errorStk, setErrorStk] = useState(false);
-  //const [loading, setLoading] = useState(false);
+  const [load, setLoad] = useState(false);
 
   useEffect(() => {
     fetch("http://appdemo1.solarc.pe/api/Parametros/GetParametros?Tabla=marca")
@@ -127,6 +134,7 @@ const DialogCreate = ({ open, setOpen, actionAlert, actionAlertError }) => {
   };
 
   const handleCreate = () => {
+    text("¡Se creo el producto correctamente!");
     if (!itemCod) {
       setErrorCd(true);
     } else if (!itemNom) {
@@ -170,7 +178,7 @@ const DialogCreate = ({ open, setOpen, actionAlert, actionAlertError }) => {
       itemBr &&
       itemMd
     ) {
-      //setLoading(true);
+      setLoad(true);
       fetch("http://appdemo1.solarc.pe/api/Productos/Productos", {
         method: "POST", // or 'PUT'
         headers: {
@@ -180,7 +188,7 @@ const DialogCreate = ({ open, setOpen, actionAlert, actionAlertError }) => {
       })
         .then((response) => response.json())
         .then(() => {
-          //setLoading(false);
+          setLoad(false);
           actionAlert(true);
           setOpen(false);
           setItemCod("");
@@ -337,10 +345,14 @@ const DialogCreate = ({ open, setOpen, actionAlert, actionAlertError }) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button color="error" onClick={handleClose}>
+          <Button color="error" disabled={load} onClick={handleClose}>
             Cancelar
           </Button>
-          <Button onClick={handleCreate}>Aceptar</Button>
+          {!load ? (
+            <Button onClick={handleCreate}>Aceptar</Button>
+          ) : (
+            <LoadingButton loading></LoadingButton>
+          )}
         </DialogActions>
       </Dialog>
     </div>
@@ -348,6 +360,7 @@ const DialogCreate = ({ open, setOpen, actionAlert, actionAlertError }) => {
 };
 
 DialogCreate.propTypes = {
+  text: PropTypes.string,
   open: PropTypes.bool,
   setOpen: PropTypes.bool,
   actionAlert: PropTypes.bool,

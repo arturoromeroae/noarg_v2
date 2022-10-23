@@ -8,7 +8,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const SuccessAlert = ({ actionSuccess, success }) => {
+const SuccessAlert = ({ actionSuccess, success, text }) => {
   const handleClose = () => {
     actionSuccess(false);
   };
@@ -17,7 +17,7 @@ const SuccessAlert = ({ actionSuccess, success }) => {
     <Stack spacing={2} sx={{ width: "100%" }}>
       <Snackbar open={success} autoHideDuration={9000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          ¡Se creo el producto correctamente!
+          {text}
         </Alert>
       </Snackbar>
     </Stack>
@@ -25,6 +25,7 @@ const SuccessAlert = ({ actionSuccess, success }) => {
 };
 
 SuccessAlert.propTypes = {
+  text: PropTypes.string,
   actionSuccess: PropTypes.bool,
   success: PropTypes.bool
 };

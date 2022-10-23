@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -7,14 +7,25 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import ReportProblemTwoToneIcon from "@mui/icons-material/ReportProblemTwoTone";
 import { yellow } from "@mui/material/colors";
+import LoadingButton from "@mui/lab/LoadingButton";
 import PropTypes from "prop-types";
 
-const DialogMaintanceDelete = ({ data, action, set }) => {
+const DialogMaintanceDelete = ({
+  data,
+  action,
+  set,
+  actionAlert,
+  actionAlertError,
+  text,
+}) => {
+  const [load, setLoad] = useState(false);
   const handleClose = () => {
     set(false);
   };
 
   const handleDelete = () => {
+    text("¡Se elimino el producto correctamente!");
+    setLoad(true);
     let pr = {
       codProd: "string",
       nombreProducto: "string",
@@ -43,10 +54,13 @@ const DialogMaintanceDelete = ({ data, action, set }) => {
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
+          actionAlert(true);
           set(false);
+          setLoad(false);
         })
         .catch((error) => {
           console.error("Error:", error);
+          actionAlertError(true);
         });
     }
   };
@@ -71,12 +85,16 @@ const DialogMaintanceDelete = ({ data, action, set }) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="error">
+          <Button disabled={load} onClick={handleClose} color="error">
             Cancelar
           </Button>
-          <Button onClick={handleDelete} autoFocus>
+          {!load ? (
+            <Button onClick={handleDelete} autoFocus>
             Aceptar
           </Button>
+          ) : (
+            <LoadingButton loading></LoadingButton>
+          )}
         </DialogActions>
       </Dialog>
     </div>
@@ -84,9 +102,12 @@ const DialogMaintanceDelete = ({ data, action, set }) => {
 };
 
 DialogMaintanceDelete.propTypes = {
+  text: PropTypes.string,
   data: PropTypes.array,
   action: PropTypes.bool,
   set: PropTypes.bool,
+  actionAlert: PropTypes.bool,
+  actionAlertError: PropTypes.bool,
 };
 
 export default DialogMaintanceDelete;

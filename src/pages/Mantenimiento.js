@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import defaultImage from "../image/default-image.jpg";
@@ -20,6 +20,27 @@ import DialogMaintanceAddModel from "../components/DialogMaintanceAddModel";
 import DialogMaintanceAddBrand from "../components/DialogMaintanceAddBrand";
 import DialogMaintanceEditModel from "../components/DialogMaintanceEditModel";
 import DialogMaintanceEditBrand from "../components/DialogMaintanceEditBrand";
+import Box from "@mui/material/Box";
+
+function QuickSearchToolbar() {
+  return (
+    <Box
+      sx={{
+        p: 0.5,
+        pb: 0,
+      }}
+    >
+      <GridToolbarQuickFilter
+        quickFilterParser={(searchInput) =>
+          searchInput
+            .split(",")
+            .map((value) => value.trim())
+            .filter((value) => value !== "")
+        }
+      />
+    </Box>
+  );
+}
 
 const Mantenimiento = () => {
   const [error, setError] = useState(null);
@@ -36,6 +57,7 @@ const Mantenimiento = () => {
   const [openCreate, setOpenCreate] = useState(false);
   const [successCreated, setSuccessCreated] = useState(false);
   const [errorCreated, setErrorCreated] = useState(false);
+  const [textAlert, setTextAlert] = useState();
 
   const handleClickOpenEdit = (params) => {
     setOpen(true);
@@ -71,7 +93,7 @@ const Mantenimiento = () => {
     { field: "idProducto", headerName: "ID", hide: true, width: 80 },
     { field: "codProd", headerName: "Codigo", width: 150 },
     { field: "nombreProducto", headerName: "Producto", width: 450 },
-    { field: "descripcion", headerName: "Descripcion", width: 500 },
+    { field: "descripcion", headerName: "Descripcion", width: 475 },
     { field: "stock", headerName: "Cantidad", width: 100 },
     { field: "precioBase", headerName: "P. Base", width: 90 },
     { field: "precioVenta", headerName: "P. Venta", width: 90 },
@@ -139,6 +161,21 @@ const Mantenimiento = () => {
       );
   }, []);
 
+  useEffect(() => {
+    fetch("http://appdemo1.solarc.pe/api/Productos/GetProductos")
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          setIsLoaded(true);
+          setItems(result.data);
+        },
+        (error) => {
+          setIsLoaded(true);
+          setError(error);
+        }
+      );
+  }, [successCreated]);
+
   const handleGetRowId = (e) => {
     return e.idProducto;
   };
@@ -163,10 +200,11 @@ const Mantenimiento = () => {
         >
           Mantenimiento
         </Typography>
-        <div style={{ height: 650, width: "100%" }}>
+        <div style={{ height: 695, width: "100%" }}>
           <DataGrid
             rows={items}
             columns={columns}
+            components={{ Toolbar: QuickSearchToolbar }}
             pageSize={10}
             rowsPerPageOptions={[10]}
             getRowId={handleGetRowId}
@@ -230,6 +268,7 @@ const Mantenimiento = () => {
           open={openCreate}
           actionAlert={setSuccessCreated}
           actionAlertError={setErrorCreated}
+          text={setTextAlert}
         />
         {/* Editar productos */}
         <DialogMaintanceEdit action={open} set={setOpen} data={selectedRow} />
@@ -238,19 +277,29 @@ const Mantenimiento = () => {
           action={openDelete}
           set={setOpenDelete}
           data={selectedRowDelete}
+          actionAlert={setSuccessCreated}
+          actionAlertError={setErrorCreated}
+          text={setTextAlert}
         />
         {/* Agregar modelos */}
         <DialogMaintanceAddModel action={openModel} set={setOpenModel} />
         {/* Editar modelos */}
-        <DialogMaintanceEditModel action={openEditModel} set={setOpenEditModel} />
+        <DialogMaintanceEditModel
+          action={openEditModel}
+          set={setOpenEditModel}
+        />
         {/* Agregar marcas */}
         <DialogMaintanceAddBrand action={openBrand} set={setOpenBrand} />
         {/* Editar marcas */}
-        <DialogMaintanceEditBrand action={openEditBrand} set={setOpenEditBrand} />
+        <DialogMaintanceEditBrand
+          action={openEditBrand}
+          set={setOpenEditBrand}
+        />
         {/* Mensaje de producto creado */}
         <SuccessAlert
           actionSuccess={setSuccessCreated}
           success={successCreated}
+          text={textAlert}
         />
         {/* Mensaje de error producto creado */}
         <ErrorAlert actionError={setErrorCreated} error={errorCreated} />
