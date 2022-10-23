@@ -62,7 +62,7 @@ const DialogMaintanceAddBrand = ({ action, set }) => {
         </DialogTitle>
         <DialogContent sx={{ textAlign: "center" }}>
           <DialogContentText id="alert-dialog-description">
-            Inserte la marca del producto.
+            Inserte la marca del producto.<br/>(Los campos con * son requeridos)
           </DialogContentText>
           <TextField
             sx={{ m: 1, width: "50ch" }}

@@ -126,11 +126,11 @@ const DialogMaintanceEditModel = ({ action, set }) => {
           Editar Modelo
         </DialogTitle>
         <DialogContent sx={{ textAlign: "center" }}>
-          <DialogContentText id="alert-dialog-description">
-            Seleccione el modelo a editar.
+          <DialogContentText sx={{ m: 2 }} id="alert-dialog-description">
+            Seleccione el modelo a editar o eliminar.<br/>(Los campos con * son requeridos)
           </DialogContentText>
           <div style={{ display: "flex", alignItems: "center" }}>
-            <FormControl sx={{ m: 1, width: "30ch" }}>
+            <FormControl required sx={{ m: 1, width: "30ch" }}>
               <InputLabel id="edit-model-label">Modelos</InputLabel>
               <Select
                 labelId="edit-model-label"

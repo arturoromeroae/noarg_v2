@@ -126,11 +126,11 @@ const DialogMaintanceEditBrand = ({ action, set }) => {
           Editar Marca
         </DialogTitle>
         <DialogContent sx={{ textAlign: "center" }}>
-          <DialogContentText id="alert-dialog-description-brand">
-            Seleccione la marca a editar.
+          <DialogContentText sx={{ m: 2 }} id="alert-dialog-description-brand">
+            Seleccione la marca a editar o eliminar.<br/>(Los campos con * son requeridos)
           </DialogContentText>
           <div style={{ display: "flex", alignItems: "center" }}>
-            <FormControl sx={{ m: 1, width: "30ch" }}>
+            <FormControl required sx={{ m: 1, width: "30ch" }}>
               <InputLabel id="edit-brand-label">Marcas</InputLabel>
               <Select
                 labelId="edit-brand-label"

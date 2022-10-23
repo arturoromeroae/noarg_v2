@@ -62,7 +62,7 @@ const DialogMaintanceAddModel = ({ action, set }) => {
         </DialogTitle>
         <DialogContent sx={{ textAlign: "center" }}>
           <DialogContentText id="alert-dialog-description">
-            Inserte el modelo del producto.
+            Inserte el modelo del producto.<br/>(Los campos con * son requeridos)
           </DialogContentText>
           <TextField
             sx={{ m: 1, width: "50ch" }}
