@@ -16,16 +16,16 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Navigate } from "react-router-dom";
-import Badge from '@mui/material/Badge';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import Badge from "@mui/material/Badge";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 
 const pages = [
-  {id: 1, name: "Inicio"},
-  {id: 2, name:"Cotizaciones"},
-  {id: 3, name:"Repuestos"},
-  {id: 4, name:"Almacen"},
-  {id: 5, name:"Mantenimiento"},
-  {id: 6, name:"Ventas"},
+  { id: 1, name: "Inicio" },
+  { id: 2, name: "Cotizaciones" },
+  { id: 3, name: "Repuestos" },
+  { id: 4, name: "Almacen" },
+  { id: 5, name: "Mantenimiento" },
+  { id: 6, name: "Ventas" },
 ];
 // const settings = ["Perfil", "Agregar Usuarios", "Cerrar Sesión"];
 
@@ -109,7 +109,9 @@ const ResponsiveAppBar = () => {
             >
               {pages.map((page) => (
                 <MenuItem key={page.id} onClick={handleCloseNavMenu}>
-                  <Typography key={page.id} textAlign="center">{page.name}</Typography>
+                  <Typography key={page.id} textAlign="center">
+                    {page.name}
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -206,17 +208,17 @@ const ResponsiveAppBar = () => {
             </Link>
           </Box>
 
-              <MenuItem>
-                <IconButton
-                  size="large"
-                  aria-label="show 17 new notifications"
-                  color="inherit"
-                >
-                  <Badge badgeContent={5} color="error">
-                    <NotificationsIcon />
-                  </Badge>
-                </IconButton>
-              </MenuItem>
+          <MenuItem>
+            <IconButton
+              size="large"
+              aria-label="show 17 new notifications"
+              color="inherit"
+            >
+              <Badge badgeContent={5} color="error">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+          </MenuItem>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Opciones de Perfil">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -241,7 +243,25 @@ const ResponsiveAppBar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <MenuItem key="1" onClick={logout}>
+              <Link
+                style={{ textDecoration: "none", color: "black" }}
+                to="/cuenta"
+              >
+                <MenuItem key="1">
+                  <Typography textAlign="center">Cuenta</Typography>
+                </MenuItem>
+              </Link>
+              {user.userName === "JGONZALES" || user.userName === "arturo" &&
+                <Link
+                  style={{ textDecoration: "none", color: "black" }}
+                  to="/agregar-usuarios"
+                >
+                  <MenuItem key="2">
+                    <Typography textAlign="center">Agregar Usuarios</Typography>
+                  </MenuItem>
+                </Link>
+              }
+              <MenuItem key="3" onClick={logout}>
                 <Typography textAlign="center">Cerrar Sesión</Typography>
               </MenuItem>
             </Menu>

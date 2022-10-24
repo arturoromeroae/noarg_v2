@@ -380,8 +380,34 @@ const CompletarVenta = () => {
     cotizaDet: cart,
   };
 
+  // Enviar email
+  let emailData = {
+    destinatario: "string",
+    asunto: "Venta",
+    cliente: cl,
+    fecha: `${yyyy}-${mm}-${dd}T${time}`,
+    documento: dni,
+    subTotal: (sum / 1.18),
+    igv: 0,
+    total: sum,
+    emailDet: cart,
+  };
+
   useEffect(() => {
     if (billType !== 4 && cart) {
+      fetch("http://appdemo1.solarc.pe/api/Venta/EnviarEmail", {
+        method: "POST", // or 'PUT'
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(emailData),
+      })
+        .then((response) => response.json())
+        .then(() => {})
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+
       fetch("http://appdemo1.solarc.pe/api/Venta/InsertaVenta", {
         method: "POST", // or 'PUT'
         headers: {
