@@ -271,7 +271,14 @@ const Mantenimiento = () => {
           text={setTextAlert}
         />
         {/* Editar productos */}
-        <DialogMaintanceEdit action={open} set={setOpen} data={selectedRow} />
+        <DialogMaintanceEdit
+          action={open}
+          set={setOpen}
+          data={selectedRow}
+          actionAlert={setSuccessCreated}
+          actionAlertError={setErrorCreated}
+          text={setTextAlert}
+        />
         {/* Eliminar productos */}
         <DialogMaintanceDelete
           action={openDelete}

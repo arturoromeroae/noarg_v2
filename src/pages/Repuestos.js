@@ -255,6 +255,7 @@ const Repuestos = () => {
           <Cart dataCart={addToCart} dataCount={count} />
         </TableContainer>
 
+        {/* Imagenes de los productos */}
         <Dialog
           open={open}
           TransitionComponent={Transition}

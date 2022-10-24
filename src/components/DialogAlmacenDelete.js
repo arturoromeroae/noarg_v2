@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -7,15 +7,62 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import ReportProblemTwoToneIcon from "@mui/icons-material/ReportProblemTwoTone";
 import { yellow } from "@mui/material/colors";
+import LoadingButton from "@mui/lab/LoadingButton";
 import PropTypes from "prop-types";
 
-const DialogAlmacenDelete = ({ data, open, set }) => {
+const DialogAlmacenDelete = ({
+  data,
+  open,
+  set,
+  actionAlert,
+  actionAlertError,
+  text,
+}) => {
+  const [load, setLoad] = useState(false);
   const handleClose = () => {
     set(false);
   };
 
-  const deleteProduct = () => {
-    console.log("hola");
+  const handleDelete = () => {
+    text("¡Se elimino el producto correctamente!");
+    setLoad(true);
+    let pr = {
+      codProd: "string",
+      nombreProducto: "string",
+      descripcion: "string",
+      idMarca: 0,
+      idModelo: 0,
+      idUnidadMedida: 0,
+      idTienda: 0,
+      precioBase: 0,
+      imagen: "string",
+      rutaImagen: "string",
+      idProducto: data.idProducto,
+      cantidad: 0,
+      precioVenta: 0,
+    };
+    // Eliminar producto
+
+    if (pr) {
+      fetch("http://appdemo1.solarc.pe/api/Productos/ActualizarProducto", {
+        method: "POST", // or 'PUT'
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(pr),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          actionAlert(true);
+          set(false);
+          setLoad(false);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          actionAlertError(true);
+        });
+    }
   };
 
   return (
@@ -33,17 +80,21 @@ const DialogAlmacenDelete = ({ data, open, set }) => {
         </DialogTitle>
         <DialogContent sx={{ textAlign: "center" }}>
           <DialogContentText id="alert-dialog-description">
-            Si presiona <strong>&quot;Aceptar&quot;</strong> el producto sera eliminado de
-            la lista y no podra revertir el proceso.
+            Si presiona <strong>&quot;Aceptar&quot;</strong> el producto sera
+            eliminado de la lista y no podra revertir el proceso.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="error">
+          <Button disabled={load} onClick={handleClose} color="error">
             Cancelar
           </Button>
-          <Button onClick={deleteProduct} autoFocus>
+          {!load ? (
+            <Button onClick={handleDelete} autoFocus>
             Aceptar
           </Button>
+          ) : (
+            <LoadingButton loading></LoadingButton>
+          )}
         </DialogActions>
       </Dialog>
     </div>
@@ -51,9 +102,12 @@ const DialogAlmacenDelete = ({ data, open, set }) => {
 };
 
 DialogAlmacenDelete.propTypes = {
-    data: PropTypes.array,
-    open: PropTypes.bool,
-    set: PropTypes.bool
+  text: PropTypes.string,
+  data: PropTypes.array,
+  open: PropTypes.bool,
+  set: PropTypes.bool,
+  actionAlert: PropTypes.bool,
+  actionAlertError: PropTypes.bool,
 };
 
 export default DialogAlmacenDelete;

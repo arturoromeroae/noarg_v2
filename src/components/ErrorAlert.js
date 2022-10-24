@@ -17,7 +17,7 @@ const ErrorAlert = ({ actionError, error }) => {
     <Stack spacing={2} sx={{ width: "100%" }}>
       <Snackbar open={error} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-          ¡Error al crear el producto!
+          ¡Ha ocurrido un error!
         </Alert>
       </Snackbar>
     </Stack>

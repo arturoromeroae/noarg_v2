@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import defaultImage from "../image/default-image.jpg";
@@ -15,6 +15,30 @@ import DialogAlmacenDelete from "../components/DialogAlmacenDelete";
 import DialogAlmacenEdit from "../components/DialogAlmacenEdit";
 import DialogAlmacenCatalog from "../components/DialogAlmacenCatalog";
 import DialogAlmacenStock from "../components/DialogAlmacenStock";
+import Box from "@mui/material/Box";
+import SuccessAlert from "../components/SuccessAlert";
+import ErrorAlert from "../components/ErrorAlert";
+import DialogAlmacenExcel from "../components/DialogAlmacenExcel";
+
+function QuickSearchToolbar() {
+  return (
+    <Box
+      sx={{
+        p: 0.5,
+        pb: 0,
+      }}
+    >
+      <GridToolbarQuickFilter
+        quickFilterParser={(searchInput) =>
+          searchInput
+            .split(",")
+            .map((value) => value.trim())
+            .filter((value) => value !== "")
+        }
+      />
+    </Box>
+  );
+}
 
 const Almacen = () => {
   const [error, setError] = useState(null);
@@ -24,8 +48,12 @@ const Almacen = () => {
   const [openDelete, setOpenDelete] = useState(false);
   const [openCatalog, setOpenCatalog] = useState(false);
   const [openStock, setOpenStock] = useState(false);
+  const [openExcel, setOpenExcel] = useState(false);
   const [selectedRow, setSelectedRow] = useState(0);
   const [selectedRowDelete, setSelectedRowDelete] = useState(0);
+  const [successCreated, setSuccessCreated] = useState(false);
+  const [errorCreated, setErrorCreated] = useState(false);
+  const [textAlert, setTextAlert] = useState();
 
   const handleClickOpen = (params) => {
     setOpenEdit(true);
@@ -45,11 +73,15 @@ const Almacen = () => {
     setOpenStock(true);
   };
 
+  const handleClickExcel = () => {
+    setOpenExcel(true);
+  };
+
   const columns = [
     { field: "idProducto", headerName: "ID", hide: true, width: 80 },
     { field: "codProd", headerName: "Codigo", width: 150 },
-    { field: "nombreProducto", headerName: "Producto", width: 470 },
-    { field: "descripcion", headerName: "Descripcion", width: 480 },
+    { field: "nombreProducto", headerName: "Producto", width: 450 },
+    { field: "descripcion", headerName: "Descripcion", width: 470 },
     { field: "stock", headerName: "Cantidad", width: 100 },
     { field: "precioBase", headerName: "P. Base", width: 90 },
     { field: "precioVenta", headerName: "P. Venta", width: 90 },
@@ -113,6 +145,21 @@ const Almacen = () => {
       );
   }, []);
 
+  useEffect(() => {
+    fetch("http://appdemo1.solarc.pe/api/Productos/GetProductos")
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          setIsLoaded(true);
+          setItems(result.data);
+        },
+        (error) => {
+          setIsLoaded(true);
+          setError(error);
+        }
+      );
+  }, [successCreated]);
+
   const handleGetRowId = (e) => {
     return e.idProducto;
   };
@@ -137,10 +184,11 @@ const Almacen = () => {
         >
           Almacen
         </Typography>
-        <div style={{ height: 650, width: "100%" }}>
+        <div style={{ height: 680, width: "100%" }}>
           <DataGrid
             rows={items}
             columns={columns}
+            components={{ Toolbar: QuickSearchToolbar }}
             pageSize={10}
             rowsPerPageOptions={[10]}
             getRowId={handleGetRowId}
@@ -176,6 +224,7 @@ const Almacen = () => {
             variant="contained"
             sx={{ m: 1 }}
             endIcon={<NoteAddTwoToneIcon />}
+            onClick={handleClickExcel}
           >
             Cargar Excel
           </Button>
@@ -185,17 +234,39 @@ const Almacen = () => {
           open={openDelete}
           set={setOpenDelete}
           data={selectedRowDelete}
+          actionAlert={setSuccessCreated}
+          actionAlertError={setErrorCreated}
+          text={setTextAlert}
         />
         {/* Editar productos */}
         <DialogAlmacenEdit
           open={openEdit}
           set={setOpenEdit}
           data={selectedRow}
+          actionAlert={setSuccessCreated}
+          actionAlertError={setErrorCreated}
+          text={setTextAlert}
         />
         {/* Imprimir catalogo */}
         <DialogAlmacenCatalog open={openCatalog} set={setOpenCatalog} />
         {/* Imprimir stock */}
         <DialogAlmacenStock open={openStock} set={setOpenStock} />
+        {/* Enviar excel */}
+        <DialogAlmacenExcel
+          open={openExcel}
+          set={setOpenExcel}
+          actionAlert={setSuccessCreated}
+          actionAlertError={setErrorCreated}
+          text={setTextAlert}
+        />
+        {/* Mensaje de producto creado */}
+        <SuccessAlert
+          actionSuccess={setSuccessCreated}
+          success={successCreated}
+          text={textAlert}
+        />
+        {/* Mensaje de error producto creado */}
+        <ErrorAlert actionError={setErrorCreated} error={errorCreated} />
       </>
     );
   }

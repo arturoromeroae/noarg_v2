@@ -15,13 +15,21 @@ import defaultImage from "../image/default-image.jpg";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
+import LoadingButton from "@mui/lab/LoadingButton";
 import PropTypes from "prop-types";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const DialogMaintanceEdit = ({ data, action, set }) => {
+const DialogMaintanceEdit = ({
+  data,
+  action,
+  set,
+  actionAlert,
+  actionAlertError,
+  text,
+}) => {
   const [dataProducts, setDataProducts] = useState([]);
   const [itemsModels, setItemsModels] = useState([]);
   const [itemsBrands, setItemsBrands] = useState([]);
@@ -32,8 +40,9 @@ const DialogMaintanceEdit = ({ data, action, set }) => {
   const [itemPb, setItemPb] = useState();
   const [itemPv, setItemPv] = useState();
   const [itemBr, setItemBr] = useState();
-  const [itemMd, setItemMd] = useState(0);
+  const [itemMd, setItemMd] = useState();
   const [itemUb, setItemUb] = useState();
+  const [load, setLoad] = useState(false);
 
   useEffect(() => {
     if (data) {
@@ -108,7 +117,7 @@ const DialogMaintanceEdit = ({ data, action, set }) => {
     setItemUb(e.target.value);
   };
 
-  useState(() => {
+  useEffect(() => {
     fetch("http://appdemo1.solarc.pe/api/Parametros/GetParametros?Tabla=modelo")
       .then((res) => res.json())
       .then(
@@ -133,6 +142,7 @@ const DialogMaintanceEdit = ({ data, action, set }) => {
   }, []);
 
   const handleEdit = () => {
+    text("¡Se modificó el producto correctamente!");
     let pr = {
       codProd: itemCod,
       nombreProducto: itemNom,
@@ -152,6 +162,7 @@ const DialogMaintanceEdit = ({ data, action, set }) => {
     // Editar producto
 
     if (pr) {
+      setLoad(true);
       fetch("http://appdemo1.solarc.pe/api/Productos/ActualizarProducto", {
         method: "POST", // or 'PUT'
         headers: {
@@ -161,10 +172,15 @@ const DialogMaintanceEdit = ({ data, action, set }) => {
       })
         .then((response) => response.json())
         .then((data) => {
+          setLoad(false);
+          actionAlert(true);
+          set(false);
+          setDataProducts("");
           console.log(data);
         })
         .catch((error) => {
           console.error("Error:", error);
+          actionAlertError(true);
         });
     }
   };
@@ -219,7 +235,7 @@ const DialogMaintanceEdit = ({ data, action, set }) => {
                   sx={{ width: "62ch" }}
                   multiline
                   label="Descripción"
-                  defaultValue={itemDes}
+                  value={itemDes}
                   margin="dense"
                   onChange={handleDes}
                   InputLabelProps={{ shrink: true }}
@@ -330,10 +346,14 @@ const DialogMaintanceEdit = ({ data, action, set }) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button color="error" onClick={handleClose}>
+          <Button color="error" disabled={load} onClick={handleClose}>
             Cancelar
           </Button>
-          <Button onClick={handleEdit}>Modificar</Button>
+          {!load ? (
+            <Button onClick={handleEdit}>Modificar</Button>
+          ) : (
+            <LoadingButton loading></LoadingButton>
+          )}
         </DialogActions>
       </Dialog>
     </div>
@@ -344,6 +364,9 @@ DialogMaintanceEdit.propTypes = {
   data: PropTypes.array,
   action: PropTypes.bool,
   set: PropTypes.bool,
+  actionAlert: PropTypes.bool,
+  actionAlertError: PropTypes.bool,
+  text: PropTypes.string,
 };
 
 export default DialogMaintanceEdit;
