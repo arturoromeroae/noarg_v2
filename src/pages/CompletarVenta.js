@@ -28,6 +28,7 @@ import DialogAlert from "../components/DialogAlert";
 import print from "../components/PdfBill";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner";
+import ClientsDni from "../components/ClientsDniAuto";
 
 const SellContainer = styled.div`
   display: flex;
@@ -58,7 +59,8 @@ const CompletarVenta = () => {
   const [action, setAction] = useState(false);
   const [name, setName] = useState();
   const [cl, setCl] = useState();
-  const [dni, setDni] = useState();
+  const [clDni, setClDni] = useState();
+  const [cliente, setCliente] = useState();
   const [direccion, setDireccion] = useState();
   const [textErrorCl, setTextErrorCl] = useState("");
   const [textErrorPay, setTextErrorPay] = useState("");
@@ -67,6 +69,12 @@ const CompletarVenta = () => {
   const [data, setData] = useState();
   const [idCab, setIdCab] = useState();
   const [cart, setCart] = useState();
+  const [clientsCompare, setClientsCompare] = useState();
+  const [ruc, setRuc] = useState();
+  const [dni, setDni] = useState();
+  const [razonSocial, setRazonSocial] = useState();
+  const [crearCl, setCrearCl] = useState(0);
+  const [tipoCl, setTipoCl] = useState(0);
   const selectedRow = "";
   const navigate = useNavigate();
 
@@ -85,22 +93,53 @@ const CompletarVenta = () => {
   let yyyy = today.getFullYear();
 
   // Informacion RUC y razon social
-  let ruc = "";
-  let razonSocial = "";
-  let cliente = "";
-  let clienteDni = "";
-  let clienteDireccion = "";
-  if (cl && cl.rucCliente) {
-    ruc = cl.rucCliente;
-    razonSocial = cl.razonSocial;
-    cliente = cl.razonSocial;
-  } else {
-    cliente = cl;
-    clienteDni = dni;
-    clienteDireccion = direccion;
-    ruc = "string";
-    razonSocial = "string";
-  }
+  useEffect(() => {
+    // Obtener clientes
+    fetch("http://appdemo1.solarc.pe/api/Cliente/GetClientes")
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          setClientsCompare(result.data);
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
+  }, []);
+
+  useEffect(() => {
+    if (cl && cl.rucCliente) {
+      setRuc(cl.rucCliente);
+      setDni("");
+      setTipoCl(1);
+      setRazonSocial(cl.razonSocial);
+      setCliente(cl.razonSocial);
+      setDireccion(cl.direccion);
+    } else if (clDni && clDni.dni) {
+      setDni(clDni.dni);
+      setRuc("");
+      setTipoCl(2);
+      setRazonSocial(clDni.razonSocial);
+      setCliente(clDni.nombres);
+      setDireccion(clDni.direccion);
+    } else {
+      if (clDni) {
+        setCliente(cliente);
+        setDireccion(direccion);
+        setDni(clDni);
+        setRuc("");
+        setRazonSocial(direccion);
+        setTipoCl(2);
+      } else if(cl) {
+        setCliente(cliente);
+        setDireccion(direccion);
+        setDni("");
+        setRuc(cl);
+        setRazonSocial(direccion);
+        setTipoCl(1);
+      }
+    }
+  }, [clDni, cl]);
 
   // Obtener la hora
   function addZero(i) {
@@ -162,11 +201,7 @@ const CompletarVenta = () => {
   };
 
   const handleChangeClient = (e) => {
-    setCl(e.target.value);
-  };
-
-  const handleChangeDni = (e) => {
-    setDni(e.target.value);
+    setCliente(e.target.value);
   };
 
   const handleChangeDireccion = (e) => {
@@ -224,11 +259,11 @@ const CompletarVenta = () => {
     setTextErrorPay("");
 
     if (billType !== 4) {
-      if (cl && cliente !== "" && pay) {
+      if (cliente && pay) {
         setLoadingSell(true);
         print(
           productsCookies,
-          cl,
+          cliente,
           dni,
           direccion,
           pay,
@@ -245,7 +280,7 @@ const CompletarVenta = () => {
           total: (sum * 1.18).toFixed(2),
           carritoDet: productsCookies,
         });
-      } else if (!cl || cliente === "") {
+      } else if (!cliente) {
         setCustomErrorCl(true);
         setTextErrorCl("Debe introducir el cliente");
       } else if (billType !== 4) {
@@ -386,15 +421,42 @@ const CompletarVenta = () => {
     asunto: "Venta",
     cliente: cl,
     fecha: `${yyyy}-${mm}-${dd}T${time}`,
-    documento: dni,
-    subTotal: (sum / 1.18),
+    documento: dni ? dni : ruc,
+    subTotal: sum / 1.18,
     igv: 0,
     total: sum,
     emailDet: cart,
   };
 
+  // Cliente de la venta
+  let clienteVenta = {
+    idCliente: 0,
+    idTipoCliente: tipoCl,
+    rucCliente: ruc,
+    razonSocial: razonSocial,
+    direccion: direccion,
+    dni: dni,
+    apellidos: "",
+    nombres: cliente,
+    email: "string",
+    teléfono: "string",
+  };
+
   useEffect(() => {
     if (billType !== 4 && cart) {
+      if (cl && clientsCompare) {
+        setCrearCl(
+          clientsCompare.findIndex((cp) => cp.rucCliente === cl.rucCliente)
+        );
+      }
+
+      if (clDni && clientsCompare) {
+        setCrearCl(
+          clientsCompare.findIndex((cp) => cp.rucCliente === clDni.rucCliente)
+        );
+      }
+
+      // Enviar email venta
       fetch("http://appdemo1.solarc.pe/api/Venta/EnviarEmail", {
         method: "POST", // or 'PUT'
         headers: {
@@ -408,6 +470,24 @@ const CompletarVenta = () => {
           console.error("Error:", error);
         });
 
+      // Guardar Cliente
+      if (crearCl > -1) {
+        console.log(clienteVenta)
+        fetch("http://appdemo1.solarc.pe/api/Cliente/Registrar%20Clientes", {
+          method: "POST", // or 'PUT'
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(clienteVenta),
+        })
+          .then((response) => response.json())
+          .then(() => {})
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+
+      // Insertar Venta
       fetch("http://appdemo1.solarc.pe/api/Venta/InsertaVenta", {
         method: "POST", // or 'PUT'
         headers: {
@@ -429,6 +509,23 @@ const CompletarVenta = () => {
 
   useEffect(() => {
     if (billType === 4 && cart) {
+      // Guardar Cliente
+      if (crearCl >= 0) {
+        fetch("http://appdemo1.solarc.pe/api/Cliente/Registrar%20Clientes", {
+          method: "POST", // or 'PUT'
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(clienteVenta),
+        })
+          .then((response) => response.json())
+          .then(() => {})
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+
+      // Guardar Cotizacion
       fetch("http://appdemo1.solarc.pe/api/Cotiza/InsertaCotiza", {
         method: "POST", // or 'PUT'
         headers: {
@@ -531,33 +628,26 @@ const CompletarVenta = () => {
                     errorCl={customErrorCl}
                     errorText={textErrorCl}
                     value={cliente}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                     required
                   />
                   {billType !== 2 && billType !== 3 && (
-                    <TextField
-                      sx={{ m: 2 }}
-                      id="outlined-basic"
-                      label="DNI"
-                      variant="outlined"
-                      onChange={handleChangeDni}
-                      inputProps={{
-                        inputMode: "numeric",
-                        maxLength: 8,
-                        pattern: "[0-9]",
-                      }}
-                      value={clienteDni}
-                      required
-                    />
+                    <ClientsDni getCl={setClDni} />
                   )}
+                  {billType > 1 && billType < 4 && <Clients getCl={setCl} />}
                   <TextField
                     sx={{ m: 1, width: 700 }}
                     id="outlined-basic"
                     label="Dirección"
                     variant="outlined"
                     onChange={handleChangeDireccion}
-                    value={clienteDireccion}
+                    value={direccion}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
                   />
-                  {billType > 1 && billType < 4 && <Clients getCl={setCl} />}
                   <TextField
                     sx={{ m: 2 }}
                     id="outlined-basic"

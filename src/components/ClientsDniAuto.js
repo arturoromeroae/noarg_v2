@@ -4,10 +4,14 @@ import Autocomplete from "@mui/material/Autocomplete";
 import CircularProgress from "@mui/material/CircularProgress";
 import PropTypes from 'prop-types';
 
-const Clients = ({ getCl }) => {
+const ClientsDni = ({ getCl }) => {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const loading = open && options.length === 0;
+
+  const handleChange = (e) => {
+    getCl(e.target.value)
+  }
 
   useEffect(() => {
     let active = true;
@@ -21,7 +25,7 @@ const Clients = ({ getCl }) => {
         .then((res) => res.json())
         .then(
           (result) => {
-            setOptions(result.data.filter((c) => c.tipoDoc === "RUC"));
+            setOptions(result.data.filter((c) => c.tipoDoc === "DNI"));
           },
           (error) => {
             console.log(error);
@@ -53,18 +57,19 @@ const Clients = ({ getCl }) => {
         onClose={() => {
           setOpen(false);
         }}
+        onChange={(index, value) => getCl(value)}
         isOptionEqualToValue={(option, value) =>
-          option.rucCliente === value.rucCliente
+          option.dni === value.dni
         }
-        getOptionLabel={option => option.rucCliente}
-        onChange={(event, value) => getCl(value)}
+        getOptionLabel={option => option.dni}
         options={options}
         loading={loading}
         renderInput={(params) => (
           <TextField
             {...params}
-            label="RUC"
+            label="DNI"
             required
+            onChange={handleChange}
             InputProps={{
               ...params.InputProps,
               endAdornment: (
@@ -83,8 +88,8 @@ const Clients = ({ getCl }) => {
   );
 };
 
-Clients.propTypes = {
+ClientsDni.propTypes = {
   getCl: PropTypes.any
 };
 
-export default Clients;
+export default ClientsDni;
