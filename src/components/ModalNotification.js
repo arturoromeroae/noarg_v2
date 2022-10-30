@@ -103,7 +103,7 @@ const ModalNotification = ({ open, set, info }) => {
           <Typography
             sx={{ display: "flex", alignItems: "center" }}
             id="modal-modal-title"
-            variant="h6"
+            variant="h5"
             component="h2"
           >
             <CampaignTwoToneIcon
@@ -148,14 +148,24 @@ const ModalNotification = ({ open, set, info }) => {
           </Typography>
           <ButtonModal>
             {!load ? (
-              <Button
-                endIcon={<NotificationsOffIcon />}
-                onClick={handleDismissNotification}
-              >
-                Marcar como leido
-              </Button>
+              <>
+                <Button sx={{ mr: 2 }} onClick={handleClose} color="error">
+                  Cerrar
+                </Button>
+                <Button
+                  endIcon={<NotificationsOffIcon />}
+                  onClick={handleDismissNotification}
+                >
+                  Marcar como leido
+                </Button>
+              </>
             ) : (
-              <LoadingButton loading></LoadingButton>
+              <>
+                <Button sx={{ mr: 2 }} disabled>
+                  Cerrar
+                </Button>
+                <LoadingButton loading></LoadingButton>
+              </>
             )}
           </ButtonModal>
         </Box>

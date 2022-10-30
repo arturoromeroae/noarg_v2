@@ -13,6 +13,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import logo from "../image/LOGO.png";
 import Cookies from "js-cookie";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Navigate } from "react-router-dom";
@@ -20,6 +21,7 @@ import Badge from "@mui/material/Badge";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import ModalNotification from "./ModalNotification";
 import Divider from "@mui/material/Divider";
+import ListItemText from "@mui/material/ListItemText";
 
 const pages = [
   { id: 1, name: "Inicio" },
@@ -250,7 +252,7 @@ const ResponsiveAppBar = () => {
               </Link>
             </Box>
 
-            {notified && (
+            {notified ? (
               <MenuItem>
                 <Tooltip title="Notificaciones">
                   <IconButton
@@ -285,15 +287,31 @@ const ResponsiveAppBar = () => {
                 >
                   {notified.map((n) => (
                     <>
-                      <MenuItem key={n.nro} onClick={() => handleOpenModal(n)}>
-                        <Typography textAlign="center">
-                          {n.serie + n.nro}
-                        </Typography>
+                      <MenuItem
+                        key={n.serie + n.nro}
+                        onClick={() => handleOpenModal(n)}
+                      >
+                        <>
+                          <ListItemAvatar key={n.serie + n.nro}>
+                            <Avatar>
+                              {n.usuario.substring(0, 1).toUpperCase()}
+                            </Avatar>
+                          </ListItemAvatar>
+                          <ListItemText primary={n.serie + n.nro} key={n.nro} />
+                        </>
                       </MenuItem>
                       <Divider />
                     </>
                   ))}
                 </Menu>
+              </MenuItem>
+            ) : (
+              <MenuItem>
+                <IconButton size="large" color="inherit">
+                  <Badge color="error" badgeContent="...">
+                    <NotificationsIcon />
+                  </Badge>
+                </IconButton>
               </MenuItem>
             )}
             <Box sx={{ flexGrow: 0 }}>
