@@ -11,6 +11,7 @@ import PersonOffTwoToneIcon from "@mui/icons-material/PersonOffTwoTone";
 import DialogProfile from "../components/DialogProfile";
 import DialogProfileList from "../components/DialogProfileList";
 import DialogProfileDelete from "../components/DialogProfileDelete";
+import SuccessAlert from "../components/SuccessAlert";
 
 const AvatarContainer = styled.div`
   display: flex;
@@ -23,6 +24,8 @@ const Cuenta = () => {
   const [openDelete, setOpenDelete] = useState(false);
   const [openList, setOpenList] = useState(false);
   const [userList, setUserList] = useState();
+  const [successCreated, setSuccessCreated] = useState(false);
+  const [textAlert, setTextAlert] = useState();
   let getUserInfo = Cookies.get("user");
   let user = getUserInfo && JSON.parse(getUserInfo);
 
@@ -49,7 +52,7 @@ const Cuenta = () => {
           console.error(error);
         }
       );
-  }, []);
+  }, [openList, successCreated]);
   return (
     <>
       <Header />
@@ -94,17 +97,18 @@ const Cuenta = () => {
         >
           Eliminar Usuario
         </Button>
-        {user.userName === "JGONZALES" || user.userName === "arturo" &&
-          <Button
-            variant="contained"
-            startIcon={<PeopleAltTwoToneIcon />}
-            color="primary"
-            onClick={handleClickList}
-            sx={{ m: 1 }}
-          >
-            Lista de Usuarios
-          </Button>
-        }
+        {user.userName === "JGONZALES" ||
+          (user.userName === "arturo" && (
+            <Button
+              variant="contained"
+              startIcon={<PeopleAltTwoToneIcon />}
+              color="primary"
+              onClick={handleClickList}
+              sx={{ m: 1 }}
+            >
+              Lista de Usuarios
+            </Button>
+          ))}
       </AvatarContainer>
       {/* Editar perfil */}
       <DialogProfile data={user} action={open} set={setOpen} />
@@ -115,7 +119,19 @@ const Cuenta = () => {
         set={setOpenDelete}
       />
       {/* Ver lista de usuarios */}
-      <DialogProfileList data={userList} action={openList} set={setOpenList} />
+      <DialogProfileList
+        data={userList}
+        action={openList}
+        set={setOpenList}
+        actionAlert={setSuccessCreated}
+        text={setTextAlert}
+      />
+      {/* Alerta */}
+      <SuccessAlert
+        actionSuccess={setSuccessCreated}
+        success={successCreated}
+        text={textAlert}
+      />
     </>
   );
 };

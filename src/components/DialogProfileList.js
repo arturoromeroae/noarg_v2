@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -14,11 +14,19 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Divider from "@mui/material/Divider";
 import PropTypes from "prop-types";
+import DialogProfileListDelete from "./DialogProfileListDelete";
 
-const DialogProfileList = ({ data, action, set }) => {
+const DialogProfileList = ({ data, action, set, actionAlert, text }) => {
+  const [open, setOpen] = useState(false);
+  const [profile, setProfile] = useState(false);
 
   const handleClose = () => {
     set(false);
+  };
+
+  const handleOpen = (prop) => {
+    setOpen(true);
+    setProfile(prop);
   };
 
   return (
@@ -43,7 +51,11 @@ const DialogProfileList = ({ data, action, set }) => {
                   <Divider />
                   <ListItem
                     secondaryAction={
-                      <IconButton edge="end" aria-label="delete">
+                      <IconButton
+                        edge="end"
+                        aria-label="delete"
+                        onClick={() => handleOpen(u)}
+                      >
                         <DeleteIcon color="error" />
                       </IconButton>
                     }
@@ -70,6 +82,13 @@ const DialogProfileList = ({ data, action, set }) => {
           </Button>
         </DialogActions>
       </Dialog>
+      <DialogProfileListDelete
+        open={open}
+        set={setOpen}
+        data={profile}
+        actionAlert={actionAlert}
+        text={text}
+      />
     </div>
   );
 };
@@ -78,6 +97,8 @@ DialogProfileList.propTypes = {
   action: PropTypes.bool,
   set: PropTypes.bool,
   data: PropTypes.json,
+  actionAlert: PropTypes.bool,
+  text: PropTypes.string,
 };
 
 export default DialogProfileList;

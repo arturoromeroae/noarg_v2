@@ -16,7 +16,6 @@ const DialogProfile = ({ data, action, set }) => {
   const [nameUser, setNameUser] = useState();
   const [loginUser, setLoginUser] = useState();
   const [passUser, setPassUser] = useState();
-  const [us, setUs] = useState();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,9 +41,18 @@ const DialogProfile = ({ data, action, set }) => {
     setPassUser(e.target.value);
   };
 
-  useEffect(() => {
+  const handleUpdateProfile = () => {
     // Actualizar usuario
-    if (us) {
+    let us = {
+      userName: loginUser,
+      userPass: passUser,
+      nombres: nameUser,
+      idPerfil: data.idPerfil,
+      idTienda: 1,
+      estadoReg: 1,
+    }
+
+    if (us && passUser && nameUser && loginUser) {
       setLoad(true);
       fetch("http://appdemo1.solarc.pe/api/Account/UsuariosActualizar", {
         method: "POST", // or 'PUT'
@@ -65,19 +73,6 @@ const DialogProfile = ({ data, action, set }) => {
         .catch((error) => {
           console.error("Error:", error);
         });
-    }
-  }, [us]);
-
-  const handleUpdate = () => {
-    if (passUser && nameUser && loginUser) {
-      setUs({
-        userName: loginUser,
-        userPass: passUser,
-        nombres: nameUser,
-        idPerfil: data.idPerfil,
-        idTienda: 1,
-        estadoReg: 1,
-      });
     }
   };
 
@@ -131,7 +126,7 @@ const DialogProfile = ({ data, action, set }) => {
             Cancelar
           </Button>
           {!load ? (
-            <Button onClick={handleUpdate} autoFocus>
+            <Button onClick={handleUpdateProfile} autoFocus>
               Actualizar
             </Button>
           ) : (
