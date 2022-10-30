@@ -22,6 +22,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import ModalNotification from "./ModalNotification";
 import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
+import NotificationsOffTwoToneIcon from "@mui/icons-material/NotificationsOffTwoTone";
 
 const pages = [
   { id: 1, name: "Inicio" },
@@ -252,68 +253,75 @@ const ResponsiveAppBar = () => {
               </Link>
             </Box>
 
-            {notified ? (
-              <MenuItem>
-                <Tooltip title="Notificaciones">
-                  <IconButton
-                    size="large"
-                    aria-label="show 17 new notifications"
-                    color="inherit"
-                    onClick={handleOpenAlertMenu}
-                  >
-                    <Badge
-                      badgeContent={Object.keys(notified).length}
-                      color="error"
+            {notified &&
+              (user.userName === "ALMACEN" || user.userName === "arturo") && (
+                <MenuItem>
+                  <Tooltip title="Notificaciones">
+                    <IconButton
+                      size="large"
+                      aria-label="show 17 new notifications"
+                      color="inherit"
+                      onClick={handleOpenAlertMenu}
                     >
-                      <NotificationsIcon />
+                      <Badge
+                        badgeContent={Object.keys(notified).length}
+                        color="error"
+                      >
+                        <NotificationsIcon />
+                      </Badge>
+                    </IconButton>
+                  </Tooltip>
+                  <Menu
+                    sx={{ mt: "45px", maxHeight: "250px" }}
+                    id="menu-appbar"
+                    anchorEl={anchorAlert}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    open={Boolean(anchorAlert)}
+                    onClose={handleCloseAlertMenu}
+                  >
+                    {notified &&
+                      notified.map((n) => (
+                        <>
+                          <MenuItem
+                            key={n.serie + n.nro}
+                            onClick={() => handleOpenModal(n)}
+                          >
+                            <>
+                              <ListItemAvatar key={n.serie + n.nro}>
+                                <Avatar>
+                                  {n.usuario.substring(0, 1).toUpperCase()}
+                                </Avatar>
+                              </ListItemAvatar>
+                              <ListItemText
+                                primary={n.serie + n.nro}
+                                key={n.nro}
+                              />
+                            </>
+                          </MenuItem>
+                          <Divider />
+                        </>
+                      ))}
+                  </Menu>
+                </MenuItem>
+              )}
+            {!notified &&
+              (user.userName === "ALMACEN" || user.userName === "arturo") && (
+                <MenuItem>
+                  <IconButton size="large" color="inherit">
+                    <Badge color="error" badgeContent="0">
+                      <NotificationsOffTwoToneIcon />
                     </Badge>
                   </IconButton>
-                </Tooltip>
-                <Menu
-                  sx={{ mt: "45px", maxHeight: "250px" }}
-                  id="menu-appbar"
-                  anchorEl={anchorAlert}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorAlert)}
-                  onClose={handleCloseAlertMenu}
-                >
-                  {notified.map((n) => (
-                    <>
-                      <MenuItem
-                        key={n.serie + n.nro}
-                        onClick={() => handleOpenModal(n)}
-                      >
-                        <>
-                          <ListItemAvatar key={n.serie + n.nro}>
-                            <Avatar>
-                              {n.usuario.substring(0, 1).toUpperCase()}
-                            </Avatar>
-                          </ListItemAvatar>
-                          <ListItemText primary={n.serie + n.nro} key={n.nro} />
-                        </>
-                      </MenuItem>
-                      <Divider />
-                    </>
-                  ))}
-                </Menu>
-              </MenuItem>
-            ) : (
-              <MenuItem>
-                <IconButton size="large" color="inherit">
-                  <Badge color="error" badgeContent="...">
-                    <NotificationsIcon />
-                  </Badge>
-                </IconButton>
-              </MenuItem>
-            )}
+                </MenuItem>
+              )}
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Opciones de Perfil">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
