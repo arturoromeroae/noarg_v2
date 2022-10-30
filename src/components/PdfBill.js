@@ -81,7 +81,8 @@ const print = (productsCookies, cl, dni, direccion, pay, billNumber, billType, s
 
   // muestra informacion del cliente
   pdf.setFontSize(10);
-  pdf.text(20, 50, `Cliente: ${cl} DNI: ${dni}`);
+  dni.length > 0 && pdf.text(20, 50, `Cliente: ${cl} DNI: ${dni}`);
+  ruc.length > 0 && pdf.text(20, 50, `Cliente: ${cl} RUC: ${ruc}`);
   pdf.text(20, 55, `Dirección: ${direccion}`);
 
   // condicional para ruc y razon social

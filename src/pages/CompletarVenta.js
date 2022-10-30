@@ -73,7 +73,6 @@ const CompletarVenta = () => {
   const [ruc, setRuc] = useState();
   const [dni, setDni] = useState();
   const [razonSocial, setRazonSocial] = useState();
-  const [crearCl, setCrearCl] = useState(0);
   const [tipoCl, setTipoCl] = useState(0);
   const selectedRow = "";
   const navigate = useNavigate();
@@ -130,7 +129,7 @@ const CompletarVenta = () => {
         setRuc("");
         setRazonSocial(direccion);
         setTipoCl(2);
-      } else if(cl) {
+      } else if (cl) {
         setCliente(cliente);
         setDireccion(direccion);
         setDni("");
@@ -433,7 +432,7 @@ const CompletarVenta = () => {
     idCliente: 0,
     idTipoCliente: tipoCl,
     rucCliente: ruc,
-    razonSocial: razonSocial,
+    razonSocial: cliente,
     direccion: direccion,
     dni: dni,
     apellidos: "",
@@ -442,20 +441,27 @@ const CompletarVenta = () => {
     teléfono: "string",
   };
 
+  let clienteDni = null;
+
   useEffect(() => {
     if (billType !== 4 && cart) {
-      if (cl && clientsCompare) {
-        setCrearCl(
-          clientsCompare.findIndex((cp) => cp.rucCliente === cl.rucCliente)
-        );
+      
+      if (typeof cl === "object") {
+        clienteDni = clientsCompare.findIndex((cp) => cp.rucCliente === cl.rucCliente);
       }
 
-      if (clDni && clientsCompare) {
-        setCrearCl(
-          clientsCompare.findIndex((cp) => cp.rucCliente === clDni.rucCliente)
-        );
+      if (typeof clDni === "object") {
+        clienteDni = clientsCompare.findIndex((cp) => cp.dni === clDni.dni);
       }
 
+      if (cl && typeof cl === "string") {
+        clienteDni = clientsCompare.findIndex((cp) => cp.rucCliente === cl);
+      }
+
+      if (clDni && typeof clDni === "string") {
+        clienteDni = clientsCompare.findIndex((cp) => cp.dni === clDni);
+      }
+      
       // Enviar email venta
       fetch("http://appdemo1.solarc.pe/api/Venta/EnviarEmail", {
         method: "POST", // or 'PUT'
@@ -471,8 +477,7 @@ const CompletarVenta = () => {
         });
 
       // Guardar Cliente
-      if (crearCl > -1) {
-        console.log(clienteVenta)
+      if (clienteDni === -1) {
         fetch("http://appdemo1.solarc.pe/api/Cliente/Registrar%20Clientes", {
           method: "POST", // or 'PUT'
           headers: {
@@ -510,7 +515,7 @@ const CompletarVenta = () => {
   useEffect(() => {
     if (billType === 4 && cart) {
       // Guardar Cliente
-      if (crearCl >= 0) {
+      if (clienteDni === -1) {
         fetch("http://appdemo1.solarc.pe/api/Cliente/Registrar%20Clientes", {
           method: "POST", // or 'PUT'
           headers: {
@@ -634,7 +639,7 @@ const CompletarVenta = () => {
                     required
                   />
                   {billType !== 2 && billType !== 3 && (
-                    <ClientsDni getCl={setClDni} />
+                    <ClientsDni getClDni={setClDni} />
                   )}
                   {billType > 1 && billType < 4 && <Clients getCl={setCl} />}
                   <TextField

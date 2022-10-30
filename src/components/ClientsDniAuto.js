@@ -2,16 +2,16 @@ import React, { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import CircularProgress from "@mui/material/CircularProgress";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-const ClientsDni = ({ getCl }) => {
+const ClientsDni = ({ getClDni }) => {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const loading = open && options.length === 0;
 
   const handleChange = (e) => {
-    getCl(e.target.value)
-  }
+    getClDni(e.target.value);
+  };
 
   useEffect(() => {
     let active = true;
@@ -57,11 +57,9 @@ const ClientsDni = ({ getCl }) => {
         onClose={() => {
           setOpen(false);
         }}
-        onChange={(index, value) => getCl(value)}
-        isOptionEqualToValue={(option, value) =>
-          option.dni === value.dni
-        }
-        getOptionLabel={option => option.dni}
+        isOptionEqualToValue={(option, value) => option.dni === value.dni}
+        getOptionLabel={(option) => option.dni}
+        onChange={(index, value) => getClDni(value)}
         options={options}
         loading={loading}
         renderInput={(params) => (
@@ -89,7 +87,7 @@ const ClientsDni = ({ getCl }) => {
 };
 
 ClientsDni.propTypes = {
-  getCl: PropTypes.any
+  getClDni: PropTypes.any,
 };
 
 export default ClientsDni;

@@ -2,12 +2,16 @@ import React, { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import CircularProgress from "@mui/material/CircularProgress";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 const Clients = ({ getCl }) => {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const loading = open && options.length === 0;
+
+  const handleChange = (e) => {
+    getCl(e.target.value);
+  };
 
   useEffect(() => {
     let active = true;
@@ -56,7 +60,7 @@ const Clients = ({ getCl }) => {
         isOptionEqualToValue={(option, value) =>
           option.rucCliente === value.rucCliente
         }
-        getOptionLabel={option => option.rucCliente}
+        getOptionLabel={(option) => option.rucCliente}
         onChange={(event, value) => getCl(value)}
         options={options}
         loading={loading}
@@ -65,6 +69,7 @@ const Clients = ({ getCl }) => {
             {...params}
             label="RUC"
             required
+            onChange={handleChange}
             InputProps={{
               ...params.InputProps,
               endAdornment: (
@@ -84,7 +89,7 @@ const Clients = ({ getCl }) => {
 };
 
 Clients.propTypes = {
-  getCl: PropTypes.any
+  getCl: PropTypes.any,
 };
 
 export default Clients;

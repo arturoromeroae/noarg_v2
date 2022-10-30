@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -18,6 +18,8 @@ import { Link } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import Badge from "@mui/material/Badge";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import ModalNotification from "./ModalNotification";
+import Divider from "@mui/material/Divider";
 
 const pages = [
   { id: 1, name: "Inicio" },
@@ -32,6 +34,10 @@ const pages = [
 const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const [anchorAlert, setAnchorAlert] = useState(null);
+  const [notified, setNotified] = useState(0);
+  const [open, setOpen] = useState(false);
+  const [infoSell, setInfoSell] = useState();
   const navigate = useNavigate();
 
   let getUserInfo = Cookies.get("user");
@@ -39,17 +45,35 @@ const ResponsiveAppBar = () => {
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
+    setAnchorAlert(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
+    setAnchorAlert(null);
+  };
+
+  // Menu Usuario
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
   };
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  // Menu Alerta
+  const handleOpenAlertMenu = (event) => {
+    setAnchorAlert(event.currentTarget);
+  };
+
+  const handleCloseAlertMenu = () => {
+    setAnchorAlert(null);
+  };
+
+  const handleOpenModal = (prop) => {
+    setOpen(true);
+    setInfoSell(prop);
   };
 
   const logout = () => {
@@ -62,213 +86,271 @@ const ResponsiveAppBar = () => {
     return <Navigate to="/" replace />;
   }
 
+  useEffect(() => {
+    fetch("http://appdemo1.solarc.pe/api/Venta/GetVentaNot")
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          let uniqueIds = result.data.filter(
+            (ele, ind) =>
+              ind === result.data.findIndex((elem) => elem.nro === ele.nro)
+          );
+          setNotified(uniqueIds);
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
+  }, [open]);
+
   return (
-    <AppBar position="static" sx={{ bgcolor: "black" }}>
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <Typography
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-            }}
-          >
-            <img width={40} src={logo} alt="Logo NOARG" />
-          </Typography>
-
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
+    <>
+      <AppBar position="static" sx={{ bgcolor: "black" }}>
+        <Container maxWidth="xl">
+          <Toolbar disableGutters>
+            <Typography
+              noWrap
+              component="a"
+              href="/"
               sx={{
-                display: { xs: "block", md: "none" },
+                mr: 2,
+                display: { xs: "none", md: "flex" },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page.id} onClick={handleCloseNavMenu}>
-                  <Typography key={page.id} textAlign="center">
-                    {page.name}
-                  </Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-          <Typography
-            noWrap
-            component="a"
-            href=""
-            sx={{
-              mr: 2,
-              display: { xs: "flex", md: "none" },
-              flexGrow: 1,
-            }}
-          >
-            <img width={40} src={logo} alt="Logo NOARG" />
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <Link
-              style={{ textDecoration: "none", color: "white" }}
-              to="/inicio"
-            >
-              <Button
-                key="inicio"
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                Inicio
-              </Button>
-            </Link>
+              <img width={40} src={logo} alt="Logo NOARG" />
+            </Typography>
 
-            <Link
-              style={{ textDecoration: "none", color: "white" }}
-              to="/cotizaciones"
-            >
-              <Button
-                key="cotizaciones"
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
+            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleOpenNavMenu}
+                color="inherit"
               >
-                Cotizaciones
-              </Button>
-            </Link>
-
-            <Link
-              style={{ textDecoration: "none", color: "white" }}
-              to="/repuestos"
-            >
-              <Button
-                key="repuestos"
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                Repuestos
-              </Button>
-            </Link>
-
-            <Link
-              style={{ textDecoration: "none", color: "white" }}
-              to="/almacen"
-            >
-              <Button
-                key="almacen"
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                almacen
-              </Button>
-            </Link>
-
-            <Link
-              style={{ textDecoration: "none", color: "white" }}
-              to="/mantenimiento"
-            >
-              <Button
-                key="mantenimiento"
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                Mantenimiento
-              </Button>
-            </Link>
-
-            <Link
-              style={{ textDecoration: "none", color: "white" }}
-              to="/ventas"
-            >
-              <Button
-                key="ventas"
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                Ventas
-              </Button>
-            </Link>
-          </Box>
-
-          <MenuItem>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
-              <Badge badgeContent={5} color="error">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-          </MenuItem>
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Opciones de Perfil">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar sx={{ bgcolor: "green" }}>
-                  {user.userName.substring(0, 1).toUpperCase()}
-                </Avatar>
+                <MenuIcon />
               </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              <Link
-                style={{ textDecoration: "none", color: "black" }}
-                to="/cuenta"
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "left",
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+                sx={{
+                  display: { xs: "block", md: "none" },
+                }}
               >
-                <MenuItem key="1">
-                  <Typography textAlign="center">Cuenta</Typography>
-                </MenuItem>
+                {pages.map((page) => (
+                  <MenuItem key={page.id} onClick={handleCloseNavMenu}>
+                    <Typography key={page.id} textAlign="center">
+                      {page.name}
+                    </Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+            <Typography
+              noWrap
+              component="a"
+              href=""
+              sx={{
+                mr: 2,
+                display: { xs: "flex", md: "none" },
+                flexGrow: 1,
+              }}
+            >
+              <img width={40} src={logo} alt="Logo NOARG" />
+            </Typography>
+            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+              <Link
+                style={{ textDecoration: "none", color: "white" }}
+                to="/inicio"
+              >
+                <Button
+                  key="inicio"
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  Inicio
+                </Button>
               </Link>
-              {user.userName === "JGONZALES" || user.userName === "arturo" &&
+
+              <Link
+                style={{ textDecoration: "none", color: "white" }}
+                to="/cotizaciones"
+              >
+                <Button
+                  key="cotizaciones"
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  Cotizaciones
+                </Button>
+              </Link>
+
+              <Link
+                style={{ textDecoration: "none", color: "white" }}
+                to="/repuestos"
+              >
+                <Button
+                  key="repuestos"
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  Repuestos
+                </Button>
+              </Link>
+
+              <Link
+                style={{ textDecoration: "none", color: "white" }}
+                to="/almacen"
+              >
+                <Button
+                  key="almacen"
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  almacen
+                </Button>
+              </Link>
+
+              <Link
+                style={{ textDecoration: "none", color: "white" }}
+                to="/mantenimiento"
+              >
+                <Button
+                  key="mantenimiento"
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  Mantenimiento
+                </Button>
+              </Link>
+
+              <Link
+                style={{ textDecoration: "none", color: "white" }}
+                to="/ventas"
+              >
+                <Button
+                  key="ventas"
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  Ventas
+                </Button>
+              </Link>
+            </Box>
+
+            {notified && (
+              <MenuItem>
+                <Tooltip title="Notificaciones">
+                  <IconButton
+                    size="large"
+                    aria-label="show 17 new notifications"
+                    color="inherit"
+                    onClick={handleOpenAlertMenu}
+                  >
+                    <Badge
+                      badgeContent={Object.keys(notified).length}
+                      color="error"
+                    >
+                      <NotificationsIcon />
+                    </Badge>
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px", maxHeight: "250px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorAlert}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorAlert)}
+                  onClose={handleCloseAlertMenu}
+                >
+                  {notified.map((n) => (
+                    <>
+                      <MenuItem key={n.nro} onClick={() => handleOpenModal(n)}>
+                        <Typography textAlign="center">
+                          {n.serie + n.nro}
+                        </Typography>
+                      </MenuItem>
+                      <Divider />
+                    </>
+                  ))}
+                </Menu>
+              </MenuItem>
+            )}
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Opciones de Perfil">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar sx={{ bgcolor: "green" }}>
+                    {user.userName.substring(0, 1).toUpperCase()}
+                  </Avatar>
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
                 <Link
                   style={{ textDecoration: "none", color: "black" }}
-                  to="/agregar-usuarios"
+                  to="/cuenta"
                 >
-                  <MenuItem key="2">
-                    <Typography textAlign="center">Agregar Usuarios</Typography>
+                  <MenuItem key="1">
+                    <Typography textAlign="center">Cuenta</Typography>
                   </MenuItem>
                 </Link>
-              }
-              <MenuItem key="3" onClick={logout}>
-                <Typography textAlign="center">Cerrar Sesión</Typography>
-              </MenuItem>
-            </Menu>
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+                {user.userName === "JGONZALES" ||
+                  (user.userName === "arturo" && (
+                    <Link
+                      style={{ textDecoration: "none", color: "black" }}
+                      to="/agregar-usuarios"
+                    >
+                      <MenuItem key="2">
+                        <Typography textAlign="center">
+                          Agregar Usuarios
+                        </Typography>
+                      </MenuItem>
+                    </Link>
+                  ))}
+                <MenuItem key="3" onClick={logout}>
+                  <Typography textAlign="center">Cerrar Sesión</Typography>
+                </MenuItem>
+              </Menu>
+            </Box>
+          </Toolbar>
+        </Container>
+      </AppBar>
+      <ModalNotification open={open} set={setOpen} info={infoSell} />
+    </>
   );
 };
 export default ResponsiveAppBar;

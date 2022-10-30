@@ -21,7 +21,6 @@ const DialogVentasAnular = ({ open, set, data, reload }) => {
         set(false);
     };
 
-    console.log(data)
     // Insertar venta
     let NullData = {
         "fecha": "2022-10-10T20:57:10.880Z",

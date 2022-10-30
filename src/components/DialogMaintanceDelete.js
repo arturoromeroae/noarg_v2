@@ -90,8 +90,8 @@ const DialogMaintanceDelete = ({
           </Button>
           {!load ? (
             <Button onClick={handleDelete} autoFocus>
-            Aceptar
-          </Button>
+              Aceptar
+            </Button>
           ) : (
             <LoadingButton loading></LoadingButton>
           )}

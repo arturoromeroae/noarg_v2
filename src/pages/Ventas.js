@@ -108,8 +108,11 @@ const Ventas = () => {
   const [openPrint, setOpenPrint] = useState(false);
   const [selectedRowNull, setSelectedRowNull] = useState(0);
   const [selectedRowPrint, setSelectedRowPrint] = useState(0);
-  const [valueI, setValueI] = React.useState(dayjs());
-  const [valueF, setValueF] = React.useState(dayjs());
+  const [valueI, setValueI] = useState(dayjs());
+  const [valueF, setValueF] = useState(dayjs());
+  const [users, setUsers] = useState();
+  const [selectedUser, setSelectedUser] = useState(1);
+  const [selectedComprobante, setSelectedComprobante] = useState(1);
 
   let today = new Date();
   let dd = String(today.getDate()).padStart(2, "0");
@@ -135,6 +138,14 @@ const Ventas = () => {
 
   const handleChangeFinal = (newValue) => {
     setValueF(newValue);
+  };
+
+  const handleUser = (e) => {
+    setSelectedUser(e.target.value);
+  };
+
+  const handleComprobante = (e) => {
+    setSelectedComprobante(e.target.value);
   };
 
   const columns = [
@@ -173,7 +184,7 @@ const Ventas = () => {
 
   useEffect(() => {
     fetch(
-      `http://appdemo1.solarc.pe/api/Venta/ConsultaVenta?IdSede=1&TipoComprobante=1&FechaDesde=${today}&FechaHasta=${today}`
+      `http://appdemo1.solarc.pe/api/Venta/ConsultaVenta?IdSede=1&Usuario=1&TipoComprobante=1&FechaDesde=${today}&FechaHasta=${today}`
     )
       .then((res) => res.json())
       .then(
@@ -188,10 +199,21 @@ const Ventas = () => {
           setError(error);
         }
       );
+
+    fetch("http://appdemo1.solarc.pe/api/Account/Usuarios")
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          setUsers(result);
+        },
+        (error) => {
+          setError(error);
+        }
+      );
   }, []);
 
   const getCotizaciones = () => {
-    let url = `http://appdemo1.solarc.pe/api/Venta/ConsultaVenta?IdSede=1&TipoComprobante=1&FechaDesde=${
+    let url = `http://appdemo1.solarc.pe/api/Venta/ConsultaVenta?IdSede=1&Usuario=${selectedUser}&TipoComprobante=${selectedComprobante}&FechaDesde=${
       valueI.$y
     }.${parseInt(valueI.$M) + 1}.${valueI.$D}&FechaHasta=${valueF.$y}.${
       parseInt(valueF.$M) + 1
@@ -283,10 +305,14 @@ const Ventas = () => {
                     id="demo-simple-select"
                     label="Usuario"
                     value={selectedRowNull.modelo}
+                    onChange={handleUser}
                   >
-                    <MenuItem key="{model.id}" value="{model.descripcion}">
-                      test
-                    </MenuItem>
+                    {users &&
+                      users.map((u) => (
+                        <MenuItem key={u.userName} value={u.idUsuario}>
+                          {u.userName}
+                        </MenuItem>
+                      ))}
                   </Select>
                 </FormControl>
                 <FormControl>
@@ -298,9 +324,16 @@ const Ventas = () => {
                     id="demo-simple-select"
                     label="Tipo de Comprobante"
                     value={selectedRowNull.modelo}
+                    onChange={handleComprobante}
                   >
-                    <MenuItem key="{model.id}" value="{model.descripcion}">
-                      test
+                    <MenuItem key="nota" value={1}>
+                      Nota de Venta
+                    </MenuItem>
+                    <MenuItem key="boleta" value={2}>
+                      Boleta de Venta
+                    </MenuItem>
+                    <MenuItem key="factura" value={3}>
+                      Factura
                     </MenuItem>
                   </Select>
                 </FormControl>
