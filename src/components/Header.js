@@ -297,7 +297,7 @@ const ResponsiveAppBar = () => {
                             <>
                               <ListItemAvatar key={n.serie + n.nro}>
                                 <Avatar>
-                                  {n.usuario.substring(0, 1).toUpperCase()}
+                                  {n.usuario ? n.usuario.substring(0, 1).toUpperCase() : "N"}
                                 </Avatar>
                               </ListItemAvatar>
                               <ListItemText
