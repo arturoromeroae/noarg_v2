@@ -51,7 +51,7 @@ const DialogAdd = ({ addProduct, action }) => {
       if (!quantity) {
         prod.cantidad = 1;
       } else {
-        prod.cantidad = quantity;
+        prod.cantidad = parseInt(quantity);
       }
     } else {
       if (!quantity) {
