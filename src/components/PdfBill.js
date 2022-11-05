@@ -222,9 +222,15 @@ const print = (productsCookies, cl, dni, direccion, pay, billNumber, billType, s
   pdf.autoTable({
     margin: { top: 130, left: 5, right: 5 },
     theme: "grid",
-    head: [["Código", "Nombre", "Ubicacion", "Cantidad", "Precio", "Total"]],
+    head: [["Código", "Nombre", "Ubicacion", "Stock", "Precio", "Total"]],
     body: result_table,
-    columnStyles: { halign: "center" },
+    columnStyles: { 
+      halign: "center",
+      0: { cellWidth: 20 },
+      3: { cellWidth: 13 },
+      4: { cellWidth: 15 },
+      5: { cellWidth: 16 } 
+    },
     headStyles: {
       lineColor: [0, 0, 0],
       textColor: [0, 0, 0],
