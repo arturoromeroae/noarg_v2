@@ -6,6 +6,8 @@ const print = (
   productsCookies,
   cl,
   dni,
+  email,
+  referencia,
   direccion,
   pay,
   billNumber,
@@ -107,8 +109,10 @@ const print = (
   // muestra informacion del cliente
   pdf.setFontSize(10);
   dni.length > 0 && pdf.text(20, 50, `Cliente: ${cl} DNI: ${dni}`);
-  ruc.length > 0 && pdf.text(20, 50, `Cliente: ${cl}`);
-  pdf.text(20, 55, `Dirección: ${direccion}`);
+  ruc && ruc.length > 0 && pdf.text(20, 50, `Cliente: ${cl}`);
+  pdf.text(20, 55, `Email: ${email}`);
+  pdf.text(20, 60, `Dirección: ${direccion}`);
+  pdf.text(20, 65, `Referencia: ${referencia}`);
 
   // condicional para ruc y razon social
   if (billType === 1 || billType === 2) {
@@ -119,22 +123,19 @@ const print = (
   } else {
     // Muestra RUC
     pdf.setFontSize(10);
-    pdf.text(20, 65, `RUC: ${ruc}`);
+    pdf.text(20, 75, `RUC: ${ruc}`);
     // Muestra Razon Social
     pdf.setFontSize(10);
-    pdf.text(20, 70, `Razón Social: ${razonSocial}`);
+    pdf.text(20, 80, `Razón Social: ${razonSocial}`);
   }
 
   // muestra la fecha
   pdf.setFontSize(10);
   pdf.text(
     20,
-    60,
+    70,
     `Fecha Emision: ${dd + "/" + mm + "/" + yyyy} Hora: ${time}`
   );
-
-  // Muestra una linea
-  pdf.line(20, 72, 85, 72);
 
   // lista de informacion de la venta
   let info = [];

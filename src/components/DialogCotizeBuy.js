@@ -7,7 +7,6 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import Spinner from "./Spinner";
-import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
@@ -27,9 +26,7 @@ const DialogCotizeBuy = ({ openBuy, actionBuy, dataBuy }) => {
 
   const handleBuy = () => {
     if (cartCotize.length > 0) {
-      Cookies.set("sell", JSON.stringify(cartCotize).toString(), {
-        expires: 0.3,
-      });
+      localStorage.setItem("sell", JSON.stringify(cartCotize).toString());
       navigate("/completar-venta");
     }
   };

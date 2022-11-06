@@ -3,7 +3,6 @@ import Header from "../components/Header";
 import { Navigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { DataGrid } from "@mui/x-data-grid";
-import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import styled from "styled-components";
 import TextField from "@mui/material/TextField";
@@ -29,10 +28,29 @@ import print from "../components/PdfBill";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner";
 import ClientsDni from "../components/ClientsDniAuto";
+import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
+import HomeIcon from '@mui/icons-material/Home';
+import ContactMailTwoToneIcon from '@mui/icons-material/ContactMailTwoTone';
+import PaymentsIcon from '@mui/icons-material/Payments';
+import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 
 const SellContainer = styled.div`
   display: flex;
+  @media (max-width: 800px) {
+    display: inline-block;
+  }
 `;
+
+const TableContainer = styled.div`
+  padding: 20px;
+  height: 730px;
+  width: 55%;
+  @media (max-width: 800px) {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+`
 
 const BillContainer = styled.div`
   margin: 20px;
@@ -45,6 +63,11 @@ const InputsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  @media (max-width: 800px) {
+    display: block;
+    width: 100%;
+    flex-wrap: nowrap;
+  }
 `;
 
 const CompletarVenta = () => {
@@ -62,6 +85,8 @@ const CompletarVenta = () => {
   const [clDni, setClDni] = useState();
   const [cliente, setCliente] = useState();
   const [direccion, setDireccion] = useState();
+  const [referencia, setReferencia] = useState();
+  const [email, setEmail] = useState();
   const [textErrorCl, setTextErrorCl] = useState("");
   const [textErrorPay, setTextErrorPay] = useState("");
   const [customErrorCl, setCustomErrorCl] = useState(false);
@@ -78,7 +103,7 @@ const CompletarVenta = () => {
   const navigate = useNavigate();
 
   // Cookies productos
-  let getSellInfo = Cookies.get("sell");
+  let getSellInfo = localStorage.getItem("sell");
   let productsCookies = getSellInfo && JSON.parse(getSellInfo);
 
   // Cookies usuario
@@ -207,6 +232,14 @@ const CompletarVenta = () => {
     setDireccion(e.target.value);
   };
 
+  const handleChangeReferencia = (e) => {
+    setReferencia(e.target.value);
+  };
+
+  const handleChangeEmail = (e) => {
+    setEmail(e.target.value);
+  };
+
   const handleChangePay = (e) => {
     setPay(e.target.value);
   };
@@ -239,15 +272,13 @@ const CompletarVenta = () => {
 
   const handleDelete = () => {
     if (newProducts) {
-      Cookies.set("sell", JSON.stringify(newProducts).toString(), {
-        expires: 0.3,
-      });
+      localStorage.setItem("sell", JSON.stringify(newProducts).toString());
     }
     setAction(false);
   };
 
   const handleCancelSell = () => {
-    Cookies.remove("sell");
+    localStorage.removeItem("sell");
     navigate("/repuestos");
   };
 
@@ -264,6 +295,8 @@ const CompletarVenta = () => {
           productsCookies,
           cliente,
           dni,
+          email,
+          referencia,
           direccion,
           pay,
           billNumber,
@@ -437,7 +470,7 @@ const CompletarVenta = () => {
     dni: dni,
     apellidos: "",
     nombres: cliente,
-    email: "string",
+    email: email,
     teléfono: "string",
   };
 
@@ -503,7 +536,7 @@ const CompletarVenta = () => {
         .then((response) => response.json())
         .then(() => {
           setLoadingSell(false);
-          Cookies.remove("sell");
+          localStorage.removeItem("sell");
           navigate("/ventas");
         })
         .catch((error) => {
@@ -541,7 +574,7 @@ const CompletarVenta = () => {
         .then((response) => response.json())
         .then(() => {
           setLoadingSell(false);
-          Cookies.remove("sell");
+          localStorage.removeItem("sell");
           navigate("/cotizaciones");
         })
         .catch((error) => {
@@ -563,13 +596,13 @@ const CompletarVenta = () => {
             Emitir Comprobante
           </Typography>
           <SellContainer>
-            <Box sx={{ p: 2, height: 650, width: "55%" }}>
+            <TableContainer>
               <DataGrid
                 getRowId={handleGetRowId}
                 rows={productsCookies}
                 columns={rows}
-                pageSize={10}
-                rowsPerPageOptions={[10]}
+                pageSize={12}
+                rowsPerPageOptions={[12]}
                 disableSelectionOnClick
                 experimentalFeatures={{ newEditingApi: true }}
                 initialState={{
@@ -583,7 +616,7 @@ const CompletarVenta = () => {
                   },
                 }}
               />
-            </Box>
+            </TableContainer>
             <BillContainer>
               <Typography
                 sx={{ mb: 2, textAlign: "center" }}
@@ -598,7 +631,7 @@ const CompletarVenta = () => {
               </p>
               <FormContainer>
                 <InputsContainer>
-                  <FormControl sx={{ m: 2, minWidth: 210 }} required>
+                  <FormControl sx={{ m: 1, minWidth: 210 }} required>
                     <InputLabel id="demo-simple-select-label">
                       Tipo Comprobante
                     </InputLabel>
@@ -624,7 +657,7 @@ const CompletarVenta = () => {
                     </Select>
                   </FormControl>
                   <TextField
-                    sx={{ m: 2 }}
+                    sx={{ m: 1 }}
                     id="outlined-basic"
                     label="Cliente"
                     variant="outlined"
@@ -636,6 +669,13 @@ const CompletarVenta = () => {
                     InputLabelProps={{
                       shrink: true,
                     }}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <ContactMailTwoToneIcon />
+                        </InputAdornment>
+                      ),
+                    }}
                     required
                   />
                   {billType !== 2 && billType !== 3 && (
@@ -643,7 +683,26 @@ const CompletarVenta = () => {
                   )}
                   {billType > 1 && billType < 4 && <Clients getCl={setCl} />}
                   <TextField
-                    sx={{ m: 1, width: 700 }}
+                    sx={{ m: 1 }}
+                    id="outlined-basic"
+                    label="Email"
+                    variant="outlined"
+                    type="email"
+                    onChange={handleChangeEmail}
+                    value={email}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AlternateEmailIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                  <TextField
+                    sx={{ m: 1, width: 435 }}
                     id="outlined-basic"
                     label="Dirección"
                     variant="outlined"
@@ -652,9 +711,34 @@ const CompletarVenta = () => {
                     InputLabelProps={{
                       shrink: true,
                     }}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <HomeIcon />
+                        </InputAdornment>
+                      ),
+                    }}
                   />
                   <TextField
-                    sx={{ m: 2 }}
+                    sx={{ m: 1 }}
+                    id="outlined-basic"
+                    label="Referencia"
+                    variant="outlined"
+                    onChange={handleChangeReferencia}
+                    value={referencia}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AddLocationAltIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                  <TextField
+                    sx={{ m: 1 }}
                     id="outlined-basic"
                     label="Subtotal"
                     variant="outlined"
@@ -662,7 +746,7 @@ const CompletarVenta = () => {
                     disabled
                   />
                   <TextField
-                    sx={{ m: 2 }}
+                    sx={{ m: 1 }}
                     id="outlined-basic"
                     label="Monto a Pagar"
                     variant="outlined"
@@ -671,7 +755,7 @@ const CompletarVenta = () => {
                   />
                   {billType !== 4 && (
                     <TextField
-                      sx={{ m: 2 }}
+                      sx={{ m: 1 }}
                       id="outlined-basic"
                       label="Pagó con soles"
                       variant="outlined"
@@ -679,12 +763,19 @@ const CompletarVenta = () => {
                       helperText={textErrorPay}
                       onChange={handleChangePay}
                       type="number"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <PaymentsIcon />
+                          </InputAdornment>
+                        ),
+                      }}
                       required
                     />
                   )}
                   {billType !== 4 && (
                     <TextField
-                      sx={{ m: 2 }}
+                      sx={{ m: 1 }}
                       id="outlined-basic"
                       label="Vuelto"
                       variant="outlined"
@@ -693,7 +784,7 @@ const CompletarVenta = () => {
                     />
                   )}
                   <TextField
-                    sx={{ m: 2, maxWidth: "210px" }}
+                    sx={{ m: 1, maxWidth: "210px" }}
                     id="input-with-icon-textfield"
                     label="Numero de Factura"
                     value={
@@ -732,14 +823,14 @@ const CompletarVenta = () => {
                 </Typography>
                 <InputsContainer>
                   <TextField
-                    sx={{ m: 2 }}
+                    sx={{ m: 1 }}
                     id="outlined-basic"
                     label="Monto a pagar"
                     variant="outlined"
                     value={sum ? "S/ " + sum.toFixed(2) : 0}
                     disabled
                   />
-                  <FormControl sx={{ m: 2, minWidth: 210 }}>
+                  <FormControl sx={{ m: 1, minWidth: 210 }}>
                     <InputLabel id="demo-simple-select-label">
                       Descuento
                     </InputLabel>
@@ -758,14 +849,14 @@ const CompletarVenta = () => {
                     </Select>
                   </FormControl>
                   <TextField
-                    sx={{ m: 2 }}
+                    sx={{ m: 1 }}
                     id="outlined-basic"
                     label="Monto del descuento"
                     variant="outlined"
                     onChange={handleChangeDiscount}
                   />
                   <TextField
-                    sx={{ m: 2 }}
+                    sx={{ m: 1 }}
                     id="outlined-basic"
                     label="Nuevo precio de venta"
                     variant="outlined"

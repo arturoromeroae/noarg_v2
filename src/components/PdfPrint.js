@@ -108,9 +108,6 @@ const print = (
     `Fecha Emision: ${dd + "/" + mm + "/" + yyyy} Hora: ${time}`
   );
 
-  // Muestra una linea
-  pdf.line(20, 72, 85, 72);
-
   // lista de informacion de la venta
   let info = [];
   let subtotal = (sum / 1.18).toFixed(2);

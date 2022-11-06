@@ -49,7 +49,7 @@ const ClientsDni = ({ getClDni }) => {
       <Autocomplete
         id="asynchronous-demo"
         freeSolo
-        sx={{ m: 2, width: "210px" }}
+        sx={{ m: 1, width: "210px" }}
         open={open}
         onOpen={() => {
           setOpen(true);

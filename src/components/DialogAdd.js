@@ -7,7 +7,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import Cookies from "js-cookie";
 import Button from "@mui/material/Button";
 import defaultImage from "../image/default-image.jpg";
 import ProductsAutoCode from "./ProductsAutoCode";
@@ -22,7 +21,7 @@ const DialogAdd = ({ addProduct, action }) => {
   const [price, setPrice] = useState();
   const [quantity, setQuantity] = useState();
 
-  let getSellInfo = Cookies.get("sell");
+  let getSellInfo = localStorage.getItem("sell");
   let productsCookies = getSellInfo && JSON.parse(getSellInfo);
 
   useEffect(() => {
@@ -62,7 +61,7 @@ const DialogAdd = ({ addProduct, action }) => {
     }
 
     if (prod && foundIndex === -1) {
-      Cookies.set(
+      localStorage.setItem(
         "sell",
         JSON.stringify([...productsCookies, prod]).toString(),
         {
@@ -74,7 +73,7 @@ const DialogAdd = ({ addProduct, action }) => {
       setPrice("");
       setQuantity("");
     } else {
-      Cookies.set("sell", JSON.stringify([...productsCookies]).toString(), {
+      localStorage.setItem("sell", JSON.stringify([...productsCookies]).toString(), {
         expires: 0.3,
       });
       addProduct(false);

@@ -6,7 +6,6 @@ import List from "@mui/material/List";
 import SellTwoToneIcon from "@mui/icons-material/SellTwoTone";
 import Button from "@mui/material/Button";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import Cookies from "js-cookie";
 import Product from "./Product";
 import Typography from "@mui/material/Typography";
 import PropTypes from 'prop-types';
@@ -15,7 +14,7 @@ const Cart = ({ dataCart, dataCount }) => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
 
-  let getSellInfo = Cookies.get("sell");
+  let getSellInfo = localStorage.getItem("sell");
   let productsCookies = getSellInfo && JSON.parse(getSellInfo);
   if (productsCookies) {
     return <Navigate to="/completar-venta" replace />;
@@ -47,9 +46,7 @@ const Cart = ({ dataCart, dataCount }) => {
 
   const handleSaveProd = () => {
     if (products.length > 0) {
-      Cookies.set("sell", JSON.stringify(products).toString(), {
-        expires: 0.3,
-      });
+      localStorage.setItem("sell", JSON.stringify(products).toString());
       navigate("/completar-venta");
     }
   };

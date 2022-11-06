@@ -17,6 +17,8 @@ import CampaignTwoToneIcon from "@mui/icons-material/CampaignTwoTone";
 import Spinner from "./Spinner";
 import Divider from "@mui/material/Divider";
 import LoadingButton from "@mui/lab/LoadingButton";
+import PrintIcon from "@mui/icons-material/Print";
+import print from "../components/PdfPrint";
 
 const style = {
   position: "absolute",
@@ -44,6 +46,22 @@ const ModalNotification = ({ open, set, info }) => {
   const handleClose = () => {
     set(false);
     setIsLoaded(false);
+  };
+
+  const handlePrintPdf = () => {
+    console.log(items);
+    print(
+      items,
+      info.razonSocial,
+      0,
+      info.serie + info.nro,
+      "VENTA",
+      info.total,
+      0,
+      info.rucCliente,
+      info.razonSocial
+    );
+    console.log(items)
   };
 
   const handleDismissNotification = () => {
@@ -153,10 +171,17 @@ const ModalNotification = ({ open, set, info }) => {
                   Cerrar
                 </Button>
                 <Button
+                  endIcon={<PrintIcon />}
+                  onClick={handlePrintPdf}
+                  color="secondary"
+                >
+                  Imprimir PDF
+                </Button>
+                <Button
                   endIcon={<NotificationsOffIcon />}
                   onClick={handleDismissNotification}
                 >
-                  Marcar como leido
+                  Marcar leido
                 </Button>
               </>
             ) : (
