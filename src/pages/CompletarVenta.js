@@ -472,6 +472,7 @@ const CompletarVenta = () => {
     nombres: cliente,
     email: email,
     teléfono: "string",
+    referencia: referencia
   };
 
   let clienteDni = null;
