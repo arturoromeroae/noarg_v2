@@ -119,7 +119,7 @@ const Ventas = () => {
   let mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
   let yyyy = today.getFullYear();
 
-  today = yyyy + "/" + mm + "/" + dd;
+  today = dd + "/" + mm + "/" + yyyy;
 
   const handleClickOpenNull = (params) => {
     setOpenNull(true);
@@ -184,7 +184,7 @@ const Ventas = () => {
 
   useEffect(() => {
     fetch(
-      `http://appdemo1.solarc.pe/api/Venta/ConsultaVenta?IdSede=1&Usuario=1&TipoComprobante=1&FechaDesde=${today}&FechaHasta=${today}`
+      `http://appdemo1.solarc.pe/api/Venta/ConsultaVenta?IdSede=1&Usuario=JGONZALES&TipoComprobante=1&FechaDesde=${today}&FechaHasta=${today}`
     )
       .then((res) => res.json())
       .then(
@@ -213,11 +213,17 @@ const Ventas = () => {
   }, []);
 
   const getCotizaciones = () => {
-    let url = `http://appdemo1.solarc.pe/api/Venta/ConsultaVenta?IdSede=1&Usuario=${selectedUser}&TipoComprobante=${selectedComprobante}&FechaDesde=${
-      valueI.$y
-    }.${parseInt(valueI.$M) + 1}.${valueI.$D}&FechaHasta=${valueF.$y}.${
-      parseInt(valueF.$M) + 1
-    }.${valueF.$D}`;
+    let url = ""
+    if (selectedComprobante !== 4) {
+      url = `http://appdemo1.solarc.pe/api/Venta/ConsultaVenta?IdSede=1&Usuario=${selectedUser}&TipoComprobante=${selectedComprobante}&FechaDesde=${valueI.$y
+        }.${parseInt(valueI.$M) + 1}.${valueI.$D}&FechaHasta=${valueF.$y}.${parseInt(valueF.$M) + 1
+        }.${valueF.$D}`;
+    } else {
+      url = `http://appdemo1.solarc.pe/api/Cotiza/ConsultaCotiza?IdSede=1&Usuario=${selectedUser}&TipoComprobante=${selectedComprobante}&FechaDesde=${valueI.$y
+        }.${parseInt(valueI.$M) + 1}.${valueI.$D}&FechaHasta=${valueF.$y}.${parseInt(valueF.$M) + 1
+        }.${valueF.$D}`;
+    }
+
     fetch(url)
       .then((res) => res.json())
       .then(
@@ -309,7 +315,7 @@ const Ventas = () => {
                   >
                     {users &&
                       users.map((u) => (
-                        <MenuItem key={u.userName} value={u.idUsuario}>
+                        <MenuItem key={u.userName} value={u.userName}>
                           {u.userName}
                         </MenuItem>
                       ))}
@@ -334,6 +340,9 @@ const Ventas = () => {
                     </MenuItem>
                     <MenuItem key="factura" value={3}>
                       Factura
+                    </MenuItem>
+                    <MenuItem key="cotizacion" value={4}>
+                      Cotizaciones
                     </MenuItem>
                   </Select>
                 </FormControl>

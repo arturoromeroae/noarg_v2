@@ -19,6 +19,7 @@ import Box from "@mui/material/Box";
 import SuccessAlert from "../components/SuccessAlert";
 import ErrorAlert from "../components/ErrorAlert";
 import DialogAlmacenExcel from "../components/DialogAlmacenExcel";
+import Cookies from "js-cookie";
 
 function QuickSearchToolbar() {
   return (
@@ -54,6 +55,15 @@ const Almacen = () => {
   const [successCreated, setSuccessCreated] = useState(false);
   const [errorCreated, setErrorCreated] = useState(false);
   const [textAlert, setTextAlert] = useState();
+  const [hideCol, setHideCol] = useState();
+
+  let getUserInfo = Cookies.get('user');
+  let user = getUserInfo && JSON.parse(getUserInfo);
+  let currentUser = user.userName;
+  
+  useEffect(() => {
+    currentUser === 'arturo' || currentUser === 'JGONZALES' ? setHideCol(false) : setHideCol(true);
+  }, [])
 
   const handleClickOpen = (params) => {
     setOpenEdit(true);
@@ -83,7 +93,7 @@ const Almacen = () => {
     { field: "nombreProducto", headerName: "Producto", width: 450 },
     { field: "descripcion", headerName: "Descripcion", width: 470 },
     { field: "stock", headerName: "Cantidad", width: 100 },
-    { field: "precioBase", headerName: "P. Base", width: 90 },
+    { field: "precioBase", headerName: "P. Base", width: 90, hide: hideCol },
     { field: "precioVenta", headerName: "P. Venta", width: 90 },
     { field: "marca", headerName: "Marca", width: 100 },
     { field: "modelo", headerName: "Modelo", width: 100 },

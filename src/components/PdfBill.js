@@ -108,11 +108,11 @@ const print = (
 
   // muestra informacion del cliente
   pdf.setFontSize(10);
-  dni.length > 0 && pdf.text(20, 50, `Cliente: ${cl} DNI: ${dni}`);
+  dni.length > 0 && pdf.text(20, 50, `Cliente: ${cl} \nDNI: ${dni}`);
   ruc && ruc.length > 0 && pdf.text(20, 50, `Cliente: ${cl}`);
-  pdf.text(20, 55, `Email: ${email}`);
-  pdf.text(20, 60, `Dirección: ${direccion}`);
-  pdf.text(20, 65, `Referencia: ${referencia}`);
+  pdf.text(20, 60, `Email: ${email ? email : ""}`);
+  pdf.text(20, 65, `Dirección: ${direccion ? direccion : ""}`);
+  pdf.text(20, 70, `Referencia: ${referencia ? referencia : ""}`);
 
   // condicional para ruc y razon social
   if (billType === 1 || billType === 2) {
@@ -133,7 +133,7 @@ const print = (
   pdf.setFontSize(10);
   pdf.text(
     20,
-    70,
+    75,
     `Fecha Emision: ${dd + "/" + mm + "/" + yyyy} Hora: ${time}`
   );
 

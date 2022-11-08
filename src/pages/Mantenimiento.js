@@ -20,6 +20,7 @@ import DialogMaintanceAddModel from "../components/DialogMaintanceAddModel";
 import DialogMaintanceAddBrand from "../components/DialogMaintanceAddBrand";
 import DialogMaintanceEditModel from "../components/DialogMaintanceEditModel";
 import DialogMaintanceEditBrand from "../components/DialogMaintanceEditBrand";
+import Cookies from "js-cookie";
 import Box from "@mui/material/Box";
 
 function QuickSearchToolbar() {
@@ -58,11 +59,22 @@ const Mantenimiento = () => {
   const [successCreated, setSuccessCreated] = useState(false);
   const [errorCreated, setErrorCreated] = useState(false);
   const [textAlert, setTextAlert] = useState();
+  const [hideCol, setHideCol] = useState();
+
+  let getUserInfo = Cookies.get('user');
+  let user = getUserInfo && JSON.parse(getUserInfo);
+  let currentUser = user.userName;
+  
+  useEffect(() => {
+    currentUser === 'arturo' || currentUser === 'JGONZALES' ? setHideCol(false) : setHideCol(true);
+  }, [])
 
   const handleClickOpenEdit = (params) => {
     setOpen(true);
     setSelectedRow(params);
   };
+
+  console.log(hideCol)
 
   const handleClickOpenDelete = (params) => {
     setOpenDelete(true);
@@ -95,7 +107,10 @@ const Mantenimiento = () => {
     { field: "nombreProducto", headerName: "Producto", width: 450 },
     { field: "descripcion", headerName: "Descripcion", width: 475 },
     { field: "stock", headerName: "Cantidad", width: 100 },
-    { field: "precioBase", headerName: "P. Base", width: 90 },
+    {
+      field: "precioBase", headerName: "P. Base", width: 90,
+      hide: hideCol
+    },
     { field: "precioVenta", headerName: "P. Venta", width: 90 },
     { field: "marca", headerName: "Marca", width: 100 },
     { field: "modelo", headerName: "Modelo", width: 100 },
