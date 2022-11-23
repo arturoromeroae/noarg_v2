@@ -97,8 +97,7 @@ const Cuenta = () => {
         >
           Eliminar Usuario
         </Button>
-        {user.userName === "JGONZALES" ||
-          (user.userName === "arturo" && (
+        {(user.userName === "JGONZALES" && (
             <Button
               variant="contained"
               startIcon={<PeopleAltTwoToneIcon />}

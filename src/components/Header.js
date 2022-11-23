@@ -354,19 +354,18 @@ const ResponsiveAppBar = () => {
                     <Typography textAlign="center">Cuenta</Typography>
                   </MenuItem>
                 </Link>
-                {user.userName === "JGONZALES" ||
-                  (user.userName === "arturo" && (
-                    <Link
-                      style={{ textDecoration: "none", color: "black" }}
-                      to="/agregar-usuarios"
-                    >
-                      <MenuItem key="2">
-                        <Typography textAlign="center">
-                          Agregar Usuarios
-                        </Typography>
-                      </MenuItem>
-                    </Link>
-                  ))}
+                {(user.userName === "JGONZALES" && (
+                  <Link
+                    style={{ textDecoration: "none", color: "black" }}
+                    to="/agregar-usuarios"
+                  >
+                    <MenuItem key="2">
+                      <Typography textAlign="center">
+                        Agregar Usuarios
+                      </Typography>
+                    </MenuItem>
+                  </Link>
+                ))}
                 <MenuItem key="3" onClick={logout}>
                   <Typography textAlign="center">Cerrar Sesión</Typography>
                 </MenuItem>
