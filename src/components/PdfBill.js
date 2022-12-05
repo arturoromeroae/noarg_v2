@@ -12,7 +12,7 @@ const print = (
   pay,
   billNumber,
   billType,
-  sum,
+  montoPagar,
   discount,
   ruc,
   razonSocial
@@ -36,8 +36,8 @@ const print = (
   let time = h + ":" + m + ":" + s;
 
   let infoBill = [];
-  let total = sum.toFixed(2);
-  let subtotal = (sum / 1.18).toFixed(2);
+  let total = montoPagar;
+  let subtotal = (montoPagar / 1.18).toFixed(2);
   let igv = (subtotal * 0.18).toFixed(2);
   const pdf = new jsPDF("p", "mm", "a4");
   // eslint-disable-next-line no-undef

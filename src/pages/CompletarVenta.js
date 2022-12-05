@@ -35,6 +35,7 @@ import ContactMailTwoToneIcon from "@mui/icons-material/ContactMailTwoTone";
 import PaymentsIcon from "@mui/icons-material/Payments";
 import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 import FaceRetouchingNaturalTwoToneIcon from "@mui/icons-material/FaceRetouchingNaturalTwoTone";
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 
 const SellContainer = styled.div`
   display: flex;
@@ -101,8 +102,9 @@ const CompletarVenta = () => {
   const [ruc, setRuc] = useState();
   const [dni, setDni] = useState();
   const [razonSocial, setRazonSocial] = useState();
+  const [typeDiscount, setTypeDiscount] = useState();
   const [tipoCl, setTipoCl] = useState(0);
-  const selectedRow = "";
+  const [montoPagar, setMontoPagar] = useState(0);
   const navigate = useNavigate();
 
   // Cookies productos
@@ -225,6 +227,10 @@ const CompletarVenta = () => {
     sum += element.cantidad * element.precioVenta;
   });
 
+  useEffect(() => {
+    setMontoPagar(sum);
+  }, [])
+  
   const handleGetRowId = (e) => {
     return e.idProducto;
   };
@@ -250,7 +256,19 @@ const CompletarVenta = () => {
   };
 
   const handleChangeDiscount = (e) => {
-    setDiscount(e.target.value);
+    if (typeDiscount == 0) {
+      setDiscount((sum - parseFloat(e.target.value)).toFixed(2));
+    } else {
+      setDiscount((sum - (sum * parseFloat(e.target.value)) / 100).toFixed(2));
+    }
+  };
+
+  const handlePrice = () => {
+    setMontoPagar(discount);
+  };
+
+  const handleChangeTypeDiscount = (e) => {
+    setTypeDiscount(e.target.value);
   };
 
   const handleActionModal = (action) => {
@@ -318,7 +336,7 @@ const CompletarVenta = () => {
           pay,
           billNumber,
           billType,
-          sum,
+          montoPagar,
           discount,
           ruc,
           razonSocial
@@ -761,7 +779,7 @@ const CompletarVenta = () => {
                     id="outlined-basic"
                     label="Subtotal"
                     variant="outlined"
-                    value={sum ? "S/ " + (sum / 1.18).toFixed(2) : 0}
+                    value={montoPagar ? "S/ " + (montoPagar / 1.18).toFixed(2) : 0}
                     disabled
                   />
                   <TextField
@@ -769,7 +787,7 @@ const CompletarVenta = () => {
                     id="outlined-basic"
                     label="Monto a Pagar"
                     variant="outlined"
-                    value={sum ? "S/ " + sum.toFixed(2) : 0}
+                    value={montoPagar ? "S/ " + montoPagar : 0}
                     disabled
                   />
                   {billType !== 4 && (
@@ -798,7 +816,7 @@ const CompletarVenta = () => {
                       id="outlined-basic"
                       label="Vuelto"
                       variant="outlined"
-                      value={pay ? "S/ " + (pay - sum).toFixed(2) : "S/ " + 0}
+                      value={pay ? "S/ " + (pay - montoPagar).toFixed(2) : "S/ " + 0}
                       disabled
                     />
                   )}
@@ -855,7 +873,7 @@ const CompletarVenta = () => {
                     id="outlined-basic"
                     label="Monto a pagar"
                     variant="outlined"
-                    value={sum ? "S/ " + sum.toFixed(2) : 0}
+                    value={montoPagar ? "S/ " + montoPagar : 0}
                     disabled
                   />
                   <FormControl sx={{ m: 1, minWidth: 210 }}>
@@ -866,12 +884,12 @@ const CompletarVenta = () => {
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       label="Descuento"
-                      value={selectedRow.modelo}
+                      onChange={handleChangeTypeDiscount}
                     >
-                      <MenuItem key="{model.id}" value="0">
+                      <MenuItem key="sol" value="0">
                         S/
                       </MenuItem>
-                      <MenuItem key="{model.id}" value="1">
+                      <MenuItem key="percent" value="1">
                         %
                       </MenuItem>
                     </Select>
@@ -888,7 +906,21 @@ const CompletarVenta = () => {
                     id="outlined-basic"
                     label="Nuevo precio de venta"
                     variant="outlined"
+                    value={discount ? discount : 0}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    disabled
                   />
+                  <Button
+                    sx={{ width: "200px", height: "50px", p: 0, m: 1 }}
+                    variant="outlined"
+                    color="warning"
+                    endIcon={<LocalOfferIcon />}
+                    onClick={handlePrice}
+                  >
+                    Aplicar descuento
+                  </Button>
                 </InputsContainer>
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   <Button
