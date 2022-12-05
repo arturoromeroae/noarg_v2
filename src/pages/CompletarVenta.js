@@ -17,6 +17,7 @@ import Divider from "@mui/material/Divider";
 import ReceiptLongTwoToneIcon from "@mui/icons-material/ReceiptLongTwoTone";
 import MoneyOffTwoToneIcon from "@mui/icons-material/MoneyOffTwoTone";
 import DialogAdd from "../components/DialogAdd";
+import DialogClient from "../components/DialogClients";
 import CreditCardTwoToneIcon from "@mui/icons-material/CreditCardTwoTone";
 import InputAdornment from "@mui/material/InputAdornment";
 import PointOfSaleRoundedIcon from "@mui/icons-material/PointOfSaleRounded";
@@ -28,11 +29,12 @@ import print from "../components/PdfBill";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner";
 import ClientsDni from "../components/ClientsDniAuto";
-import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
-import HomeIcon from '@mui/icons-material/Home';
-import ContactMailTwoToneIcon from '@mui/icons-material/ContactMailTwoTone';
-import PaymentsIcon from '@mui/icons-material/Payments';
-import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
+import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
+import HomeIcon from "@mui/icons-material/Home";
+import ContactMailTwoToneIcon from "@mui/icons-material/ContactMailTwoTone";
+import PaymentsIcon from "@mui/icons-material/Payments";
+import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
+import FaceRetouchingNaturalTwoToneIcon from "@mui/icons-material/FaceRetouchingNaturalTwoTone";
 
 const SellContainer = styled.div`
   display: flex;
@@ -50,7 +52,7 @@ const TableContainer = styled.div`
     padding: 0;
     margin: 0;
   }
-`
+`;
 
 const BillContainer = styled.div`
   margin: 20px;
@@ -74,6 +76,7 @@ const CompletarVenta = () => {
   const [pay, setPay] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [openModal, setOpenModal] = useState(false);
+  const [openModalClient, setOpenModalClient] = useState(false);
   const [billType, setBillType] = useState();
   const [billNumber, setBillNumber] = useState();
   const [loading, setLoading] = useState(false);
@@ -139,6 +142,7 @@ const CompletarVenta = () => {
       setRazonSocial(cl.razonSocial);
       setCliente(cl.razonSocial);
       setDireccion(cl.direccion);
+      setClDni("");
     } else if (clDni && clDni.dni) {
       setDni(clDni.dni);
       setRuc("");
@@ -146,6 +150,7 @@ const CompletarVenta = () => {
       setRazonSocial(clDni.razonSocial);
       setCliente(clDni.nombres);
       setDireccion(clDni.direccion);
+      setCl("");
     } else {
       if (clDni) {
         setCliente(cliente);
@@ -253,6 +258,18 @@ const CompletarVenta = () => {
       setOpenModal(true);
     } else {
       setOpenModal(false);
+    }
+  };
+
+  const handleActionModalClient = (action) => {
+    if (action === "open") {
+      setOpenModalClient(true);
+      setCl("");
+      setClDni("");
+    } else {
+      setOpenModalClient(false);
+      setCl("");
+      setClDni("");
     }
   };
 
@@ -472,16 +489,17 @@ const CompletarVenta = () => {
     nombres: cliente,
     email: email,
     teléfono: "string",
-    referencia: referencia
+    referencia: referencia,
   };
 
   let clienteDni = null;
 
   useEffect(() => {
     if (billType !== 4 && cart) {
-      
       if (typeof cl === "object") {
-        clienteDni = clientsCompare.findIndex((cp) => cp.rucCliente === cl.rucCliente);
+        clienteDni = clientsCompare.findIndex(
+          (cp) => cp.rucCliente === cl.rucCliente
+        );
       }
 
       if (typeof clDni === "object") {
@@ -495,7 +513,7 @@ const CompletarVenta = () => {
       if (clDni && typeof clDni === "string") {
         clienteDni = clientsCompare.findIndex((cp) => cp.dni === clDni);
       }
-      
+
       // Enviar email venta
       fetch("http://appdemo1.solarc.pe/api/Venta/EnviarEmail", {
         method: "POST", // or 'PUT'
@@ -811,6 +829,15 @@ const CompletarVenta = () => {
                   >
                     Agregar productos
                   </Button>
+                  <Button
+                    sx={{ width: "200px", height: "50px", p: 0, m: 2 }}
+                    variant="outlined"
+                    endIcon={<FaceRetouchingNaturalTwoToneIcon />}
+                    onClick={() => handleActionModalClient("open")}
+                    color="secondary"
+                  >
+                    Actualizar clientes
+                  </Button>
                 </InputsContainer>
                 <Divider sx={{ marginTop: "20px" }} />
                 <Typography
@@ -888,6 +915,10 @@ const CompletarVenta = () => {
           </SellContainer>
 
           <DialogAdd addProduct={handleActionModal} action={openModal} />
+          <DialogClient
+            close={handleActionModalClient}
+            action={openModalClient}
+          />
           <DialogAlert
             deleteProduct={handleDelete}
             action={action}

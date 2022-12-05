@@ -31,6 +31,7 @@ const pages = [
   { id: 4, name: "Almacen" },
   { id: 5, name: "Mantenimiento" },
   { id: 6, name: "Ventas" },
+  { id: 7, name: "Clientes" },
 ];
 // const settings = ["Perfil", "Agregar Usuarios", "Cerrar Sesión"];
 
@@ -249,6 +250,19 @@ const ResponsiveAppBar = () => {
                   sx={{ my: 2, color: "white", display: "block" }}
                 >
                   Ventas
+                </Button>
+              </Link>
+
+              <Link
+                style={{ textDecoration: "none", color: "white" }}
+                to="/clientes"
+              >
+                <Button
+                  key="clientes"
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  Clientes
                 </Button>
               </Link>
             </Box>

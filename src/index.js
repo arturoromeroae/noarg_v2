@@ -12,6 +12,7 @@ import Ventas from "./pages/Ventas";
 import CompletarVenta from "./pages/CompletarVenta";
 import Cuenta from "./pages/Cuenta";
 import AgregarUsuarios from "./pages/AgregarUsuarios";
+import Clientes from "./pages/Clientes";
 
 // app test
 
@@ -29,6 +30,7 @@ root.render(
         <Route path="/almacen" element={<Almacen />} />
         <Route path="/mantenimiento" element={<Mantenimiento />} />
         <Route path="/ventas" element={<Ventas />} />
+        <Route path="/clientes" element={<Clientes />} />
         <Route path="/cuenta" element={<Cuenta />} />
         <Route path="/agregar-usuarios" element={<AgregarUsuarios />} />
       </Routes>
