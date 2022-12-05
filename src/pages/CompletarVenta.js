@@ -344,7 +344,7 @@ const CompletarVenta = () => {
         setData({
           usuario: user.userName,
           idOrigen: 0,
-          total: (sum * 1.18).toFixed(2),
+          total: (montoPagar * 1.18).toFixed(2),
           carritoDet: productsCookies,
         });
       } else if (!cliente) {
@@ -365,7 +365,7 @@ const CompletarVenta = () => {
           pay,
           billNumber,
           billType,
-          sum,
+          montoPagar,
           discount,
           ruc,
           razonSocial
@@ -373,7 +373,7 @@ const CompletarVenta = () => {
         setData({
           usuario: user.userName,
           idOrigen: 0,
-          total: sum.toFixed(2),
+          total: montoPagar,
           carritoDet: productsCookies,
         });
       } else if (!cl || cliente === "") {
@@ -445,13 +445,13 @@ const CompletarVenta = () => {
     fecha: `${yyyy}-${mm}-${dd}T${time}`,
     idCliente: 1,
     tipoVenta: billType,
-    subTotal: sum,
-    igv: sum * 0.18,
-    total: sum,
-    vuelto: pay - sum,
+    subTotal: montoPagar,
+    igv: montoPagar * 0.18,
+    total: montoPagar,
+    vuelto: pay - montoPagar,
     porcDscto: 0,
     valorDscto: 0,
-    valorVenta: sum,
+    valorVenta: montoPagar,
     idSede: 1,
     idPedCab: idCab,
     usuario: `${user.userName}`,
@@ -466,13 +466,13 @@ const CompletarVenta = () => {
     fecha: `${yyyy}-${mm}-${dd}T${time}`,
     idCliente: 1,
     tipoVenta: billType,
-    subTotal: sum,
-    igv: sum * 0.18,
-    total: sum,
-    vuelto: pay - sum,
+    subTotal: montoPagar,
+    igv: montoPagar * 0.18,
+    total: montoPagar,
+    vuelto: pay - montoPagar,
     porcDscto: 0,
     valorDscto: 0,
-    valorVenta: sum,
+    valorVenta: montoPagar,
     idSede: 1,
     idPedCab: idCab,
     usuario: `${user.userName}`,
@@ -489,9 +489,9 @@ const CompletarVenta = () => {
     cliente: cl,
     fecha: `${yyyy}-${mm}-${dd}T${time}`,
     documento: dni ? dni : ruc,
-    subTotal: sum / 1.18,
+    subTotal: montoPagar / 1.18,
     igv: 0,
-    total: sum,
+    total: montoPagar,
     emailDet: cart,
   };
 
@@ -900,6 +900,7 @@ const CompletarVenta = () => {
                     label="Monto del descuento"
                     variant="outlined"
                     onChange={handleChangeDiscount}
+                    disabled={typeDiscount >= 0 ? false : true}
                   />
                   <TextField
                     sx={{ m: 1 }}
