@@ -127,7 +127,7 @@ const DialogAdd = ({ close, action, client }) => {
   // Actualizar cliente
   useEffect(() => {
     if (infoClient) {
-      fetch("http://appdemo1.solarc.pe/api/Carrito/InsertaCarrito", {
+      fetch("http://appdemo1.solarc.pe/api/Cliente/ActualizarCliente", {
         method: "POST", // or 'PUT'
         headers: {
           "Content-Type": "application/json",
