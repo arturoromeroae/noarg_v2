@@ -9,6 +9,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import LoadingSpinner from "../components/LoadingSpinner";
 import DialogClientsEdit from "../components/DialogClientsEdit";
 import DialogClientsDelete from "../components/DialogClientsDelete";
+import DialogClientsAdd from "../components/DialogClientsAdd";
+import Button from '@mui/material/Button';
+import PersonAddAlt1TwoToneIcon from '@mui/icons-material/PersonAddAlt1TwoTone';
 
 function QuickSearchToolbar() {
   return (
@@ -36,16 +39,21 @@ const Clientes = () => {
   const [items, setItems] = useState([]);
   const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+  const [openAdd, setOpenAdd] = useState(false);
   const [data, setData] = useState([]);
 
   const handleClickOpen = (params) => {
     setData(params);
-    setOpen(true)
+    setOpen(true);
   };
 
   const handleClickOpenDelete = (params) => {
     setOpenDelete(true);
     setData(params);
+  };
+
+  const handleClickOpenAdd = () => {
+    setOpenAdd(true);
   };
 
   const columns = [
@@ -157,10 +165,18 @@ const Clientes = () => {
               },
             }}
           />
+          <Button variant="contained" endIcon={<PersonAddAlt1TwoToneIcon />} sx={{ margin: 3 }} onClick={() => handleClickOpenAdd()}>
+            Agregar Cliente
+          </Button>
         </div>
 
         <DialogClientsEdit action={open} close={setOpen} client={data} />
-        <DialogClientsDelete open={openDelete} set={setOpenDelete} data={data} />
+        <DialogClientsDelete
+          open={openDelete}
+          set={setOpenDelete}
+          data={data}
+        />
+        <DialogClientsAdd action={openAdd} close={setOpenAdd} client={data} />
       </>
     );
   }

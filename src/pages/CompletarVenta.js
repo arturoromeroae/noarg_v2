@@ -35,7 +35,7 @@ import ContactMailTwoToneIcon from "@mui/icons-material/ContactMailTwoTone";
 import PaymentsIcon from "@mui/icons-material/Payments";
 import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 import FaceRetouchingNaturalTwoToneIcon from "@mui/icons-material/FaceRetouchingNaturalTwoTone";
-import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 
 const SellContainer = styled.div`
   display: flex;
@@ -229,8 +229,12 @@ const CompletarVenta = () => {
 
   useEffect(() => {
     setMontoPagar(sum);
-  }, [])
-  
+  }, []);
+
+  useEffect(() => {
+    setMontoPagar(sum);
+  }, [openModal, action]);
+
   const handleGetRowId = (e) => {
     return e.idProducto;
   };
@@ -779,7 +783,9 @@ const CompletarVenta = () => {
                     id="outlined-basic"
                     label="Subtotal"
                     variant="outlined"
-                    value={montoPagar ? "S/ " + (montoPagar / 1.18).toFixed(2) : 0}
+                    value={
+                      montoPagar ? "S/ " + (montoPagar / 1.18).toFixed(2) : 0
+                    }
                     disabled
                   />
                   <TextField
@@ -816,7 +822,9 @@ const CompletarVenta = () => {
                       id="outlined-basic"
                       label="Vuelto"
                       variant="outlined"
-                      value={pay ? "S/ " + (pay - montoPagar).toFixed(2) : "S/ " + 0}
+                      value={
+                        pay ? "S/ " + (pay - montoPagar).toFixed(2) : "S/ " + 0
+                      }
                       disabled
                     />
                   )}
