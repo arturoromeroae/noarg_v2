@@ -155,6 +155,7 @@ const print = (
   const result_table = [];
   for (let x = 0; x < productsCookies.length; x++) {
     let name = [
+      x + 1,
       productsCookies[x].codProd,
       productsCookies[x].nombreProducto,
       productsCookies[x].ubicacion,
@@ -177,7 +178,8 @@ const print = (
     body: result_table,
     columnStyles: {
       halign: "center",
-      0: { cellWidth: 20 },
+      0: { cellWidth: 6 },
+      1: { cellWidth: 20 },
       3: { cellWidth: 13 },
       4: { cellWidth: 15 },
       5: { cellWidth: 16 },
