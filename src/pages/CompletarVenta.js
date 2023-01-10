@@ -793,7 +793,7 @@ const CompletarVenta = () => {
                     id="outlined-basic"
                     label="Monto a Pagar"
                     variant="outlined"
-                    value={montoPagar ? "S/ " + montoPagar : 0}
+                    value={montoPagar ? "S/ " + montoPagar.toFixed(2) : 0}
                     disabled
                   />
                   {billType !== 4 && (
@@ -881,7 +881,7 @@ const CompletarVenta = () => {
                     id="outlined-basic"
                     label="Monto a pagar"
                     variant="outlined"
-                    value={montoPagar ? "S/ " + montoPagar : 0}
+                    value={montoPagar ? "S/ " + montoPagar.toFixed(2) : 0}
                     disabled
                   />
                   <FormControl sx={{ m: 1, minWidth: 210 }}>

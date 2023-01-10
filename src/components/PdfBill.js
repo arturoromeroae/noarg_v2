@@ -152,7 +152,7 @@ const print = (
         igv +
         "\n" +
         "Importe Total: S/ " +
-        total,
+        total.toFixed(2),
     ];
   } else {
     info = [
@@ -167,7 +167,7 @@ const print = (
         igv +
         "\n" +
         "Importe Total: S/ " +
-        total +
+        total.toFixed(2) +
         "\n" +
         "Pago con:       S/ " +
         pay +
