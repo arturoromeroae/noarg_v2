@@ -40,8 +40,13 @@ const DialogVentasImprimir = ({
       let discount = 0;
       let ruc = "";
       let razonSocial = "";
+
+      const completeSell = [...cartPrint];
+
+      // Ordenar alfabeticamente
+      completeSell.sort((a, b) => a.codProd.localeCompare(b.codProd));
       print(
-        (productsCookies = cartPrint),
+        (productsCookies = completeSell),
         (cl = dataPrint.razonSocial),
         (pay = 0),
         (billNumber = dataPrint.numero),

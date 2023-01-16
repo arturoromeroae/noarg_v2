@@ -327,11 +327,16 @@ const CompletarVenta = () => {
     setTextErrorCl("");
     setTextErrorPay("");
 
+    const completeSell = [...productsCookies];
+
+    // Ordenar alfabeticamente
+    completeSell.sort((a, b) => a.codProd.localeCompare(b.codProd));
+
     if (billType !== 4) {
       if (cliente && pay) {
         setLoadingSell(true);
         print(
-          productsCookies,
+          completeSell,
           cliente,
           dni,
           email,

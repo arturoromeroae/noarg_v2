@@ -174,7 +174,7 @@ const print = (
   pdf.autoTable({
     margin: { top: 85, left: 3, right: 3 },
     theme: "grid",
-    head: [["Código", "Nombre", "Ubicacion", "Cant.", "Precio", "Total"]],
+    head: [["#","Código", "Nombre", "Ubicacion", "Cant.", "Precio", "Total"]],
     body: result_table,
     columnStyles: {
       halign: "center",
