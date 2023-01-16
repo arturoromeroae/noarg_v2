@@ -123,9 +123,7 @@ const print = (
         "\n" +
         "IGV 18%:        S/ " +
         igv +
-        "\n" +
-        "Importe Total: S/ " +
-        sum,
+        "\n"
     ];
   } else {
     info = [
@@ -138,10 +136,7 @@ const print = (
         "\n" +
         "IGV 18%:        S/ " +
         igv +
-        "\n" +
-        "Importe Total: S/ " +
-        sum +
-        "\n" +
+        "\n \n" +
         "Pago con:       S/ " +
         pay +
         "\n" +
@@ -230,8 +225,14 @@ const print = (
   pdf.rect(163, finalY, 44, 25, "FD");
 
   // Muestra: Monto a pagar, Descuento, Total a pagar, Pago con, Vuelto.
+  pdf.setFontSize(9);
+  pdf.setFont('helvetica', 'bold')
+  pdf.setTextColor(255, 0, 0);
+  pdf.text(165, finalY + 15, `Importe Total: S/ ${sum}`);
   pdf.setFontSize(8);
-  pdf.text(170, finalY + 2, `${infoBill.join("")}`);
+  pdf.setFont('helvetica', 'normal')
+  pdf.setTextColor(0, 0, 0);
+  pdf.text(165, finalY + 2, `${infoBill.join("")}`);
 
   pdf.save(`venta-${billNumber}`);
 };
