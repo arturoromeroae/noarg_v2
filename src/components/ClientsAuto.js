@@ -4,7 +4,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import CircularProgress from "@mui/material/CircularProgress";
 import PropTypes from "prop-types";
 
-const Clients = ({ getCl }) => {
+const ClientsAuto = ({ getCl }) => {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const loading = open && options.length === 0;
@@ -60,14 +60,14 @@ const Clients = ({ getCl }) => {
         isOptionEqualToValue={(option, value) =>
           option.rucCliente === value.rucCliente
         }
-        getOptionLabel={(option) => option.rucCliente}
+        getOptionLabel={(option) => option.filtro}
         onChange={(event, value) => getCl(value)}
         options={options}
         loading={loading}
         renderInput={(params) => (
           <TextField
             {...params}
-            label="RUC"
+            label="RUC / Nombre"
             required
             onChange={handleChange}
             InputProps={{
@@ -88,8 +88,8 @@ const Clients = ({ getCl }) => {
   );
 };
 
-Clients.propTypes = {
+ClientsAuto.propTypes = {
   getCl: PropTypes.any,
 };
 
-export default Clients;
+export default ClientsAuto;

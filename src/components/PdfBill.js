@@ -123,7 +123,7 @@ const print = (
   } else {
     // Muestra RUC
     pdf.setFontSize(10);
-    pdf.text(20, 75, `RUC: ${ruc}`);
+    pdf.text(20, 55, `RUC: ${ruc}`);
     // Muestra Razon Social
     pdf.setFontSize(10);
     pdf.text(20, 80, `Razón Social: ${razonSocial}`);

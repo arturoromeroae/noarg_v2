@@ -4,7 +4,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import CircularProgress from "@mui/material/CircularProgress";
 import PropTypes from "prop-types";
 
-const ClientsDni = ({ getClDni }) => {
+const ClientsDniAuto = ({ getClDni }) => {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const loading = open && options.length === 0;
@@ -58,14 +58,14 @@ const ClientsDni = ({ getClDni }) => {
           setOpen(false);
         }}
         isOptionEqualToValue={(option, value) => option.dni === value.dni}
-        getOptionLabel={(option) => option.dni}
+        getOptionLabel={(option) => option.filtro}
         onChange={(index, value) => getClDni(value)}
         options={options}
         loading={loading}
         renderInput={(params) => (
           <TextField
             {...params}
-            label="DNI"
+            label="DNI / Nombre"
             required
             onChange={handleChange}
             InputProps={{
@@ -86,8 +86,8 @@ const ClientsDni = ({ getClDni }) => {
   );
 };
 
-ClientsDni.propTypes = {
+ClientsDniAuto.propTypes = {
   getClDni: PropTypes.any,
 };
 
-export default ClientsDni;
+export default ClientsDniAuto;

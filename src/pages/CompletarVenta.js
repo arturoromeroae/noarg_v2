@@ -21,14 +21,12 @@ import DialogClient from "../components/DialogClients";
 import CreditCardTwoToneIcon from "@mui/icons-material/CreditCardTwoTone";
 import InputAdornment from "@mui/material/InputAdornment";
 import PointOfSaleRoundedIcon from "@mui/icons-material/PointOfSaleRounded";
-import Clients from "../components/ClientsAuto";
 import IconButton from "@mui/material/IconButton";
 import DeleteForeverTwoToneIcon from "@mui/icons-material/DeleteForeverTwoTone";
 import DialogAlert from "../components/DialogAlert";
 import print from "../components/PdfBill";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../components/LoadingSpinner";
-import ClientsDni from "../components/ClientsDniAuto";
 import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import HomeIcon from "@mui/icons-material/Home";
 import ContactMailTwoToneIcon from "@mui/icons-material/ContactMailTwoTone";
@@ -36,6 +34,11 @@ import PaymentsIcon from "@mui/icons-material/Payments";
 import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
 import FaceRetouchingNaturalTwoToneIcon from "@mui/icons-material/FaceRetouchingNaturalTwoTone";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import PersonSearchIcon from "@mui/icons-material/PersonSearch";
+import ClientsDniAuto from "../components/ClientsDniAuto";
+import ClientsAuto from "../components/ClientsAuto";
+import Chip from "@mui/material/Chip";
+import PersonPinCircleTwoToneIcon from "@mui/icons-material/PersonPinCircleTwoTone";
 
 const SellContainer = styled.div`
   display: flex;
@@ -46,7 +49,7 @@ const SellContainer = styled.div`
 
 const TableContainer = styled.div`
   padding: 20px;
-  height: 730px;
+  height: 920px;
   width: 55%;
   @media (max-width: 800px) {
     width: 100%;
@@ -105,6 +108,8 @@ const CompletarVenta = () => {
   const [typeDiscount, setTypeDiscount] = useState();
   const [tipoCl, setTipoCl] = useState(0);
   const [montoPagar, setMontoPagar] = useState(0);
+  const [clienType, setClientType] = useState();
+  const [documento, setDocumento] = useState();
   const navigate = useNavigate();
 
   // Cookies productos
@@ -145,6 +150,7 @@ const CompletarVenta = () => {
       setCliente(cl.razonSocial);
       setDireccion(cl.direccion);
       setClDni("");
+      setDocumento(cl.rucCliente);
     } else if (clDni && clDni.dni) {
       setDni(clDni.dni);
       setRuc("");
@@ -153,6 +159,7 @@ const CompletarVenta = () => {
       setCliente(clDni.nombres);
       setDireccion(clDni.direccion);
       setCl("");
+      setDocumento(clDni.dni);
     } else {
       if (clDni) {
         setCliente(cliente);
@@ -168,6 +175,13 @@ const CompletarVenta = () => {
         setRuc(cl);
         setRazonSocial(direccion);
         setTipoCl(1);
+      } else {
+        setCliente("");
+        setDireccion("");
+        setDni("");
+        setRuc("");
+        setRazonSocial("");
+        setDocumento("");
       }
     }
   }, [clDni, cl]);
@@ -234,6 +248,10 @@ const CompletarVenta = () => {
   useEffect(() => {
     setMontoPagar(sum);
   }, [openModal, action]);
+
+  const handleDocumento = (e) => {
+    setDocumento(e.target.value);
+  };
 
   const handleGetRowId = (e) => {
     return e.idProducto;
@@ -319,6 +337,15 @@ const CompletarVenta = () => {
   const handleCancelSell = () => {
     localStorage.removeItem("sell");
     navigate("/repuestos");
+  };
+
+  const handleClientType = (event) => {
+    setClientType(event.target.value);
+    setDireccion("");
+    setEmail("");
+    setCl("");
+    setClDni("");
+    setCliente("");
   };
 
   const handleSell = () => {
@@ -647,8 +674,8 @@ const CompletarVenta = () => {
                 getRowId={handleGetRowId}
                 rows={productsCookies}
                 columns={rows}
-                pageSize={12}
-                rowsPerPageOptions={[12]}
+                pageSize={15}
+                rowsPerPageOptions={[15]}
                 disableSelectionOnClick
                 experimentalFeatures={{ newEditingApi: true }}
                 initialState={{
@@ -675,6 +702,58 @@ const CompletarVenta = () => {
               <p style={{ textAlign: "center" }}>
                 Los campos con * son requeridos
               </p>
+              <Divider sx={{ my: 3 }}>
+                <Chip
+                  icon={<PersonPinCircleTwoToneIcon />}
+                  label="Buscar Clientes"
+                  variant="outlined"
+                />
+              </Divider>
+              <p style={{ margin: 8, textAlign: "center" }}>
+                <strong>Buscar clientes:</strong> seleccione el tipo de
+                documento e ingrese el nro. de documento o nombre del cliente
+              </p>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <PersonSearchIcon
+                  sx={{ fontSize: 45, my: 1 }}
+                  color="primary"
+                />
+                <FormControl sx={{ m: 1, width: "23ch" }}>
+                  <InputLabel id="demo-simple-select-label">
+                    Tipo de Documento
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    label="Tipo de Comprobante"
+                    onChange={handleClientType}
+                  >
+                    <MenuItem key="nota" value={2}>
+                      DNI
+                    </MenuItem>
+                    <MenuItem key="boleta" value={1}>
+                      RUC
+                    </MenuItem>
+                  </Select>
+                </FormControl>
+                {clienType == 2 && <ClientsDniAuto getClDni={setClDni} />}
+                {clienType == 1 && <ClientsAuto getCl={setCl} />}
+                {!clienType && (
+                  <TextField
+                    sx={{ m: 1, width: "30ch" }}
+                    label="Seleccione tipo de documento"
+                    margin="dense"
+                    disabled
+                  />
+                )}
+              </div>
+              <Divider sx={{ my: 2 }} />
               <FormContainer>
                 <InputsContainer>
                   <FormControl sx={{ m: 1, minWidth: 210 }} required>
@@ -724,10 +803,18 @@ const CompletarVenta = () => {
                     }}
                     required
                   />
-                  {billType !== 2 && billType !== 3 && (
-                    <ClientsDni getClDni={setClDni} />
-                  )}
-                  {billType > 1 && billType < 4 && <Clients getCl={setCl} />}
+                  <TextField
+                    sx={{ m: 1 }}
+                    id="outlined-basic"
+                    label="Nro. Documento"
+                    variant="outlined"
+                    type="number"
+                    onChange={handleDocumento}
+                    value={cl ? documento : clDni ? documento : ""}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
                   <TextField
                     sx={{ m: 1 }}
                     id="outlined-basic"
