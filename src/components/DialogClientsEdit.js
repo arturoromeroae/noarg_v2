@@ -20,9 +20,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const DialogAdd = ({ close, action, client }) => {
-  const [cl, setCl] = useState();
   const [nombres, setNombres] = useState();
-  const [clDni, setClDni] = useState();
   const [email, setEmail] = useState();
   const [direccion, setDireccion] = useState();
   const [referencia, setReferencia] = useState();
@@ -30,7 +28,7 @@ const DialogAdd = ({ close, action, client }) => {
   const [idcl, setIdcl] = useState();
   const [clientType, setClientType] = useState();
   const [nroDocumento, setNroDocumento] = useState();
-  const [actualizar, setActualizar] = useState(false);
+  //const [actualizar, setActualizar] = useState(false);
   const [errorText, setErrorText] = useState();
   const [errorTextName, setErrorTextName] = useState();
 
@@ -44,7 +42,6 @@ const DialogAdd = ({ close, action, client }) => {
       setIdcl(client ? client.idCliente : "");
       setNroDocumento(client.rucCliente ? client.rucCliente : client.dni);
       client.tipoDoc == "DNI" ? setClientType(2) : setClientType(1);
-      setClDni("");
     } else {
       setDireccion("");
       setNombres("");
@@ -62,8 +59,6 @@ const DialogAdd = ({ close, action, client }) => {
     setNombres("");
     setEmail("");
     setNroDocumento("");
-    setCl("");
-    setClDni("");
     setReferencia("");
     setErrorText();
     setErrorTextName();
@@ -100,58 +95,60 @@ const DialogAdd = ({ close, action, client }) => {
     setClientType(e.target.value);
   };
 
-  const handleChangeUpdate = () => {
-    if (nroDocumento && nombres) {
-      setActualizar(true);
-    } else if (!nroDocumento) {
-      setErrorText("Debe ingresar el numero de documento");
-    } else if (!nombres) {
-      setErrorTextName("Debe ingresar el nombre / razón social");
-    }
-  };
-
   const infoClient = {
     idCliente: idcl,
-    idTipoCliente: 1,
-    rucCliente: cl ? nroDocumento : "",
-    razonSocial: cl ? nombres : "",
+    idTipoCliente: clientType,
+    rucCliente: clientType === 1 ? nroDocumento : "",
+    razonSocial: client ? nombres : "",
     direccion: direccion,
-    dni: clDni ? nroDocumento : "",
+    dni: clientType === 2 ? nroDocumento : "",
     apellidos: "",
-    nombres: clDni ? nombres : "",
+    nombres: client ? nombres : "",
     email: email,
     telefono: telefono,
     referencia: referencia,
   };
 
   // Actualizar cliente
-  useEffect(() => {
-    if (infoClient) {
-      fetch("http://appdemo1.solarc.pe/api/Cliente/ActualizarCliente", {
-        method: "POST", // or 'PUT'
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(infoClient),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          close(false);
-          setDireccion("");
-          setNombres("");
-          setEmail("");
-          setNroDocumento("");
-          setCl("");
-          setClDni("");
-          setErrorText();
-          setErrorTextName();
+  const handleClick = async () => {
+    if (nroDocumento && nombres) {
+      try {
+        console.log(infoClient);
+        const response = await fetch('http://appdemo1.solarc.pe/api/Cliente/ActualizarCliente', {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(infoClient),
         })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            close(false);
+            setDireccion("");
+            setNombres("");
+            setEmail("");
+            setNroDocumento("");
+            setErrorText();
+            setErrorTextName();
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+
+        const result = await response.json();
+        console.log('result is: ', JSON.stringify(result, null, 4));
+      } catch (err) {
+        console.error(err.message);
+      } finally {
+        console.log('termino');
+      }
+    } else if (!nroDocumento) {
+      setErrorText("Debe ingresar el numero de documento");
+    } else if (!nombres) {
+      setErrorTextName("Debe ingresar el nombre / razón social");
     }
-  }, [actualizar]);
+  };
 
   return (
     <div>
@@ -263,7 +260,7 @@ const DialogAdd = ({ close, action, client }) => {
           <Button color="error" onClick={handleClose}>
             Cancelar
           </Button>
-          <Button disabled={!client} onClick={handleChangeUpdate}>
+          <Button disabled={!client} onClick={handleClick}>
             Actualizar
           </Button>
         </DialogActions>
