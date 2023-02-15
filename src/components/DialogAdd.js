@@ -109,7 +109,7 @@ const DialogAdd = ({ addProduct, action }) => {
                 width={250}
                 src={
                   prod
-                    ? `http://appdemo1.solarc.pe/imagenes/${prod.codProd}.JPG`
+                    ? `https://appdemo1.solarc.pe/imagenes/${prod.codProd}.JPG`
                     : defaultImage
                 }
               />

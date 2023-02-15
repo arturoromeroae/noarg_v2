@@ -58,7 +58,7 @@ const DialogAlmacenEdit = ({
   };
 
   useEffect(() => {
-    fetch("http://appdemo1.solarc.pe/api/Parametros/GetParametros?Tabla=modelo")
+    fetch("https://appdemo1.solarc.pe/api/Parametros/GetParametros?Tabla=modelo")
       .then((res) => res.json())
       .then(
         (result) => {
@@ -69,7 +69,7 @@ const DialogAlmacenEdit = ({
         }
       );
 
-    fetch("http://appdemo1.solarc.pe/api/Parametros/GetParametros?Tabla=marca")
+    fetch("https://appdemo1.solarc.pe/api/Parametros/GetParametros?Tabla=marca")
       .then((res) => res.json())
       .then(
         (result) => {
@@ -119,7 +119,7 @@ const DialogAlmacenEdit = ({
     // Editar producto
     if (pr) {
       setLoad(true);
-      fetch("http://appdemo1.solarc.pe/api/Productos/ActualizarProducto", {
+      fetch("https://appdemo1.solarc.pe/api/Productos/ActualizarProducto", {
         method: "POST", // or 'PUT'
         headers: {
           "Content-Type": "application/json",
@@ -168,7 +168,7 @@ const DialogAlmacenEdit = ({
                     currentTarget.src = defaultImage;
                   }}
                   width={250}
-                  src={`http://appdemo1.solarc.pe/imagenes/${data.codProd}.JPG`}
+                  src={`https://appdemo1.solarc.pe/imagenes/${data.codProd}.JPG`}
                   alt={data.nombreProducto}
                 />
               </Grid>

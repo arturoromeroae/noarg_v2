@@ -41,7 +41,7 @@ const DialogAlmacenExcel = ({
     // Agregar marca
     if (formdata) {
       text("!Se subio el archivo correctamente!");
-      fetch("http://appdemo1.solarc.pe/api/Productos/UploadFileXLS", fileUpoad)
+      fetch("https://appdemo1.solarc.pe/api/Productos/UploadFileXLS", fileUpoad)
         .then((response) => response.json())
         .then((data) => {
           console.log(data);

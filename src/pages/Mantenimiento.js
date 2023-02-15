@@ -150,7 +150,7 @@ const Mantenimiento = () => {
             currentTarget.src = defaultImage;
           }}
           width={100}
-          src={`http://appdemo1.solarc.pe/imagenes/${items.row.codProd}.JPG`}
+          src={`https://appdemo1.solarc.pe/imagenes/${items.row.codProd}.JPG`}
           alt={
             items.row.nombreProducto
               ? items.row.nombreProducto
@@ -162,7 +162,7 @@ const Mantenimiento = () => {
   ];
 
   useEffect(() => {
-    fetch("http://appdemo1.solarc.pe/api/Productos/GetProductos")
+    fetch("https://appdemo1.solarc.pe/api/Productos/GetProductos")
       .then((res) => res.json())
       .then(
         (result) => {
@@ -177,7 +177,7 @@ const Mantenimiento = () => {
   }, []);
 
   useEffect(() => {
-    fetch("http://appdemo1.solarc.pe/api/Productos/GetProductos")
+    fetch("https://appdemo1.solarc.pe/api/Productos/GetProductos")
       .then((res) => res.json())
       .then(
         (result) => {

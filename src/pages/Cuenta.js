@@ -42,7 +42,7 @@ const Cuenta = () => {
   };
 
   useEffect(() => {
-    fetch("http://appdemo1.solarc.pe/api/Account/Usuarios")
+    fetch("https://appdemo1.solarc.pe/api/Account/Usuarios")
       .then((res) => res.json())
       .then(
         (result) => {

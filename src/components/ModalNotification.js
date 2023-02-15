@@ -71,7 +71,7 @@ const ModalNotification = ({ open, set, info }) => {
         idVentaCab: info.idVentaCab,
       };
 
-      fetch("http://appdemo1.solarc.pe/api/Venta/ModificarNotificacion", {
+      fetch("https://appdemo1.solarc.pe/api/Venta/ModificarNotificacion", {
         method: "POST", // or 'PUT'
         headers: {
           "Content-Type": "application/json",
@@ -93,7 +93,7 @@ const ModalNotification = ({ open, set, info }) => {
   useEffect(() => {
     info &&
       fetch(
-        `http://appdemo1.solarc.pe/api/Venta/ConsultaReimprimir?IdVentaCab=${info.idVentaCab}`
+        `https://appdemo1.solarc.pe/api/Venta/ConsultaReimprimir?IdVentaCab=${info.idVentaCab}`
       )
         .then((res) => res.json())
         .then(

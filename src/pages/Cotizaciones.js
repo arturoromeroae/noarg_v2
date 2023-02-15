@@ -177,7 +177,7 @@ const Cotizaciones = () => {
   // Obtener cotizaciones
   useEffect(() => {
     fetch(
-      `http://appdemo1.solarc.pe/api/Cotiza/ConsultaCotiza?IdSede=1&Usuario=${selectedUser}&TipoComprobante=4&FechaDesde=${today}&FechaHasta=${today}`
+      `https://appdemo1.solarc.pe/api/Cotiza/ConsultaCotiza?IdSede=1&Usuario=${selectedUser}&TipoComprobante=4&FechaDesde=${today}&FechaHasta=${today}`
     )
       .then((res) => res.json())
       .then(
@@ -196,7 +196,7 @@ const Cotizaciones = () => {
 
   // Obtener cotizaciones
   const getCotizaciones = () => {
-    let url = `http://appdemo1.solarc.pe/api/Cotiza/ConsultaCotiza?IdSede=1&Usuario=${selectedUser}&TipoComprobante=4&FechaDesde=${
+    let url = `https://appdemo1.solarc.pe/api/Cotiza/ConsultaCotiza?IdSede=1&Usuario=${selectedUser}&TipoComprobante=4&FechaDesde=${
       valueI.$y
     }.${parseInt(valueI.$M) + 1}.${valueI.$D}&FechaHasta=${valueF.$y}.${
       parseInt(valueF.$M) + 1
@@ -219,7 +219,7 @@ const Cotizaciones = () => {
 
   // Obtener usuarios
   useEffect(() => {
-    fetch("http://appdemo1.solarc.pe/api/Account/Usuarios")
+    fetch("https://appdemo1.solarc.pe/api/Account/Usuarios")
       .then((res) => res.json())
       .then(
         (result) => {

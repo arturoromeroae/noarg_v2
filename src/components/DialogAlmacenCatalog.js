@@ -36,7 +36,7 @@ const DialogAlmacenCatalog = ({ open, set }) => {
   };
 
   useEffect(() => {
-    fetch("http://appdemo1.solarc.pe/api/Productos/GetProductos")
+    fetch("https://appdemo1.solarc.pe/api/Productos/GetProductos")
       .then((res) => res.json())
       .then(
         (result) => {
@@ -47,7 +47,7 @@ const DialogAlmacenCatalog = ({ open, set }) => {
         }
       );
 
-    fetch("http://appdemo1.solarc.pe/api/Productos/DownloadFilePDF")
+    fetch("https://appdemo1.solarc.pe/api/Productos/DownloadFilePDF")
       .then((res) => res.json())
       .then(
         (result) => {

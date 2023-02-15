@@ -129,7 +129,7 @@ const CompletarVenta = () => {
   // Informacion RUC y razon social
   useEffect(() => {
     // Obtener clientes
-    fetch("http://appdemo1.solarc.pe/api/Cliente/GetClientes")
+    fetch("https://appdemo1.solarc.pe/api/Cliente/GetClientes")
       .then((res) => res.json())
       .then(
         (result) => {
@@ -423,7 +423,7 @@ const CompletarVenta = () => {
   useEffect(() => {
     if (billType > 0) {
       fetch(
-        `http://appdemo1.solarc.pe/api/Maestro/GetNroComprobante?IdTipoDoc=${billType}`
+        `https://appdemo1.solarc.pe/api/Maestro/GetNroComprobante?IdTipoDoc=${billType}`
       )
         .then((res) => res.json())
         .then(
@@ -441,7 +441,7 @@ const CompletarVenta = () => {
   // Insertar carrito
   useEffect(() => {
     if (data) {
-      fetch("http://appdemo1.solarc.pe/api/Carrito/InsertaCarrito", {
+      fetch("https://appdemo1.solarc.pe/api/Carrito/InsertaCarrito", {
         method: "POST", // or 'PUT'
         headers: {
           "Content-Type": "application/json",
@@ -462,7 +462,7 @@ const CompletarVenta = () => {
   useEffect(() => {
     if (idCab) {
       fetch(
-        `http://appdemo1.solarc.pe/api/Carrito/GetCarrito?IdCarrito=${idCab}`
+        `https://appdemo1.solarc.pe/api/Carrito/GetCarrito?IdCarrito=${idCab}`
       )
         .then((res) => res.json())
         .then(
@@ -569,7 +569,7 @@ const CompletarVenta = () => {
       }
 
       // Enviar email venta
-      fetch("http://appdemo1.solarc.pe/api/Venta/EnviarEmail", {
+      fetch("https://appdemo1.solarc.pe/api/Venta/EnviarEmail", {
         method: "POST", // or 'PUT'
         headers: {
           "Content-Type": "application/json",
@@ -584,7 +584,7 @@ const CompletarVenta = () => {
 
       // Guardar Cliente
       if (clienteDni === -1) {
-        fetch("http://appdemo1.solarc.pe/api/Cliente/Registrar%20Clientes", {
+        fetch("https://appdemo1.solarc.pe/api/Cliente/Registrar%20Clientes", {
           method: "POST", // or 'PUT'
           headers: {
             "Content-Type": "application/json",
@@ -599,7 +599,7 @@ const CompletarVenta = () => {
       }
 
       // Insertar Venta
-      fetch("http://appdemo1.solarc.pe/api/Venta/InsertaVenta", {
+      fetch("https://appdemo1.solarc.pe/api/Venta/InsertaVenta", {
         method: "POST", // or 'PUT'
         headers: {
           "Content-Type": "application/json",
@@ -622,7 +622,7 @@ const CompletarVenta = () => {
     if (billType === 4 && cart) {
       // Guardar Cliente
       if (clienteDni === -1) {
-        fetch("http://appdemo1.solarc.pe/api/Cliente/Registrar%20Clientes", {
+        fetch("https://appdemo1.solarc.pe/api/Cliente/Registrar%20Clientes", {
           method: "POST", // or 'PUT'
           headers: {
             "Content-Type": "application/json",
@@ -637,7 +637,7 @@ const CompletarVenta = () => {
       }
 
       // Guardar Cotizacion
-      fetch("http://appdemo1.solarc.pe/api/Cotiza/InsertaCotiza", {
+      fetch("https://appdemo1.solarc.pe/api/Cotiza/InsertaCotiza", {
         method: "POST", // or 'PUT'
         headers: {
           "Content-Type": "application/json",

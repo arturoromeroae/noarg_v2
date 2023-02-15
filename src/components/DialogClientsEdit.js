@@ -114,7 +114,7 @@ const DialogAdd = ({ close, action, client }) => {
     if (nroDocumento && nombres) {
       try {
         console.log(infoClient);
-        const response = await fetch('http://appdemo1.solarc.pe/api/Cliente/ActualizarCliente', {
+        const response = await fetch('https://appdemo1.solarc.pe/api/Cliente/ActualizarCliente', {
           method: 'POST',
           headers: {
             "Content-Type": "application/json",

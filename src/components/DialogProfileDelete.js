@@ -22,7 +22,7 @@ const DialogProfileDelete = ({ data, action, set }) => {
   // Eliminar usuario
   useEffect(() => {
     if (us) {
-      fetch("http://appdemo1.solarc.pe/api/Account/UsuariosActualizar", {
+      fetch("https://appdemo1.solarc.pe/api/Account/UsuariosActualizar", {
         method: "POST", // or 'PUT'
         headers: {
           "Content-Type": "application/json",

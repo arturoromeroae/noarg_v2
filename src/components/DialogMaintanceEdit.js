@@ -118,7 +118,7 @@ const DialogMaintanceEdit = ({
   };
 
   useEffect(() => {
-    fetch("http://appdemo1.solarc.pe/api/Parametros/GetParametros?Tabla=modelo")
+    fetch("https://appdemo1.solarc.pe/api/Parametros/GetParametros?Tabla=modelo")
       .then((res) => res.json())
       .then(
         (result) => {
@@ -129,7 +129,7 @@ const DialogMaintanceEdit = ({
         }
       );
 
-    fetch("http://appdemo1.solarc.pe/api/Parametros/GetParametros?Tabla=marca")
+    fetch("https://appdemo1.solarc.pe/api/Parametros/GetParametros?Tabla=marca")
       .then((res) => res.json())
       .then(
         (result) => {
@@ -163,7 +163,7 @@ const DialogMaintanceEdit = ({
 
     if (pr) {
       setLoad(true);
-      fetch("http://appdemo1.solarc.pe/api/Productos/ActualizarProducto", {
+      fetch("https://appdemo1.solarc.pe/api/Productos/ActualizarProducto", {
         method: "POST", // or 'PUT'
         headers: {
           "Content-Type": "application/json",
@@ -206,7 +206,7 @@ const DialogMaintanceEdit = ({
                     currentTarget.src = defaultImage;
                   }}
                   width={250}
-                  src={`http://appdemo1.solarc.pe/imagenes/${dataProducts.codProd}.JPG`}
+                  src={`https://appdemo1.solarc.pe/imagenes/${dataProducts.codProd}.JPG`}
                   alt={
                     dataProducts.nombreProducto
                       ? dataProducts.nombreProducto

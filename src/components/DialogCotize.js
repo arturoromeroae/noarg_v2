@@ -56,7 +56,7 @@ const DialogCotize = ({ open, action, dataNull, reload }) => {
 
   useEffect(() => {
     if (dataNull) {
-      fetch("http://appdemo1.solarc.pe/api/Cotiza/InsertaCotiza", {
+      fetch("https://appdemo1.solarc.pe/api/Cotiza/InsertaCotiza", {
         method: "POST", // or 'PUT'
         headers: {
           "Content-Type": "application/json",

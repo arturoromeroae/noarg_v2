@@ -44,7 +44,7 @@ const DialogAlmacenDelete = ({
     // Eliminar producto
 
     if (pr) {
-      fetch("http://appdemo1.solarc.pe/api/Productos/ActualizarProducto", {
+      fetch("https://appdemo1.solarc.pe/api/Productos/ActualizarProducto", {
         method: "POST", // or 'PUT'
         headers: {
           "Content-Type": "application/json",

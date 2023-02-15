@@ -54,7 +54,7 @@ const DialogProfile = ({ data, action, set }) => {
 
     if (us && passUser && nameUser && loginUser) {
       setLoad(true);
-      fetch("http://appdemo1.solarc.pe/api/Account/UsuariosActualizar", {
+      fetch("https://appdemo1.solarc.pe/api/Account/UsuariosActualizar", {
         method: "POST", // or 'PUT'
         headers: {
           "Content-Type": "application/json",

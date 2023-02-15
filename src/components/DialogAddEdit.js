@@ -71,7 +71,7 @@ const DialogAddEdit = ({ info, infoEdit, setAction, action }) => {
                 width={250}
                 src={
                   info
-                    ? `http://appdemo1.solarc.pe/imagenes/${info.codProd}.JPG`
+                    ? `https://appdemo1.solarc.pe/imagenes/${info.codProd}.JPG`
                     : defaultImage
                 }
               />

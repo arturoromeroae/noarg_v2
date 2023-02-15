@@ -133,7 +133,7 @@ const Almacen = () => {
             currentTarget.src = defaultImage;
           }}
           width={100}
-          src={`http://appdemo1.solarc.pe/imagenes/${items.row.codProd}.JPG`}
+          src={`https://appdemo1.solarc.pe/imagenes/${items.row.codProd}.JPG`}
           alt={items.row.nombreProducto}
         />
       ),
@@ -141,7 +141,7 @@ const Almacen = () => {
   ];
 
   useEffect(() => {
-    fetch("http://appdemo1.solarc.pe/api/Productos/GetProductos")
+    fetch("https://appdemo1.solarc.pe/api/Productos/GetProductos")
       .then((res) => res.json())
       .then(
         (result) => {
@@ -156,7 +156,7 @@ const Almacen = () => {
   }, []);
 
   useEffect(() => {
-    fetch("http://appdemo1.solarc.pe/api/Productos/GetProductos")
+    fetch("https://appdemo1.solarc.pe/api/Productos/GetProductos")
       .then((res) => res.json())
       .then(
         (result) => {

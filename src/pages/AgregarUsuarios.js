@@ -50,7 +50,7 @@ const AgregarUsuarios = () => {
     };
 
     if (user) {
-      fetch("http://appdemo1.solarc.pe/api/Account/UsuariosCrear", {
+      fetch("https://appdemo1.solarc.pe/api/Account/UsuariosCrear", {
         method: "POST", // or 'PUT'
         headers: {
           "Content-Type": "application/json",

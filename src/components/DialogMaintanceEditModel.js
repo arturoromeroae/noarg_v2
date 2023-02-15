@@ -22,7 +22,7 @@ const DialogMaintanceEditModel = ({ action, set }) => {
   const [itemsModels, setItemsModels] = useState();
   const [load, setLoad] = useState();
   useEffect(() => {
-    fetch("http://appdemo1.solarc.pe/api/Parametros/GetParametros?Tabla=modelo")
+    fetch("https://appdemo1.solarc.pe/api/Parametros/GetParametros?Tabla=modelo")
       .then((res) => res.json())
       .then(
         (result) => {
@@ -64,7 +64,7 @@ const DialogMaintanceEditModel = ({ action, set }) => {
 
     // Editar modelo
     if (md) {
-      fetch("http://appdemo1.solarc.pe/api/Parametros/ModificarParametros", {
+      fetch("https://appdemo1.solarc.pe/api/Parametros/ModificarParametros", {
         method: "POST", // or 'PUT'
         headers: {
           "Content-Type": "application/json",
@@ -94,7 +94,7 @@ const DialogMaintanceEditModel = ({ action, set }) => {
 
     // Eliminar modelo
     if (mdDelete) {
-      fetch("http://appdemo1.solarc.pe/api/Parametros/EliminarParametros", {
+      fetch("https://appdemo1.solarc.pe/api/Parametros/EliminarParametros", {
         method: "POST", // or 'PUT'
         headers: {
           "Content-Type": "application/json",

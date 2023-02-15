@@ -30,7 +30,7 @@ const DialogMaintanceAddBrand = ({ action, set }) => {
 
     // Agregar marca
     if (bd) {
-      fetch("http://appdemo1.solarc.pe/api/Parametros/InsertaParametros", {
+      fetch("https://appdemo1.solarc.pe/api/Parametros/InsertaParametros", {
         method: "POST", // or 'PUT'
         headers: {
           "Content-Type": "application/json",

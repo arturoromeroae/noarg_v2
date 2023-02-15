@@ -45,7 +45,7 @@ const DialogVentasAnular = ({ open, set, data, reload }) => {
 
     useEffect(() => {
         if (data) {
-            fetch("http://appdemo1.solarc.pe/api/Venta/InsertaVenta", {
+            fetch("https://appdemo1.solarc.pe/api/Venta/InsertaVenta", {
                 method: "POST", // or 'PUT'
                 headers: {
                     "Content-Type": "application/json",

@@ -93,7 +93,7 @@ const Clientes = () => {
   ];
 
   useEffect(() => {
-    fetch("http://appdemo1.solarc.pe/api/Cliente/GetClientes")
+    fetch("https://appdemo1.solarc.pe/api/Cliente/GetClientes")
       .then((res) => res.json())
       .then(
         (result) => {
@@ -108,7 +108,7 @@ const Clientes = () => {
   }, [open, openDelete]);
 
   useEffect(() => {
-    fetch("http://appdemo1.solarc.pe/api/Cliente/GetClientes")
+    fetch("https://appdemo1.solarc.pe/api/Cliente/GetClientes")
       .then((res) => res.json())
       .then(
         (result) => {

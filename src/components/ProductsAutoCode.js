@@ -17,7 +17,7 @@ const ProductsAutoCode = ({ pr }) => {
     }
 
     if (active) {
-    fetch("http://appdemo1.solarc.pe/api/Productos/GetProductos")
+    fetch("https://appdemo1.solarc.pe/api/Productos/GetProductos")
       .then((res) => res.json())
       .then(
         (result) => {

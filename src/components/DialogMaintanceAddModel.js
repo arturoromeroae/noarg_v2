@@ -30,7 +30,7 @@ const DialogMaintanceAddModel = ({ action, set }) => {
 
     // Agregar modelo
     if (md) {
-      fetch("http://appdemo1.solarc.pe/api/Parametros/InsertaParametros", {
+      fetch("https://appdemo1.solarc.pe/api/Parametros/InsertaParametros", {
         method: "POST", // or 'PUT'
         headers: {
           "Content-Type": "application/json",

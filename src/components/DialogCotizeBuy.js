@@ -35,7 +35,7 @@ const DialogCotizeBuy = ({ openBuy, actionBuy, dataBuy }) => {
   useEffect(() => {
     if (dataBuy) {
       fetch(
-        `http://appdemo1.solarc.pe/api/Cotiza/GetCotiza?IdVentaCab=${dataBuy.idVentaCab}`
+        `https://appdemo1.solarc.pe/api/Cotiza/GetCotiza?IdVentaCab=${dataBuy.idVentaCab}`
       )
         .then((res) => res.json())
         .then(

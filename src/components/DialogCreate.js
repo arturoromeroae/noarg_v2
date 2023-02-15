@@ -50,7 +50,7 @@ const DialogCreate = ({
   const [load, setLoad] = useState(false);
 
   useEffect(() => {
-    fetch("http://appdemo1.solarc.pe/api/Parametros/GetParametros?Tabla=marca")
+    fetch("https://appdemo1.solarc.pe/api/Parametros/GetParametros?Tabla=marca")
       .then((res) => res.json())
       .then(
         (result) => {
@@ -61,7 +61,7 @@ const DialogCreate = ({
         }
       );
 
-    fetch("http://appdemo1.solarc.pe/api/Parametros/GetParametros?Tabla=modelo")
+    fetch("https://appdemo1.solarc.pe/api/Parametros/GetParametros?Tabla=modelo")
       .then((res) => res.json())
       .then(
         (result) => {
@@ -179,7 +179,7 @@ const DialogCreate = ({
       itemMd
     ) {
       setLoad(true);
-      fetch("http://appdemo1.solarc.pe/api/Productos/Productos", {
+      fetch("https://appdemo1.solarc.pe/api/Productos/Productos", {
         method: "POST", // or 'PUT'
         headers: {
           "Content-Type": "application/json",

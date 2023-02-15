@@ -90,7 +90,7 @@ const DialogClientsAdd = ({ close, action }) => {
     };
 
     if (infoClient && add === true) {
-      fetch("http://appdemo1.solarc.pe/api/Cliente/Registrar%20Clientes", {
+      fetch("https://appdemo1.solarc.pe/api/Cliente/Registrar%20Clientes", {
         method: "POST", // or 'PUT'
         headers: {
           "Content-Type": "application/json",

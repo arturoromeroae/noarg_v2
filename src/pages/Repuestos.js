@@ -182,7 +182,7 @@ const Repuestos = () => {
             currentTarget.src = defaultImage;
           }}
           width={50}
-          src={`http://appdemo1.solarc.pe/imagenes/${items.row.codProd}.JPG`}
+          src={`https://appdemo1.solarc.pe/imagenes/${items.row.codProd}.JPG`}
           alt={
             items.row.nombreProducto
               ? items.row.nombreProducto
@@ -195,7 +195,7 @@ const Repuestos = () => {
   ];
 
   useEffect(() => {
-    fetch("http://appdemo1.solarc.pe/api/Productos/GetProductos")
+    fetch("https://appdemo1.solarc.pe/api/Productos/GetProductos")
       .then((res) => res.json())
       .then(
         (result) => {
@@ -273,7 +273,7 @@ const Repuestos = () => {
                   currentTarget.src = defaultImage;
                 }}
                 width={500}
-                src={`http://appdemo1.solarc.pe/imagenes/${selectedRow.codProd}.JPG`}
+                src={`https://appdemo1.solarc.pe/imagenes/${selectedRow.codProd}.JPG`}
                 alt={
                   selectedRow.nombreProducto
                     ? selectedRow.nombreProducto

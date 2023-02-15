@@ -24,7 +24,7 @@ const DialogClientDelete = ({ data, open, set }) => {
 
     if (us) {
       setLoad(true);
-      fetch("http://appdemo1.solarc.pe/api/Cliente/EliminarCliente", {
+      fetch("https://appdemo1.solarc.pe/api/Cliente/EliminarCliente", {
         method: "POST", // or 'PUT'
         headers: {
           "Content-Type": "application/json",

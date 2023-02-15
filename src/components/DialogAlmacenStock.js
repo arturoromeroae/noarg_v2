@@ -38,7 +38,7 @@ const DialogAlmacenStock = ({ open, set }) => {
   const [dateStart, setDateStart] = useState(today);
   const [dateEnd, setDateEnd] = useState(today);
 
-  let url = `http://appdemo1.solarc.pe/api/Venta/ConsultaGanancia?FechaDesde=${dateStart}&FechaHasta=${dateEnd}`;
+  let url = `https://appdemo1.solarc.pe/api/Venta/ConsultaGanancia?FechaDesde=${dateStart}&FechaHasta=${dateEnd}`;
 
   useEffect(() => {
     fetch(url)
@@ -54,7 +54,7 @@ const DialogAlmacenStock = ({ open, set }) => {
   }, [url]);
 
   useEffect(() => {
-    fetch("http://appdemo1.solarc.pe/api/Productos/GetRepStock")
+    fetch("https://appdemo1.solarc.pe/api/Productos/GetRepStock")
       .then((res) => res.json())
       .then(
         (result) => {

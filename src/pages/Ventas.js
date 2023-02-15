@@ -184,7 +184,7 @@ const Ventas = () => {
 
   useEffect(() => {
     fetch(
-      `http://appdemo1.solarc.pe/api/Venta/ConsultaVenta?IdSede=1&Usuario=JGONZALES&TipoComprobante=1&FechaDesde=${today}&FechaHasta=${today}`
+      `https://appdemo1.solarc.pe/api/Venta/ConsultaVenta?IdSede=1&Usuario=JGONZALES&TipoComprobante=1&FechaDesde=${today}&FechaHasta=${today}`
     )
       .then((res) => res.json())
       .then(
@@ -200,7 +200,7 @@ const Ventas = () => {
         }
       );
 
-    fetch("http://appdemo1.solarc.pe/api/Account/Usuarios")
+    fetch("https://appdemo1.solarc.pe/api/Account/Usuarios")
       .then((res) => res.json())
       .then(
         (result) => {
@@ -215,11 +215,11 @@ const Ventas = () => {
   const getCotizaciones = () => {
     let url = ""
     if (selectedComprobante !== 4) {
-      url = `http://appdemo1.solarc.pe/api/Venta/ConsultaVenta?IdSede=1&Usuario=${selectedUser}&TipoComprobante=${selectedComprobante}&FechaDesde=${valueI.$y
+      url = `https://appdemo1.solarc.pe/api/Venta/ConsultaVenta?IdSede=1&Usuario=${selectedUser}&TipoComprobante=${selectedComprobante}&FechaDesde=${valueI.$y
         }.${parseInt(valueI.$M) + 1}.${valueI.$D}&FechaHasta=${valueF.$y}.${parseInt(valueF.$M) + 1
         }.${valueF.$D}`;
     } else {
-      url = `http://appdemo1.solarc.pe/api/Cotiza/ConsultaCotiza?IdSede=1&Usuario=${selectedUser}&TipoComprobante=${selectedComprobante}&FechaDesde=${valueI.$y
+      url = `https://appdemo1.solarc.pe/api/Cotiza/ConsultaCotiza?IdSede=1&Usuario=${selectedUser}&TipoComprobante=${selectedComprobante}&FechaDesde=${valueI.$y
         }.${parseInt(valueI.$M) + 1}.${valueI.$D}&FechaHasta=${valueF.$y}.${parseInt(valueF.$M) + 1
         }.${valueF.$D}`;
     }

@@ -30,7 +30,7 @@ const DialogProfileListDelete = ({ data, open, set, actionAlert, text }) => {
     if (us) {
       setLoad(true);
       text("Se elimino el usuario correctamente");
-      fetch("http://appdemo1.solarc.pe/api/Account/UsuariosActualizar", {
+      fetch("https://appdemo1.solarc.pe/api/Account/UsuariosActualizar", {
         method: "POST", // or 'PUT'
         headers: {
           "Content-Type": "application/json",

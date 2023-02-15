@@ -62,7 +62,7 @@ const DialogVentasImprimir = ({
   useEffect(() => {
     if (dataPrint) {
       fetch(
-        `http://appdemo1.solarc.pe/api/Venta/GetVenta?IdVentaCab=${dataPrint.idVentaCab}`
+        `https://appdemo1.solarc.pe/api/Venta/GetVenta?IdVentaCab=${dataPrint.idVentaCab}`
       )
         .then((res) => res.json())
         .then(

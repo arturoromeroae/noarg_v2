@@ -91,7 +91,7 @@ const ResponsiveAppBar = () => {
   }
 
   useEffect(() => {
-    fetch("http://appdemo1.solarc.pe/api/Venta/GetVentaNot")
+    fetch("https://appdemo1.solarc.pe/api/Venta/GetVentaNot")
       .then((res) => res.json())
       .then(
         (result) => {

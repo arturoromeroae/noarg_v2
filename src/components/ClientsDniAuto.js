@@ -21,7 +21,7 @@ const ClientsDniAuto = ({ getClDni }) => {
     }
 
     if (active) {
-      fetch("http://appdemo1.solarc.pe/api/Cliente/GetClientes")
+      fetch("https://appdemo1.solarc.pe/api/Cliente/GetClientes")
         .then((res) => res.json())
         .then(
           (result) => {

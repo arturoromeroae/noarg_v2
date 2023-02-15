@@ -22,7 +22,7 @@ const DialogMaintanceEditBrand = ({ action, set }) => {
   const [itemsBrands, setItemsBrands] = useState();
   const [load, setLoad] = useState();
   useEffect(() => {
-    fetch("http://appdemo1.solarc.pe/api/Parametros/GetParametros?Tabla=marca")
+    fetch("https://appdemo1.solarc.pe/api/Parametros/GetParametros?Tabla=marca")
       .then((res) => res.json())
       .then(
         (result) => {
@@ -64,7 +64,7 @@ const DialogMaintanceEditBrand = ({ action, set }) => {
 
     // Editar marca
     if (md) {
-      fetch("http://appdemo1.solarc.pe/api/Parametros/ModificarParametros", {
+      fetch("https://appdemo1.solarc.pe/api/Parametros/ModificarParametros", {
         method: "POST", // or 'PUT'
         headers: {
           "Content-Type": "application/json",
@@ -94,7 +94,7 @@ const DialogMaintanceEditBrand = ({ action, set }) => {
 
     // Eliminar marca
     if (mdDelete) {
-      fetch("http://appdemo1.solarc.pe/api/Parametros/EliminarParametros", {
+      fetch("https://appdemo1.solarc.pe/api/Parametros/EliminarParametros", {
         method: "POST", // or 'PUT'
         headers: {
           "Content-Type": "application/json",
