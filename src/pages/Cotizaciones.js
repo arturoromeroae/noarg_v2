@@ -22,6 +22,7 @@ import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import DialogCotize from "../components/DialogCotize";
 import DialogCotizeBuy from "../components/DialogCotizeBuy";
+import './css/cotizaciones.css'
 
 const TableContainer = styled("div")(() => ({
   display: "flex",
@@ -142,17 +143,17 @@ const Cotizaciones = () => {
   };
 
   const columns = [
-    { field: "numero", headerName: "Comprobante", width: 150 },
-    { field: "comprobante", headerName: "Tipo", width: 150 },
-    { field: "razonSocial", headerName: "Cliente", width: 250 },
-    { field: "estado", headerName: "Estado", width: 120 },
-    { field: "usuario", headerName: "Vendedor", width: 150 },
+    { field: "numero", headerName: "Comprobante", width: 200 },
+    { field: "comprobante", headerName: "Tipo", width: 200 },
+    { field: "razonSocial", headerName: "Cliente", width: 350 },
+    { field: "estado", headerName: "Estado", width: 220 },
+    { field: "usuario", headerName: "Vendedor", width: 200 },
     { field: "total", headerName: "Total", flex: true },
     {
       field: "actions",
       type: "actions",
       headerName: "Anular | Vender",
-      width: 120,
+      width: 150,
       getActions: (params) => [
         <IconButton
           key={params.row.idProducto}
@@ -196,11 +197,9 @@ const Cotizaciones = () => {
 
   // Obtener cotizaciones
   const getCotizaciones = () => {
-    let url = `https://appdemo1.solarc.pe/api/Cotiza/ConsultaCotiza?IdSede=1&Usuario=${selectedUser}&TipoComprobante=4&FechaDesde=${
-      valueI.$y
-    }.${parseInt(valueI.$M) + 1}.${valueI.$D}&FechaHasta=${valueF.$y}.${
-      parseInt(valueF.$M) + 1
-    }.${valueF.$D}`;
+    let url = `https://appdemo1.solarc.pe/api/Cotiza/ConsultaCotiza?IdSede=1&Usuario=${selectedUser}&TipoComprobante=4&FechaDesde=${valueI.$y
+      }.${parseInt(valueI.$M) + 1}.${valueI.$D}&FechaHasta=${valueF.$y}.${parseInt(valueF.$M) + 1
+      }.${valueF.$D}`;
     fetch(url)
       .then((res) => res.json())
       .then(
@@ -251,14 +250,15 @@ const Cotizaciones = () => {
       <>
         <Header />
         <Typography
+          className="titulo-cotizacion"
           sx={{ m: 1, textAlign: "center" }}
           variant="h2"
           gutterBottom
         >
           Cotizaciones
         </Typography>
-        <TableContainer>
-          <div style={{ height: 650, width: "62%" }}>
+        <TableContainer className="contenedor-cotizaciones">
+          <div className="contenedor-tabla">
             <DataGrid
               rows={items}
               columns={columns}
@@ -280,7 +280,7 @@ const Cotizaciones = () => {
               }}
             />
           </div>
-          <div style={{ margin: 10 }}>
+          <div style={{ margin: 10 }} className="contenedor-fecha">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <Stack spacing={3}>
                 <DesktopDatePicker

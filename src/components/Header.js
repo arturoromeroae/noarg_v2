@@ -24,17 +24,6 @@ import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import NotificationsOffTwoToneIcon from "@mui/icons-material/NotificationsOffTwoTone";
 
-const pages = [
-  { id: 1, name: "Inicio" },
-  { id: 2, name: "Cotizaciones" },
-  { id: 3, name: "Repuestos" },
-  { id: 4, name: "Almacen" },
-  { id: 5, name: "Mantenimiento" },
-  { id: 6, name: "Ventas" },
-  { id: 7, name: "Clientes" },
-];
-// const settings = ["Perfil", "Agregar Usuarios", "Cerrar Sesión"];
-
 const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -49,7 +38,6 @@ const ResponsiveAppBar = () => {
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
-    setAnchorAlert(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
@@ -109,7 +97,7 @@ const ResponsiveAppBar = () => {
 
   return (
     <>
-      <AppBar position="static" sx={{ bgcolor: "black" }}>
+      <AppBar position="static" sx={{ bgcolor: "black", width: "100%" }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Typography
@@ -153,13 +141,50 @@ const ResponsiveAppBar = () => {
                   display: { xs: "block", md: "none" },
                 }}
               >
-                {pages.map((page) => (
-                  <MenuItem key={page.id} onClick={handleCloseNavMenu}>
-                    <Typography key={page.id} textAlign="center">
-                      {page.name}
-                    </Typography>
-                  </MenuItem>
-                ))}
+                <MenuItem key="inicio" onClick={handleCloseNavMenu}>
+                  <Link
+                    style={{ textDecoration: "none", color: "black", width: "100%" }}
+                    to="/inicio"
+                  >
+                    Inicio
+                  </Link>
+                </MenuItem>
+                <MenuItem key="cotizaciones" onClick={handleCloseNavMenu}>
+                  <Link
+                    style={{ textDecoration: "none", color: "black", width: "100%" }}
+                    to="/cotizaciones"
+                  >Cotizaciones</Link>
+                </MenuItem>
+                <MenuItem key="repuestos" onClick={handleCloseNavMenu}>
+                  <Link
+                    style={{ textDecoration: "none", color: "black", width: "100%" }}
+                    to="/repuestos"
+                  >Respuestos</Link>
+                </MenuItem>
+                <MenuItem key="almacen" onClick={handleCloseNavMenu}>
+                  <Link
+                    style={{ textDecoration: "none", color: "black", width: "100%" }}
+                    to="/almacen"
+                  >Almacen</Link>
+                </MenuItem>
+                <MenuItem key="mantenimiento" onClick={handleCloseNavMenu}>
+                  <Link
+                    style={{ textDecoration: "none", color: "black", width: "100%" }}
+                    to="/mantenimiento"
+                  >Mantenimiento</Link>
+                </MenuItem>
+                <MenuItem key="ventas" onClick={handleCloseNavMenu}>
+                  <Link
+                    style={{ textDecoration: "none", color: "black", width: "100%" }}
+                    to="/ventas"
+                  >Ventas</Link>
+                </MenuItem>
+                <MenuItem key="clientes" onClick={handleCloseNavMenu}>
+                  <Link
+                    style={{ textDecoration: "none", color: "black", width: "100%" }}
+                    to="/clientes"
+                  >Clientes</Link>
+                </MenuItem>
               </Menu>
             </Box>
             <Typography

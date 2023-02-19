@@ -22,6 +22,7 @@ import DialogMaintanceEditModel from "../components/DialogMaintanceEditModel";
 import DialogMaintanceEditBrand from "../components/DialogMaintanceEditBrand";
 import Cookies from "js-cookie";
 import Box from "@mui/material/Box";
+import './css/mantenimiento.css';
 
 function QuickSearchToolbar() {
   return (
@@ -64,7 +65,7 @@ const Mantenimiento = () => {
   let getUserInfo = Cookies.get('user');
   let user = getUserInfo && JSON.parse(getUserInfo);
   let currentUser = user.userName;
-  
+
   useEffect(() => {
     currentUser === 'arturo' || currentUser === 'JGONZALES' ? setHideCol(false) : setHideCol(true);
   }, [])
@@ -209,6 +210,7 @@ const Mantenimiento = () => {
       <>
         <Header />
         <Typography
+          className="titulo-mantenimiento"
           sx={{ m: 1, textAlign: "center" }}
           variant="h2"
           gutterBottom

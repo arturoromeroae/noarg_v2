@@ -17,6 +17,7 @@ import Cart from "../components/Cart";
 import LoadingSpinner from "../components/LoadingSpinner";
 import DialogAddEdit from "../components/DialogAddEdit";
 import Box from "@mui/material/Box";
+import './css/repuestos.css'
 
 const ImageTable = styled.img`
   transition: linear 0.3s;
@@ -227,13 +228,14 @@ const Repuestos = () => {
       <>
         <Header />
         <Typography
+          className="titulo-reouestos"
           sx={{ m: 1, textAlign: "center" }}
           variant="h2"
           gutterBottom
         >
           Repuestos
         </Typography>
-        <TableContainer>
+        <TableContainer className="contenedor-repuestos">
           <DataGrid
             rows={items}
             components={{ Toolbar: QuickSearchToolbar }}

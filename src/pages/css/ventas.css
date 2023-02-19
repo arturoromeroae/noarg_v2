@@ -1,0 +1,19 @@
+.contenedor-tabla-ventas{
+    height: 750px;
+    width: 80%;
+}
+
+@media only screen and (max-width: 768px) {
+    .titulo-ventas{
+        font-size: 40px !important;
+    }
+
+    .contenedor-ventas{
+        flex-wrap: wrap;
+        flex-direction: column-reverse;
+    }
+
+    .contenedor-tabla-ventas{
+        width: 100%;
+    }
+}

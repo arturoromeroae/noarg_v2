@@ -1,0 +1,5 @@
+@media only screen and (max-width: 768px) {
+    .titulo-almacen{
+        font-size: 40px !important;
+    }
+}

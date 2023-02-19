@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import { Navigate } from 'react-router-dom';
 import Typography from "@mui/material/Typography";
 import logo from '../image/LOGO.png';
+import './css/home.css';
 
 const TitleContainer = styled.div`
   text-align: center;
@@ -34,7 +35,7 @@ const Home = () => {
             Fecha: {dd}/{mm}/{yyyy}
           </Typography>
           <br />
-          <img width={500} src={logo} alt="Logo NOARG" />
+          <img src={logo} alt="Logo NOARG" className='logo-inicio' />
         </TitleContainer>
     </>
   )

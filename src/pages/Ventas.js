@@ -22,6 +22,7 @@ import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import DialogVentasAnular from "../components/DialogVentasAnular";
 import DialogVentasImprimir from "../components/DialogVentasImprimir";
+import './css/ventas.css'
 
 const TableContainer = styled("div")(() => ({
   display: "flex",
@@ -258,14 +259,15 @@ const Ventas = () => {
       <>
         <Header />
         <Typography
+          className="titulo-ventas"
           sx={{ m: 1, textAlign: "center" }}
           variant="h2"
           gutterBottom
         >
           Ventas
         </Typography>
-        <TableContainer>
-          <div style={{ height: 650, width: "62%" }}>
+        <TableContainer className="contenedor-ventas">
+          <div className="contenedor-tabla-ventas">
             <DataGrid
               rows={items}
               columns={columns}

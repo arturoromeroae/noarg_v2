@@ -1,0 +1,19 @@
+.contenedor-tabla{
+    height: 750px;
+    width: 80%;
+}
+
+@media only screen and (max-width: 768px) {
+    .contenedor-cotizaciones{
+        flex-wrap: wrap;
+        flex-direction: column-reverse;
+    }
+
+    .contenedor-tabla{
+        width: 100%;
+    }
+
+    .titulo-cotizacion{
+        font-size: 40px !important;
+    }
+}

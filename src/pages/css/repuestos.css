@@ -1,0 +1,9 @@
+@media only screen and (max-width: 768px) {
+    .titulo-reouestos{
+        font-size: 40px !important;
+    }
+
+    .contenedor-repuestos{
+        display: block !important;
+    }
+}

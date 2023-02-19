@@ -20,6 +20,7 @@ import SuccessAlert from "../components/SuccessAlert";
 import ErrorAlert from "../components/ErrorAlert";
 import DialogAlmacenExcel from "../components/DialogAlmacenExcel";
 import Cookies from "js-cookie";
+import './css/almacen.css';
 
 function QuickSearchToolbar() {
   return (
@@ -60,7 +61,7 @@ const Almacen = () => {
   let getUserInfo = Cookies.get('user');
   let user = getUserInfo && JSON.parse(getUserInfo);
   let currentUser = user.userName;
-  
+
   useEffect(() => {
     currentUser === 'arturo' || currentUser === 'JGONZALES' ? setHideCol(false) : setHideCol(true);
   }, [])
@@ -188,6 +189,7 @@ const Almacen = () => {
       <>
         <Header />
         <Typography
+          className="titulo-almacen"
           sx={{ m: 1, textAlign: "center" }}
           variant="h2"
           gutterBottom

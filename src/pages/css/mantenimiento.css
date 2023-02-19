@@ -1,0 +1,5 @@
+@media only screen and (max-width: 768px) {
+    .titulo-mantenimiento{
+        font-size: 40px !important;
+    }
+}

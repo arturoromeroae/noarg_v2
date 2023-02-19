@@ -12,6 +12,7 @@ import Cookies from "js-cookie";
 import Alert from "../components/Alert";
 import { Navigate } from "react-router-dom";
 import Spinner from "../components/Spinner";
+import './css/login.css';
 
 const DivForm = styled.div`
   position: absolute;
@@ -100,9 +101,9 @@ const Login = () => {
   return (
     <>
       {check && <Alert text={textError} />}
-      <DivForm>
+      <DivForm className="contenedor-login">
         <FormLogin>
-          <Typography align="center" variant="h2" gutterBottom>
+          <Typography className="titulo-login" align="center" variant="h2" gutterBottom>
             Inicio de Sesión
           </Typography>
           <InputContainer>
@@ -136,7 +137,7 @@ const Login = () => {
               />
             </Box>
           </InputContainer>
-          <ButtonContainer>
+          <ButtonContainer className="contenedor-boton-login">
             {!loading && (
               <Button
                 variant="contained"
