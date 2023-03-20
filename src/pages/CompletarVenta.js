@@ -39,6 +39,7 @@ import ClientsDniAuto from "../components/ClientsDniAuto";
 import ClientsAuto from "../components/ClientsAuto";
 import Chip from "@mui/material/Chip";
 import PersonPinCircleTwoToneIcon from "@mui/icons-material/PersonPinCircleTwoTone";
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 
 const SellContainer = styled.div`
   display: flex;
@@ -94,6 +95,7 @@ const CompletarVenta = () => {
   const [direccion, setDireccion] = useState();
   const [referencia, setReferencia] = useState();
   const [email, setEmail] = useState();
+  const [phone, setPhone] = useState();
   const [textErrorCl, setTextErrorCl] = useState("");
   const [textErrorPay, setTextErrorPay] = useState("");
   const [customErrorCl, setCustomErrorCl] = useState(false);
@@ -148,7 +150,7 @@ const CompletarVenta = () => {
       setTipoCl(1);
       setRazonSocial(cl.razonSocial);
       setCliente(cl.razonSocial);
-      setDireccion(cl.direccion);
+      setPhone(cl.direccion);
       setClDni("");
       setDocumento(cl.rucCliente);
     } else if (clDni && clDni.dni) {
@@ -273,6 +275,10 @@ const CompletarVenta = () => {
     setEmail(e.target.value);
   };
 
+  const handleChangePhone = (e) => {
+    setPhone(e.target.value);
+  };
+
   const handleChangePay = (e) => {
     setPay(e.target.value);
   };
@@ -343,6 +349,7 @@ const CompletarVenta = () => {
     setClientType(event.target.value);
     setDireccion("");
     setEmail("");
+    setPhone("");
     setCl("");
     setClDni("");
     setCliente("");
@@ -542,7 +549,7 @@ const CompletarVenta = () => {
     apellidos: "",
     nombres: cliente,
     email: email,
-    teléfono: "string",
+    teléfono: phone,
     referencia: referencia,
   };
 
@@ -830,6 +837,25 @@ const CompletarVenta = () => {
                       startAdornment: (
                         <InputAdornment position="start">
                           <AlternateEmailIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                  <TextField
+                    sx={{ m: 1 }}
+                    id="outlined-basic"
+                    label="Teléfono"
+                    variant="outlined"
+                    type="phone"
+                    onChange={handleChangePhone}
+                    value={phone}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <LocalPhoneIcon />
                         </InputAdornment>
                       ),
                     }}

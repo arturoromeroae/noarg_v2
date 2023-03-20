@@ -202,10 +202,12 @@ const print = (
     columnStyles: {
       halign: "center",
       0: { cellWidth: 6 },
-      1: { cellWidth: 20 },
-      3: { cellWidth: 13 },
-      4: { cellWidth: 15 },
-      5: { cellWidth: 16 },
+      1: { cellWidth: 16 },
+      2: { cellWidth: 112 },
+      3: { cellWidth: 26 },
+      4: { cellWidth: 14 },
+      5: { cellWidth: 15 },
+      6: { cellWidth: 15 },
     },
     headStyles: {
       lineColor: [0, 0, 0],
