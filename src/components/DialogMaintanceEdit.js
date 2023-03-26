@@ -42,6 +42,7 @@ const DialogMaintanceEdit = ({
   const [itemBr, setItemBr] = useState();
   const [itemMd, setItemMd] = useState();
   const [itemUb, setItemUb] = useState();
+  const [itemImg, setItemImg] = useState();
   const [load, setLoad] = useState(false);
 
   useEffect(() => {
@@ -116,6 +117,33 @@ const DialogMaintanceEdit = ({
   const handleUbicacion = (e) => {
     setItemUb(e.target.value);
   };
+
+  const handleImage = (e) => {
+    setItemImg(e.target.files[0]);
+  };
+
+  // Formulario editar producto
+  let formdata = new FormData();
+  if (itemImg) {
+    formdata.append("FileData", itemImg);
+    formdata.append("CodigoProducto", itemCod);
+  }
+
+  var requestOptions = {
+    method: "POST",
+    body: formdata,
+    redirect: "follow",
+  };
+
+  useEffect(() => {
+    fetch(
+      "https://appdemo1.solarc.pe/api/Productos/UploadFilePNG",
+      requestOptions
+    )
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
+  }, [itemImg])
 
   useEffect(() => {
     fetch("https://appdemo1.solarc.pe/api/Parametros/GetParametros?Tabla=modelo")
@@ -271,7 +299,7 @@ const DialogMaintanceEdit = ({
                   component="label"
                   size="large"
                 >
-                  <input hidden accept=".jpg" type="file" />
+                  <input hidden accept=".jpg" type="file" onChange={handleImage} />
                   <PhotoCamera />
                 </IconButton>
                 <FormControl sx={{ m: 1, width: "26ch" }}>

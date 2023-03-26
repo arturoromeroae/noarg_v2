@@ -109,7 +109,7 @@ const print = (
   // muestra informacion del cliente
   pdf.setFontSize(10);
   dni.length > 0 && pdf.text(20, 50, `Cliente: ${cl} \nDNI: ${dni}`);
-  ruc && ruc.length > 0 && pdf.text(20, 50, `Cliente: ${cl}`);
+  ruc && ruc.length > 0 && pdf.text(20, 50, `Cliente: ${cl} \nRUC: ${ruc}`);
   pdf.text(20, 60, `Email: ${email ? email : ""}`);
   pdf.text(20, 65, `Dirección: ${direccion ? direccion : ""}`);
   pdf.text(20, 70, `Referencia: ${referencia ? referencia : ""}`);
