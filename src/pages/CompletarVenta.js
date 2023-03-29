@@ -150,7 +150,8 @@ const CompletarVenta = () => {
       setTipoCl(1);
       setRazonSocial(cl.razonSocial);
       setCliente(cl.razonSocial);
-      setPhone(cl.direccion);
+      setDireccion(cl.direccion);
+      setPhone(cl.telefono);
       setClDni("");
       setDocumento(cl.rucCliente);
     } else if (clDni && clDni.dni) {
@@ -160,6 +161,7 @@ const CompletarVenta = () => {
       setRazonSocial(clDni.razonSocial);
       setCliente(clDni.nombres);
       setDireccion(clDni.direccion);
+      setPhone(clDni.telefono);
       setCl("");
       setDocumento(clDni.dni);
     } else {
@@ -846,7 +848,7 @@ const CompletarVenta = () => {
                     id="outlined-basic"
                     label="Teléfono"
                     variant="outlined"
-                    type="phone"
+                    type="number"
                     onChange={handleChangePhone}
                     value={phone}
                     InputLabelProps={{
