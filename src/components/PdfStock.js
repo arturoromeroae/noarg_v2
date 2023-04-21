@@ -47,7 +47,8 @@ const print = (data, repStock, dateStart, dateEnd) => {
   pdf.addImage(logo, "JPEG", 15, 10, 30, 30);
   // Genera la tabla
   // Valores de cada fila
-  const result = [];
+  const result = []
+
   for (let x = 0; x < data["data"].length; x++) {
     var name = [
       data["data"][x]["codProd"],
@@ -58,8 +59,13 @@ const print = (data, repStock, dateStart, dateEnd) => {
       parseFloat(data["data"][x]["precioVenta"]).toFixed(2),
     ];
     // agrega cada valor al array vacio
-    result.push(name);
+    if (name[0] != undefined && name[0] != "" && name[0] != null && name[1] != "" && name[1] != "string" && name[1] != "test" && name[1] != "prueba" && name[1] != "tester" && name[1] != null) {
+      result.push(name);
+      console.log(name[0])
+    }
   }
+
+  let sorted = result.sort((a,b) => a[1].toUpperCase().localeCompare(b[1].toUpperCase()));
 
   // genera la tabla en pdf
   pdf.autoTable({
@@ -72,7 +78,7 @@ const print = (data, repStock, dateStart, dateEnd) => {
       lineWidth: 0.1,
       fontSize: 7,
     },
-    bodyStyles: { lineColor: [0, 0, 0], textColor: [0, 0, 0] },
+    bodyStyles: { lineColor: [0, 0, 0], textColor: [0, 0, 0], fontSize: 7 },
     head: [
       [
         "Código",
@@ -83,11 +89,14 @@ const print = (data, repStock, dateStart, dateEnd) => {
         "Precio de Venta",
       ],
     ],
-    body: result,
+    body: sorted,
     columnStyles: {
-      3: { halign: "right" },
-      4: { halign: "right" },
-      5: { halign: "right" },
+      0: { cellWidth: 16 },
+      1: { cellWidth: 70 },
+      2: { cellWidth: 40 },
+      3: { cellWidth: 15, halign: "right" },
+      4: { cellWidth: 18, halign: "right" },
+      5: { cellWidth: 25, halign: "right" },
     },
     didDrawCell: function (data) {
       data.settings.margin.top = 10;
