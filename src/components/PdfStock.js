@@ -61,7 +61,6 @@ const print = (data, repStock, dateStart, dateEnd) => {
     // agrega cada valor al array vacio
     if (name[0] != undefined && name[0] != "" && name[0] != null && name[1] != "" && name[1] != "string" && name[1] != "test" && name[1] != "prueba" && name[1] != "tester" && name[1] != null) {
       result.push(name);
-      console.log(name[0])
     }
   }
 
