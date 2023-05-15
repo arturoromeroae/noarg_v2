@@ -551,7 +551,7 @@ const CompletarVenta = () => {
     apellidos: "",
     nombres: cliente,
     email: email,
-    teléfono: phone,
+    telefono: phone,
     referencia: referencia,
   };
 

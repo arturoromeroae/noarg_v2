@@ -35,7 +35,7 @@ const DialogAdd = ({ close, action, client }) => {
   useEffect(() => {
     if (client) {
       setDireccion(client ? client.direccion : "");
-      setNombres(client ? client.razonSocial : "");
+      setNombres(client ? client.nombres : "");
       setEmail(client ? client.email : "");
       setTelefono(client ? client.telefono : "");
       setReferencia(client ? client.referencia : "");

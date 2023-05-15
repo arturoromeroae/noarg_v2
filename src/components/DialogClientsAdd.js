@@ -23,6 +23,7 @@ const DialogClientsAdd = ({ close, action }) => {
   const [tipoDocumento, setTipoDocumento] = useState();
   const [nroDocumento, setNroDocumento] = useState();
   const [nombres, setNombres] = useState();
+  const [apellidos, setApellidos] = useState();
   const [telefono, setTelefono] = useState();
   const [email, setEmail] = useState();
   const [direccion, setDireccion] = useState();
@@ -35,6 +36,7 @@ const DialogClientsAdd = ({ close, action }) => {
     setTipoDocumento(0);
     setNroDocumento("");
     setNombres("");
+    setApellidos("");
     setTelefono("");
     setEmail("");
     setDireccion("");
@@ -51,6 +53,10 @@ const DialogClientsAdd = ({ close, action }) => {
 
   const handleChangeNombres = (e) => {
     setNombres(e.target.value);
+  };
+
+  const handleChangeApellidos = (e) => {
+    setApellidos(e.target.value);
   };
 
   const handleChangeTelefono = (e) => {
@@ -77,15 +83,15 @@ const DialogClientsAdd = ({ close, action }) => {
   useEffect(() => {
     const infoClient = {
       idCliente: 0,
-      idTipoCliente: 0,
+      idTipoCliente: tipoDocumento,
       rucCliente: tipoDocumento === 1 ? nroDocumento : "",
       razonSocial: tipoDocumento === 1 ? nombres : "",
       direccion: direccion ? direccion : "",
       dni: tipoDocumento === 2 ? nroDocumento : "",
-      apellidos: "string",
+      apellidos: apellidos,
       nombres: nombres,
       email: email ? email : "",
-      teléfono: telefono ? telefono : "",
+      telefono: telefono ? telefono : "",
       referencia: referencia ? referencia : "",
     };
 
@@ -100,6 +106,8 @@ const DialogClientsAdd = ({ close, action }) => {
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
+          console.log(infoClient);
+          setAdd(false);
           close(false);
         })
         .catch((error) => {
@@ -171,13 +179,20 @@ const DialogClientsAdd = ({ close, action }) => {
               />
               <TextField
                 sx={{ m: 1, width: "30ch" }}
+                label="Apellidos"
+                margin="dense"
+                onChange={handleChangeApellidos}
+                value={apellidos}
+              />
+              <TextField
+                sx={{ m: 1, width: "30ch" }}
                 label="Teléfono"
                 margin="dense"
                 onChange={handleChangeTelefono}
                 value={telefono}
               />
               <TextField
-                sx={{ m: 1, width: "62ch" }}
+                sx={{ m: 1, width: "30ch" }}
                 label="Email"
                 margin="dense"
                 onChange={handleChangeEmail}
